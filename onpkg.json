@@ -1,0 +1,130 @@
+{
+  "agent_instructions": {
+    "active_skills": [
+      "react.md",
+      "vite.md"
+    ],
+    "docs_directory": "onpkg_docs/"
+  },
+  "architecture": {
+    "components": "src/components",
+    "entrypoint": "src/main.tsx",
+    "routing": "src/pages",
+    "styles": "src/index.css"
+  },
+  "packages": {
+    "added_by_agent": [],
+    "core": [
+      "@eslint/js",
+      "@hookform/resolvers",
+      "@tailwindcss/vite",
+      "@tanstack/react-query",
+      "@types/node",
+      "@types/react",
+      "@types/react-dom",
+      "@vitejs/plugin-react",
+      "axios",
+      "eslint",
+      "eslint-plugin-react-hooks",
+      "eslint-plugin-react-refresh",
+      "framer-motion",
+      "globals",
+      "gsap",
+      "lucide-react",
+      "react",
+      "react-dom",
+      "react-hook-form",
+      "react-router-dom",
+      "tailwindcss",
+      "typescript",
+      "typescript-eslint",
+      "vite",
+      "zod",
+      "zustand"
+    ]
+  },
+  "project": {
+    "name": "Dopekin",
+    "package_manager": "bun",
+    "runtime": "bun",
+    "stack": "react-vite"
+  },
+  "scripts": {
+    "build": "tsc -b && vite build",
+    "dev": "vite",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "sources": {
+    "directories": [
+      "src",
+      "src/api",
+      "src/components",
+      "src/data",
+      "src/hooks",
+      "src/layouts",
+      "src/lib",
+      "src/pages",
+      "src/providers",
+      "src/store",
+      "src/styles",
+      "src/types"
+    ],
+    "file_patterns": [
+      "*.css",
+      "*.html",
+      "*.js",
+      "*.json",
+      "*.md",
+      "*.ts",
+      "*.tsx"
+    ],
+    "files": [
+      "AGENTS.md",
+      "README.md",
+      "content.md",
+      "design.md",
+      "eslint.config.js",
+      "implementation.md",
+      "index.html",
+      "package.json",
+      "prd.md",
+      "src/App.css",
+      "src/App.tsx",
+      "src/api/axios.ts",
+      "src/components/HamsterIcon.tsx",
+      "src/components/MobileNav.tsx",
+      "src/components/Navbar.tsx",
+      "src/components/Sidebar.tsx",
+      "src/components/ThemeProvider.tsx",
+      "src/components/ThemeToggleButton.tsx",
+      "src/components/button.tsx",
+      "src/data/defaultTwins.ts",
+      "src/hooks/useUser.ts",
+      "src/index.css",
+      "src/layouts/RootLayout.tsx",
+      "src/lib/logger.ts",
+      "src/main.tsx",
+      "src/pages/ChatPage.tsx",
+      "src/pages/CreatorPage.tsx",
+      "src/pages/ExplorePage.tsx",
+      "src/pages/FeedPage.tsx",
+      "src/pages/HomePage.tsx",
+      "src/pages/LivePage.tsx",
+      "src/pages/NotFoundPage.tsx",
+      "src/pages/PricingPage.tsx",
+      "src/providers/QueryProvider.tsx",
+      "src/store/useAppStore.ts",
+      "src/store/useThemeStore.ts",
+      "src/styles/animations.css",
+      "src/styles/dopekin.css",
+      "src/types/schema.ts",
+      "src/types/twin.ts",
+      "todo.md",
+      "tsconfig.app.json",
+      "tsconfig.json",
+      "tsconfig.node.json",
+      "vite.config.ts"
+    ]
+  }
+}

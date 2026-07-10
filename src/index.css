@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@800;900&family=Poppins:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+@import "./styles/dopekin.css";
+@import "./styles/animations.css";
+
+@theme {
+  --color-primary: var(--y);
+  --color-primary-hover: var(--y2);
+  --color-bg-base: var(--bg);
+  --color-bg-elevated: var(--bg2);
+  --color-bg-overlay: var(--bg3);
+  
+  --color-text-primary: #f5f5f5;
+  --color-text-secondary: var(--muted2);
+  --color-text-tertiary: var(--muted);
+  --color-text-inverted: var(--blk);
+  
+  --color-border-subtle: var(--border);
+  --color-border-strong: var(--border2);
+  
+  --color-success: #00ff88;
+  --color-error: #ff3b5c;
+  --color-warning: #ffaa00;
+  --color-info: #00bbff;
+  --color-live: #ff3b5c;
+
+  --font-heading: 'Inter', sans-serif;
+  --font-body: 'Poppins', sans-serif;
+  
+  --shadow-glow: var(--glow-y);
+  --shadow-brutal: var(--brutal);
+}
+
+@layer base {
+  :root {
+    --background: 253 43% 4%;
+    --foreground: 0 0% 96%;
+    --primary: 61 100% 50%;
+    --primary-foreground: 0 0% 5%;
+    --border: 61 100% 50% / 0.12;
+    --input: 61 100% 50% / 0.12;
+    --ring: 61 100% 50%;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: #f5f5f5;
+    font-family: 'Poppins', sans-serif;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 231, 1, 0.3);
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 231, 1, 0.5);
+}

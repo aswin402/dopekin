@@ -1,0 +1,32 @@
+/* src/styles/dopekin.css */
+:root {
+  /* ─── DopeKin Theme Colors (Neon Yellow, Black, and White) ─── */
+  --y: #ffe701;                                 /* Neon Yellow Highlight */
+  --y2: #fffa7d;                                /* Hover Neon Yellow */
+  --blk: #0d0d0d;                               /* Midnight Black */
+  --bg: #000000;                                /* Main Background (Pure Black) */
+  --bg2: #121212;                               /* Card Background (Slightly lighter black for card elevation) */
+  --bg3: #1c1c1c;                               /* Header, Input, Secondary Panels */
+  
+  /* ─── Borders & Highlights ─── */
+  --border: rgba(255, 231, 1, 0.12);            /* Subtle neon yellow border */
+  --border2: rgba(255, 231, 1, 0.25);           /* Focused neon yellow border */
+  
+  /* ─── Text States ─── */
+  --muted: rgba(255, 255, 255, 0.4);            /* Tertiary text / disabled state (muted white) */
+  --muted2: rgba(255, 255, 255, 0.7);           /* Secondary labels (half-white) */
+  
+  /* ─── Layout Metrics ─── */
+  --sidebar-w: 220px;
+  
+  /* ─── Shadow & Brutalist depth ─── */
+  --glow-y: 0 0 20px rgba(255, 231, 1, 0.55), 0 0 50px rgba(255, 231, 1, 0.25);
+  --brutal: 3px 3px 0px var(--y);
+  
+  /* ─── Semantic Colors ─── */
+  --success: #00ff88;
+  --error: #ff3b5c;
+  --warning: #ffaa00;
+  --info: #00bbff;
+  --live: #ff3b5c;
+}

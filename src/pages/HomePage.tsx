@@ -138,24 +138,24 @@ export function HomePage() {
           </span>
         </div>
         
-        <div className="flex gap-6 overflow-x-auto pb-2 scrollbar-none scroll-smooth">
+        <div className="flex gap-8 overflow-x-auto pb-2 scrollbar-none scroll-smooth">
           {favorites.map((favId) => {
             const twin = getTwin(favId);
             return (
               <Link 
                 key={favId}
                 to={`/chat?twin=${favId}`}
-                className="flex flex-col items-center gap-2 group cursor-pointer shrink-0"
+                className="flex flex-col items-center gap-2.5 group cursor-pointer shrink-0"
               >
-                <div className="relative w-20 h-20 rounded-full p-[3px] bg-zinc-900 border border-white/5 group-hover:bg-[var(--y)] group-hover:border-[var(--y)] transition-all duration-300 shadow-lg group-hover:shadow-[0_0_15px_rgba(255,231,1,0.3)]">
+                <div className="relative w-28 h-28 rounded-full p-[4px] bg-zinc-900 border border-white/5 group-hover:bg-[var(--y)] group-hover:border-[var(--y)] transition-all duration-300 shadow-lg group-hover:shadow-[0_0_20px_rgba(255,231,1,0.35)]">
                   <img 
                     src={twin.avatarUrl} 
                     alt={twin.name} 
                     className="w-full h-full rounded-full object-cover border-2 border-black" 
                   />
-                  <span className="absolute bottom-0.5 right-0.5 w-3.5 h-3.5 bg-emerald-500 rounded-full border-2 border-black" />
+                  <span className="absolute bottom-1 right-1 w-4.5 h-4.5 bg-emerald-500 rounded-full border-2 border-black shadow-md" />
                 </div>
-                <span className="text-xs text-zinc-300 font-bold group-hover:text-white tracking-wide transition-colors mt-1 truncate max-w-[5rem]">
+                <span className="text-xs md:text-sm text-zinc-300 font-extrabold group-hover:text-white tracking-wide transition-colors mt-1.5 truncate max-w-[7rem]">
                   {twin.name}
                 </span>
               </Link>
@@ -294,26 +294,26 @@ export function HomePage() {
           </span>
         </div>
         
-        <div className="flex gap-6 overflow-x-auto pb-2 scrollbar-none scroll-smooth">
+        <div className="flex gap-8 overflow-x-auto pb-2 scrollbar-none scroll-smooth">
           {['etherik', 'sarang', 'aiko', 'cody', 'vale'].map((newId, idx) => {
             const twin = getTwin(newId);
             return (
               <Link 
                 key={idx}
                 to={`/chat?twin=${newId}`}
-                className="flex flex-col items-center gap-2 group cursor-pointer shrink-0"
+                className="flex flex-col items-center gap-2.5 group cursor-pointer shrink-0"
               >
-                <div className="relative w-20 h-20 rounded-full p-[3px] bg-zinc-900 border border-white/5 group-hover:bg-purple-500 group-hover:border-purple-500 transition-all duration-300 shadow-lg group-hover:shadow-[0_0_15px_rgba(168,85,247,0.3)]">
+                <div className="relative w-28 h-28 rounded-full p-[4px] bg-zinc-900 border border-white/5 group-hover:bg-purple-500 group-hover:border-purple-500 transition-all duration-300 shadow-lg group-hover:shadow-[0_0_20px_rgba(168,85,247,0.4)]">
                   <img 
                     src={twin.avatarUrl} 
                     alt={twin.name} 
                     className="w-full h-full rounded-full object-cover border-2 border-black" 
                   />
-                  <span className="absolute -top-1 -right-1 bg-purple-500 text-white text-[8px] font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wider border border-black shadow-md">
+                  <span className="absolute -top-1 -right-1 bg-purple-500 text-white text-[9px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider border border-black shadow-md">
                     NEW
                   </span>
                 </div>
-                <span className="text-xs text-zinc-300 font-bold group-hover:text-white tracking-wide transition-colors mt-1 truncate max-w-[5rem]">
+                <span className="text-xs md:text-sm text-zinc-300 font-extrabold group-hover:text-white tracking-wide transition-colors mt-1.5 truncate max-w-[7rem]">
                   {twin.name}
                 </span>
               </Link>

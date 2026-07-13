@@ -264,15 +264,26 @@ export function HomePage() {
             return (
               <div 
                 key={item.id}
-                className="w-44 bg-zinc-950 border border-white/5 rounded-2xl flex flex-col shrink-0 relative group overflow-hidden transition-all duration-300 hover:translate-y-[-4px] hover:border-white/15"
+                className="w-52 bg-zinc-950 border border-white/5 rounded-2xl flex flex-col shrink-0 relative group overflow-hidden transition-all duration-300 hover:translate-y-[-4px] hover:border-white/15"
               >
-                {/* 3:4 Aspect Ratio Image wrapper */}
+                {/* 3:4 Aspect Ratio Image/Video wrapper */}
                 <div className="relative aspect-[3/4] w-full overflow-hidden rounded-t-2xl bg-zinc-900">
-                  <img 
-                    src={twin.avatarUrl} 
-                    alt={twin.name} 
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-103"
-                  />
+                  {twin.videoUrl ? (
+                    <video 
+                      src={twin.videoUrl}
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-103"
+                    />
+                  ) : (
+                    <img 
+                      src={twin.avatarUrl} 
+                      alt={twin.name} 
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-103"
+                    />
+                  )}
                   <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
 
                   {/* Status Tag */}
@@ -289,18 +300,18 @@ export function HomePage() {
                     <Heart className={`w-4 h-4 ${isFav ? 'fill-rose-500 text-rose-500' : 'text-zinc-400'}`} />
                   </button>
 
-                  {/* Hover play buttons (Stacked vertically to fit w-44 card) */}
+                  {/* Hover play buttons (Stacked vertically to fit w-52 card) */}
                   <div className="absolute inset-0 flex flex-col items-center justify-center gap-2.5 opacity-0 group-hover:opacity-100 transition-all z-20 bg-black/50 backdrop-blur-[2px] p-2">
                     <Link 
                       to={`/chat?twin=${twin.id}`}
-                      className="flex items-center justify-center gap-1.5 bg-[var(--y)] text-black font-extrabold text-[10px] uppercase w-32 py-2 rounded-lg hover:scale-105 active:scale-95 transition-all shadow-[2px_2px_0px_rgba(0,0,0,1)] border border-black"
+                      className="flex items-center justify-center gap-1.5 bg-[var(--y)] text-black font-extrabold text-[10px] uppercase w-36 py-2 rounded-lg hover:scale-105 active:scale-95 transition-all shadow-[2px_2px_0px_rgba(0,0,0,1)] border border-black"
                     >
                       <MessageSquare className="w-3.5 h-3.5" />
                       <span>Chat</span>
                     </Link>
                     <Link 
                       to={`/chat?twin=${twin.id}&call=true`}
-                      className="flex items-center justify-center gap-1.5 bg-black border border-[var(--y)] text-[var(--y)] font-extrabold text-[10px] uppercase w-32 py-2 rounded-lg hover:scale-105 active:scale-95 transition-all shadow-[2px_2px_0px_rgba(255,235,31,0.2)]"
+                      className="flex items-center justify-center gap-1.5 bg-black border border-[var(--y)] text-[var(--y)] font-extrabold text-[10px] uppercase w-36 py-2 rounded-lg hover:scale-105 active:scale-95 transition-all shadow-[2px_2px_0px_rgba(255,235,31,0.2)]"
                     >
                       <Phone className="w-3.5 h-3.5" />
                       <span>Call</span>

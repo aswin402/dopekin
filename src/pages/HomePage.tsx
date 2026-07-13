@@ -240,6 +240,48 @@ export function HomePage() {
         </div>
       </div>
 
+      {/* NEW COMPANIONS (BIG HORIZONTAL ROW) */}
+      <div className="flex flex-col gap-4">
+        <div className="flex justify-between items-center">
+          <h3 className="text-sm font-mono font-black uppercase text-white/50 tracking-wider">
+            New Companions
+          </h3>
+          <span 
+            className="text-zinc-500 hover:text-white text-xs font-bold uppercase tracking-wider cursor-pointer font-mono" 
+            onClick={() => navigate('/explore')}
+          >
+            View all
+          </span>
+        </div>
+        
+        <div className="flex gap-6 overflow-x-auto pb-2 scrollbar-none scroll-smooth">
+          {['etherik', 'sarang', 'aiko', 'cody', 'vale'].map((newId, idx) => {
+            const twin = getTwin(newId);
+            return (
+              <Link 
+                key={idx}
+                to={`/chat?twin=${newId}`}
+                className="flex flex-col items-center gap-2 group cursor-pointer shrink-0"
+              >
+                <div className="relative w-20 h-20 rounded-full p-[3px] bg-zinc-900 border border-white/5 group-hover:bg-purple-500 group-hover:border-purple-500 transition-all duration-300 shadow-lg group-hover:shadow-[0_0_15px_rgba(168,85,247,0.3)]">
+                  <img 
+                    src={twin.avatarUrl} 
+                    alt={twin.name} 
+                    className="w-full h-full rounded-full object-cover border-2 border-black" 
+                  />
+                  <span className="absolute -top-1 -right-1 bg-purple-500 text-white text-[8px] font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wider border border-black shadow-md">
+                    NEW
+                  </span>
+                </div>
+                <span className="text-xs text-zinc-300 font-bold group-hover:text-white tracking-wide transition-colors mt-1 truncate max-w-[5rem]">
+                  {twin.name}
+                </span>
+              </Link>
+            );
+          })}
+        </div>
+      </div>
+
       {/* RECOMMENDED FOR YOU GRID */}
       <div className="flex flex-col gap-4">
         <div className="flex justify-between items-center">
@@ -337,64 +379,43 @@ export function HomePage() {
         </div>
       </div>
 
-      {/* DOUBLE SECTION ROW: FAVORITES & NEW COMPANIONS */}
-      <div className="grid md:grid-cols-2 gap-8 pt-4">
-        {/* Your Favorites */}
-        <div className="flex flex-col gap-3.5 text-left">
-          <div className="flex justify-between items-center">
-            <h4 className="text-[10px] font-mono font-black uppercase text-zinc-400 tracking-wider">
-              Your Favorites
-            </h4>
-            <span className="text-[9px] font-bold text-zinc-500 uppercase cursor-pointer hover:text-white" onClick={() => navigate('/explore?filter=favorites')}>View all</span>
-          </div>
-          
-          <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-none">
-            {favorites.map((favId) => {
-              const twin = getTwin(favId);
-              return (
-                <Link 
-                  key={favId}
-                  to={`/chat?twin=${favId}`}
-                  className="flex flex-col items-center gap-1.5 group cursor-pointer"
-                >
-                  <div className="relative w-12 h-12 rounded-full p-[2px] bg-zinc-900 group-hover:bg-[var(--y)] transition-all">
-                    <img src={twin.avatarUrl} alt="" className="w-full h-full rounded-full object-cover border border-black" />
-                    <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 rounded-full border border-black" />
-                  </div>
-                  <span className="text-[10px] text-zinc-300 font-bold group-hover:text-white truncate max-w-12">{twin.name}</span>
-                </Link>
-              );
-            })}
-          </div>
+      {/* YOUR FAVORITES */}
+      <div className="flex flex-col gap-4">
+        <div className="flex justify-between items-center">
+          <h3 className="text-sm font-mono font-black uppercase text-white/50 tracking-wider">
+            Your Favorites
+          </h3>
+          <span 
+            className="text-zinc-500 hover:text-white text-xs font-bold uppercase tracking-wider cursor-pointer font-mono" 
+            onClick={() => navigate('/explore?filter=favorites')}
+          >
+            View all
+          </span>
         </div>
-
-        {/* New Companions */}
-        <div className="flex flex-col gap-3.5 text-left">
-          <div className="flex justify-between items-center">
-            <h4 className="text-[10px] font-mono font-black uppercase text-zinc-400 tracking-wider">
-              New Companions
-            </h4>
-            <span className="text-[9px] font-bold text-zinc-500 uppercase cursor-pointer hover:text-white" onClick={() => navigate('/explore')}>View all</span>
-          </div>
-
-          <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-none">
-            {['etherik', 'sarang', 'aiko', 'cody', 'vale'].map((newId, idx) => {
-              const twin = getTwin(newId);
-              return (
-                <Link 
-                  key={idx}
-                  to={`/chat?twin=${newId}`}
-                  className="flex flex-col items-center gap-1.5 group cursor-pointer"
-                >
-                  <div className="relative w-12 h-12 rounded-full p-[2px] bg-zinc-900 group-hover:bg-purple-500 transition-all">
-                    <img src={twin.avatarUrl} alt="" className="w-full h-full rounded-full object-cover border border-black" />
-                    <span className="absolute -top-1 -right-1 bg-purple-500 text-white text-[7px] font-extrabold px-1 rounded uppercase tracking-wider scale-90">NEW</span>
-                  </div>
-                  <span className="text-[10px] text-zinc-300 font-bold group-hover:text-white truncate max-w-12">{twin.name}</span>
-                </Link>
-              );
-            })}
-          </div>
+        
+        <div className="flex gap-5 overflow-x-auto pb-2 scrollbar-none scroll-smooth">
+          {favorites.map((favId) => {
+            const twin = getTwin(favId);
+            return (
+              <Link 
+                key={favId}
+                to={`/chat?twin=${favId}`}
+                className="flex flex-col items-center gap-2 group cursor-pointer shrink-0"
+              >
+                <div className="relative w-14 h-14 rounded-full p-[2px] bg-zinc-900 border border-white/5 group-hover:bg-[var(--y)] group-hover:border-[var(--y)] transition-all duration-300 shadow-md group-hover:shadow-[0_0_12px_rgba(255,231,1,0.25)]">
+                  <img 
+                    src={twin.avatarUrl} 
+                    alt={twin.name} 
+                    className="w-full h-full rounded-full object-cover border border-black" 
+                  />
+                  <span className="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 rounded-full border-2 border-black" />
+                </div>
+                <span className="text-[11px] text-zinc-300 font-bold group-hover:text-white transition-colors truncate max-w-[4.5rem]">
+                  {twin.name}
+                </span>
+              </Link>
+            );
+          })}
         </div>
       </div>
 

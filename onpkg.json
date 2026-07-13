@@ -110,6 +110,7 @@
       "src/pages/ExplorePage.tsx",
       "src/pages/FeedPage.tsx",
       "src/pages/HomePage.tsx",
+      "src/pages/LandingPage.tsx",
       "src/pages/LivePage.tsx",
       "src/pages/NotFoundPage.tsx",
       "src/pages/PricingPage.tsx",

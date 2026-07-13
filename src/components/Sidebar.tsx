@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { Home, Compass, MessageSquare, Radio, Plus, Tag, Rss, Menu } from 'lucide-react';
+import { Home, Compass, MessageSquare, Radio, Plus, Tag, Rss, Menu, Sparkles } from 'lucide-react';
 import { useAppStore } from '../store/useAppStore';
 import { HamsterIcon } from './HamsterIcon';
 
@@ -17,6 +17,7 @@ export function Sidebar() {
 
   const links = [
     { to: '/', label: 'Home', icon: Home },
+    { to: '/landing', label: 'Experience', icon: Sparkles },
     { to: '/explore', label: 'Explore', icon: Compass },
     { to: '/chat', label: 'Chat', icon: MessageSquare, badge: totalUnread > 0 ? totalUnread : undefined },
     { to: '/feed', label: 'Feed', icon: Rss },
@@ -39,7 +40,7 @@ export function Sidebar() {
         {/* Brand Block / Hamster Highlight */}
         <div className="p-2 border-b border-white/5 shrink-0">
           <NavLink 
-            to="/" 
+            to="/landing" 
             className="flex items-center h-12 rounded-xl transition-all duration-200 hover:bg-white/5 px-2 overflow-hidden"
           >
             <div className="w-8 h-8 rounded-full bg-[var(--y)] text-[var(--blk)] flex items-center justify-center font-heading font-black text-lg shadow-[0_0_15px_rgba(255,231,1,0.3)] shrink-0">

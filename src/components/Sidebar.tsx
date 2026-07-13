@@ -1,7 +1,7 @@
 import { NavLink, Link } from 'react-router-dom';
 import { 
   Home, Compass, MessageSquare, Plus, Rss, Menu, Heart, 
-  Phone, Bell, Wallet, Settings, Crown, ChevronDown, HelpCircle, LogOut 
+  Crown, ChevronDown, HelpCircle, LogOut 
 } from 'lucide-react';
 import { useAppStore } from '../store/useAppStore';
 import { HamsterIcon } from './HamsterIcon';
@@ -21,14 +21,10 @@ export function Sidebar() {
   const links = [
     { to: '/', label: 'Home', icon: Home },
     { to: '/chat', label: 'Chats', icon: MessageSquare, badge: totalUnread > 0 ? totalUnread : 12 },
-    { to: '/landing', label: 'Calls', icon: Phone },
     { to: '/explore?filter=favorites', label: 'Favorites', icon: Heart },
     { to: '/explore', label: 'Discover', icon: Compass },
     { to: '/feed', label: 'Episodes', icon: Rss },
     { to: '/create', label: 'Create', icon: Plus },
-    { to: '/pricing', label: 'Notifications', icon: Bell, badge: 8 },
-    { to: '/pricing', label: 'Wallet', icon: Wallet },
-    { to: '/pricing', label: 'Settings', icon: Settings },
   ];
 
   return (

@@ -430,7 +430,7 @@ export function HomePage() {
             <span className="text-zinc-500 hover:text-white text-xs font-bold uppercase tracking-wider cursor-pointer font-mono" onClick={() => navigate('/chat')}>View all</span>
           </div>
 
-          <div className="flex flex-col gap-4 bg-zinc-950 border border-white/5 rounded-3xl p-6 font-body">
+          <div className="flex-1 flex flex-col justify-between gap-4 bg-zinc-950 border border-white/5 rounded-3xl p-6 font-body">
             {[
               { id: 'serena', lastMsg: 'Hey! Let\'s talk about wellness today.', time: '10 min ago' },
               { id: 'cody', lastMsg: 'Check out my latest coin pick!', time: '22 min ago' },
@@ -475,7 +475,7 @@ export function HomePage() {
             <span className="text-zinc-500 hover:text-white text-xs font-bold uppercase tracking-wider cursor-pointer font-mono" onClick={() => navigate('/feed')}>View all</span>
           </div>
 
-          <div className="flex flex-col gap-4 bg-zinc-950 border border-white/5 rounded-3xl p-6 font-body">
+          <div className="flex-1 flex flex-col justify-between gap-4 bg-zinc-950 border border-white/5 rounded-3xl p-6 font-body">
             {[
               { title: 'Cyberpunk Summer', description: 'Behind the scenes with Serena and Rina.', cast: 'Serena & Rina', isNew: true },
               { title: 'Midnight Talks', description: 'Late night crypto insights and banter.', cast: 'Cody', isNew: false },

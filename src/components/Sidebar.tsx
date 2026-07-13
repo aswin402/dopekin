@@ -1,5 +1,8 @@
-import { NavLink } from 'react-router-dom';
-import { Home, Compass, MessageSquare, Plus, Tag, Rss, Menu } from 'lucide-react';
+import { NavLink, Link } from 'react-router-dom';
+import { 
+  Home, Compass, MessageSquare, Plus, Rss, Menu, Heart, 
+  Phone, Bell, Wallet, Settings, Crown, ChevronDown, HelpCircle, LogOut 
+} from 'lucide-react';
 import { useAppStore } from '../store/useAppStore';
 import { HamsterIcon } from './HamsterIcon';
 
@@ -17,14 +20,19 @@ export function Sidebar() {
 
   const links = [
     { to: '/', label: 'Home', icon: Home },
-    { to: '/explore', label: 'Explore', icon: Compass },
-    { to: '/chat', label: 'Chat', icon: MessageSquare, badge: totalUnread > 0 ? totalUnread : undefined },
-    { to: '/feed', label: 'Feed', icon: Rss },
-    { to: '/pricing', label: 'Pricing', icon: Tag },
+    { to: '/chat', label: 'Chats', icon: MessageSquare, badge: totalUnread > 0 ? totalUnread : 12 },
+    { to: '/landing', label: 'Calls', icon: Phone },
+    { to: '/explore?filter=favorites', label: 'Favorites', icon: Heart },
+    { to: '/explore', label: 'Discover', icon: Compass },
+    { to: '/feed', label: 'Episodes', icon: Rss },
+    { to: '/create', label: 'Create', icon: Plus },
+    { to: '/pricing', label: 'Notifications', icon: Bell, badge: 8 },
+    { to: '/pricing', label: 'Wallet', icon: Wallet },
+    { to: '/pricing', label: 'Settings', icon: Settings },
   ];
 
   return (
-    <aside className="fixed left-0 top-0 bottom-0 w-16 hover:w-60 bg-black border-r border-[var(--border)] flex flex-col justify-between z-50 transition-all duration-300 ease-in-out group hidden lg:flex overflow-hidden">
+    <aside className="fixed left-0 top-0 bottom-0 w-16 hover:w-60 bg-black border-r border-[var(--border)] flex flex-col justify-between z-50 transition-all duration-300 ease-in-out group hidden lg:flex overflow-y-auto scrollbar-none">
       
       <div className="flex flex-col w-full">
         {/* Top Header Block: Hamburger Menu */}
@@ -51,15 +59,15 @@ export function Sidebar() {
         </div>
 
         {/* Navigation links */}
-        <div className="flex flex-col gap-2 p-2 mt-2 w-full">
-          {links.map((link) => {
+        <div className="flex flex-col gap-1 p-2 mt-2 w-full">
+          {links.map((link, idx) => {
             const Icon = link.icon;
             return (
               <NavLink
-                key={link.to}
+                key={idx}
                 to={link.to}
                 className={({ isActive }) =>
-                  `flex items-center justify-between h-11 rounded-xl text-sm font-medium transition-all duration-200 px-3.5 overflow-hidden shrink-0 ${
+                  `flex items-center justify-between h-10 rounded-xl text-sm font-medium transition-all duration-200 px-3.5 overflow-hidden shrink-0 ${
                     isActive
                       ? 'bg-[var(--y)] text-[var(--blk)] font-bold shadow-[var(--brutal)] border border-[var(--blk)]'
                       : 'text-[#f5f5f5]/70 hover:text-[#f5f5f5] hover:bg-white/5'
@@ -94,31 +102,108 @@ export function Sidebar() {
         </div>
       </div>
 
-      {/* Bottom Actions Section */}
-      <div className="p-2 w-full flex flex-col gap-3 shrink-0">
-        {/* Creator Studio CTA */}
-        <NavLink
-          to="/create"
-          className={({ isActive }) =>
-            `flex items-center h-12 rounded-xl text-xs font-extrabold uppercase tracking-wider transition-all duration-200 border-2 border-[var(--y)] overflow-hidden shrink-0 ${
-              isActive
-                ? 'bg-[var(--y)] text-[var(--blk)] shadow-[var(--brutal)] px-3.5 justify-start'
-                : 'bg-transparent text-[var(--y)] hover:bg-[var(--y)] hover:text-[var(--blk)] hover:shadow-[var(--brutal)] px-3.5 justify-start'
-            }`
-          }
+      {/* Bottom Section */}
+      <div className="p-2 w-full flex flex-col gap-3 shrink-0 border-t border-white/5 mt-auto pt-3 pb-4">
+        {/* 1. DopeKin Premium Card */}
+        <div className="hidden group-hover:flex flex-col gap-2 p-3 bg-zinc-900/60 border border-[var(--y)]/20 rounded-2xl mx-1 text-left">
+          <div className="flex items-center gap-1.5 text-[var(--y)] font-heading font-black text-[10px] tracking-wider uppercase">
+            <Crown className="w-4 h-4 fill-current animate-pulse" />
+            <span>DopeKin Premium</span>
+          </div>
+          <p className="text-[10px] text-zinc-400 font-body leading-tight">
+            Unlimited chats, calls and more.
+          </p>
+          <Link 
+            to="/pricing"
+            className="w-full py-1.5 text-center bg-[var(--y)] text-black text-[10px] font-black uppercase rounded-lg hover:scale-102 active:scale-98 transition-all"
+          >
+            Upgrade Now
+          </Link>
+        </div>
+        {/* Collapsed Premium Icon */}
+        <Link 
+          to="/pricing"
+          className="flex group-hover:hidden items-center justify-center h-10 w-10 rounded-xl bg-zinc-900/60 border border-[var(--y)]/20 hover:border-[var(--y)] text-[var(--y)] mx-auto transition-all hover:scale-105 shrink-0"
+          title="DopeKin Premium"
         >
-          <Plus className="w-5 h-5 shrink-0" />
-          <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 ml-4 whitespace-nowrap font-mono text-xs uppercase tracking-wider font-bold">
-            Create Twin
-          </span>
-        </NavLink>
+          <Crown className="w-4 h-4 fill-current animate-pulse" />
+        </Link>
 
-        {/* Status indicator */}
-        <div className="flex items-center h-10 px-3 font-mono text-[10px] text-[var(--muted2)] border-t border-white/5 pt-3 overflow-hidden shrink-0">
-          <span className="w-2 h-2 rounded-full bg-[var(--success)] animate-pulse shrink-0" />
-          <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 ml-4 whitespace-nowrap">
-            CREATOR OS // ONLINE
-          </span>
+        {/* 2. Weekly Usage Stats (Only shown when expanded) */}
+        <div className="hidden group-hover:flex flex-col gap-2.5 p-3 rounded-2xl bg-zinc-900/20 border border-white/5 mx-1 text-left font-mono text-[9px] text-zinc-400">
+          <div className="flex justify-between items-center text-zinc-500 font-bold uppercase text-[8px]">
+            <span>Weekly Usage</span>
+            <span>May 12 - May 18</span>
+          </div>
+          
+          <div className="flex flex-col gap-1">
+            <div className="flex justify-between">
+              <span>Messages</span>
+              <span className="font-bold text-white">2,450 / 5,000</span>
+            </div>
+            <div className="w-full h-1 bg-zinc-950 border border-white/5 rounded-full overflow-hidden">
+              <div className="h-full bg-indigo-500" style={{ width: '49%' }} />
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <div className="flex justify-between">
+              <span>Voice Calls</span>
+              <span className="font-bold text-white">420 / 1,000 mins</span>
+            </div>
+            <div className="w-full h-1 bg-zinc-950 border border-white/5 rounded-full overflow-hidden">
+              <div className="h-full bg-emerald-500" style={{ width: '42%' }} />
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <div className="flex justify-between">
+              <span>Video Calls</span>
+              <span className="font-bold text-white">120 / 300 mins</span>
+            </div>
+            <div className="w-full h-1 bg-zinc-950 border border-white/5 rounded-full overflow-hidden">
+              <div className="h-full bg-[var(--y)]" style={{ width: '40%' }} />
+            </div>
+          </div>
+
+          <Link 
+            to="/pricing"
+            className="text-center text-[8px] font-bold text-zinc-500 hover:text-white uppercase tracking-wider mt-1 block"
+          >
+            View All Usage
+          </Link>
+        </div>
+
+        {/* 3. User Profile Card */}
+        <div className="p-1.5 rounded-xl hover:bg-white/5 transition-colors mx-1 cursor-pointer flex items-center justify-between group/profile">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <div className="relative w-8 h-8 rounded-full border border-[var(--y)] shrink-0 bg-zinc-950 overflow-hidden">
+              <img 
+                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150" 
+                alt="Alex profile" 
+                className="w-full h-full object-cover" 
+              />
+              <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 rounded-full border-2 border-black" />
+            </div>
+            <div className="hidden group-hover:flex flex-col min-w-0 text-left">
+              <span className="text-xs font-bold text-white truncate">Alex Morgan</span>
+              <span className="text-[9px] text-[var(--y)] font-mono font-bold tracking-widest uppercase">Premium</span>
+            </div>
+          </div>
+          <ChevronDown className="w-3.5 h-3.5 text-zinc-500 hidden group-hover:block" />
+        </div>
+
+        <div className="hidden group-hover:flex items-center justify-between border-t border-white/5 pt-2.5 px-2 text-zinc-500">
+          <div title="Help & Support">
+            <HelpCircle className="w-4 h-4 hover:text-white cursor-pointer transition-colors" />
+          </div>
+          <div className="flex items-center gap-0.5 text-[9px] font-mono font-bold">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            <span>ONLINE</span>
+          </div>
+          <div title="Log Out">
+            <LogOut className="w-4 h-4 hover:text-red-400 cursor-pointer transition-colors" />
+          </div>
         </div>
       </div>
       

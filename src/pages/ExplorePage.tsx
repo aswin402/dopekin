@@ -10,6 +10,7 @@ export function ExplorePage() {
 
   const queryParam = searchParams.get('q') || '';
   const categoryParam = searchParams.get('category') || 'all';
+  const filterParam = searchParams.get('filter') || '';
 
   const [searchVal, setSearchVal] = useState(queryParam);
   const [activeCategory, setActiveCategory] = useState(categoryParam);
@@ -61,7 +62,10 @@ export function ExplorePage() {
       activeCategory === 'all' || 
       twin.category === activeCategory;
 
-    return matchesSearch && matchesCategory;
+    // Filter by favorites if query filter is set
+    const matchesFilter = filterParam !== 'favorites' || ['vale', 'rina', 'aiko'].includes(twin.id);
+
+    return matchesSearch && matchesCategory && matchesFilter;
   });
 
   const sortedTwins = [...filteredTwins].sort((a, b) => {
@@ -90,15 +94,19 @@ export function ExplorePage() {
   };
 
   return (
-    <div className="flex flex-col gap-6 animate-fade-up">
+    <div className="flex flex-col gap-6 animate-fade-up px-4 md:px-6 py-6 pb-24 text-left max-w-7xl mx-auto">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/5 pb-6">
         <div>
           <h1 className="text-3xl font-heading font-black uppercase text-[#f5f5f5] tracking-tight flex items-center gap-2">
             <Compass className="w-8 h-8 text-[var(--y)]" />
-            <span>Seed Directory</span>
+            <span>{filterParam === 'favorites' ? 'My Favorites' : 'Seed Directory'}</span>
           </h1>
-          <p className="text-sm text-[#f5f5f5]/60 mt-1">Browse pre-seeded agents or activate custom trained digital clones.</p>
+          <p className="text-sm text-[#f5f5f5]/60 mt-1">
+            {filterParam === 'favorites' 
+              ? 'Your handpicked premium AI companions and active twins.' 
+              : 'Browse pre-seeded agents or activate custom trained digital clones.'}
+          </p>
         </div>
 
         {/* Sort selector */}
@@ -107,7 +115,7 @@ export function ExplorePage() {
           <select 
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
-            className="bg-black border border-[var(--border)] rounded-lg text-xs font-bold text-[#f5f5f5] px-3 py-1.5 focus:outline-none focus:border-[var(--y)] font-mono"
+            className="bg-black border border-[var(--border)] rounded-lg text-xs font-bold text-[#f5f5f5] px-3 py-1.5 focus:outline-none focus:border-[var(--y)] font-mono cursor-pointer"
           >
             <option value="popular">POPULARITY</option>
             <option value="newest">NEW SEEDS</option>
@@ -144,13 +152,13 @@ export function ExplorePage() {
         ))}
       </div>
 
-      {/* Twins Grid */}
+      {/* Twins Flex Container */}
       {sortedTwins.length > 0 ? (
-        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="flex flex-wrap gap-6 justify-start">
           {sortedTwins.map((twin) => (
             <div 
               key={twin.id}
-              className="p-3 bg-black border border-[var(--border)] rounded-2xl flex flex-col relative group overflow-hidden transition-all duration-300 hover:translate-y-[-6px] hover:border-[var(--border2)]"
+              className="w-44 p-3 bg-black border border-[var(--border)] rounded-2xl flex flex-col relative group overflow-hidden transition-all duration-300 hover:translate-y-[-6px] hover:border-[var(--border2)] shrink-0"
             >
               {/* Aspect Ratio 3:4 */}
               <div className="relative aspect-[3/4] w-full overflow-hidden rounded-xl bg-black">
@@ -163,11 +171,11 @@ export function ExplorePage() {
 
                 {/* Badges */}
                 <div className="absolute top-2 left-2 flex gap-1.5 z-20">
-                  <span className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-red-500/90 text-white text-[9px] font-extrabold uppercase animate-pulse-glow">
-                    <span className="w-1.5 h-1.5 rounded-full bg-white animate-ping" />
+                  <span className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-red-500/90 text-white text-[8px] font-extrabold uppercase animate-pulse-glow">
+                    <span className="w-1 h-1 rounded-full bg-white animate-ping" />
                     Live
                   </span>
-                  <span className="px-2 py-0.5 rounded-full bg-black/60 text-[#f5f5f5]/90 text-[9px] font-bold">
+                  <span className="px-1.5 py-0.5 rounded bg-black/60 text-[#f5f5f5]/90 text-[8px] font-bold">
                     {twin.price}
                   </span>
                 </div>
@@ -179,25 +187,25 @@ export function ExplorePage() {
                       e.preventDefault();
                       setTwinToDelete(twin.id);
                     }}
-                    className="absolute top-2 right-2 p-1.5 rounded-lg bg-red-500/80 text-white hover:bg-red-600 transition-colors z-30"
+                    className="absolute top-2 right-2 p-1.5 rounded bg-red-500/80 text-white hover:bg-red-600 transition-colors z-30 cursor-pointer"
                     title="Delete Custom Twin"
                   >
-                    <Trash2 className="w-4 h-4" />
+                    <Trash2 className="w-3.5 h-3.5" />
                   </button>
                 )}
 
-                {/* Hover Quick Actions */}
-                <div className="absolute inset-0 flex items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition-opacity z-20 bg-black/40 backdrop-blur-[2px]">
+                {/* Hover Quick Actions (Stacked vertically to fit w-44 card) */}
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-2.5 opacity-0 group-hover:opacity-100 transition-all z-20 bg-black/50 backdrop-blur-[2px] p-2">
                   <Link 
                     to={`/chat?twin=${twin.id}`}
-                    className="flex items-center gap-1.5 bg-[var(--y)] text-[var(--blk)] font-bold text-xs uppercase px-4 py-2 rounded-lg hover:scale-105 active:scale-95 transition-transform"
+                    className="flex items-center justify-center gap-1.5 bg-[var(--y)] text-black font-extrabold text-[10px] uppercase w-32 py-2 rounded-lg hover:scale-105 active:scale-95 transition-all shadow-[2px_2px_0px_rgba(0,0,0,1)] border border-black"
                   >
                     <MessageSquare className="w-3.5 h-3.5" />
                     <span>Chat</span>
                   </Link>
                   <Link 
                     to={`/chat?twin=${twin.id}&call=true`}
-                    className="flex items-center gap-1.5 bg-black border border-[var(--y)] text-[var(--y)] font-bold text-xs uppercase px-4 py-2 rounded-lg hover:scale-105 active:scale-95 transition-transform"
+                    className="flex items-center justify-center gap-1.5 bg-black border border-[var(--y)] text-[var(--y)] font-extrabold text-[10px] uppercase w-32 py-2 rounded-lg hover:scale-105 active:scale-95 transition-all shadow-[2px_2px_0px_rgba(255,235,31,0.2)]"
                   >
                     <PhoneCall className="w-3.5 h-3.5" />
                     <span>Call</span>
@@ -208,17 +216,17 @@ export function ExplorePage() {
               {/* Text Info */}
               <div className="mt-3 px-1 flex flex-col gap-0.5">
                 <div className="flex justify-between items-center">
-                  <h3 className="font-heading font-black text-base flex items-center gap-1">
+                  <h3 className="font-heading font-black text-xs flex items-center gap-1">
                     <span>{twin.name}</span>
                     {twin.isCustom && (
-                      <span className="text-[9px] bg-white/10 px-1.5 py-0.5 rounded text-[#f5f5f5]/60 font-mono">Trained</span>
+                      <span className="text-[7px] bg-white/10 px-1 py-0.5 rounded text-[#f5f5f5]/60 font-mono">Trained</span>
                     )}
                   </h3>
-                  <span className="text-[10px] text-[#f5f5f5]/40 uppercase font-mono font-semibold">{twin.fans}</span>
+                  <span className="text-[8px] text-[#f5f5f5]/40 uppercase font-mono font-semibold">{twin.fans}</span>
                 </div>
-                <div className="flex justify-between items-center text-xs text-[#f5f5f5]/60 font-body">
-                  <span>{twin.profession}</span>
-                  <span className="text-[var(--y)] font-semibold">{twin.vibe}</span>
+                <div className="flex justify-between items-center text-[10px] text-[#f5f5f5]/60 font-body">
+                  <span className="truncate max-w-20">{twin.profession}</span>
+                  <span className="text-[var(--y)] font-semibold text-[9px] shrink-0">{twin.vibe}</span>
                 </div>
               </div>
             </div>
@@ -228,7 +236,7 @@ export function ExplorePage() {
         <div className="p-16 border border-dashed border-white/10 rounded-2xl text-center flex flex-col items-center gap-4">
           <Search className="w-12 h-12 text-[#f5f5f5]/20 animate-pulse" />
           <h3 className="text-xl font-bold">No twins found</h3>
-          <p className="text-sm text-muted-foreground max-w-sm">
+          <p className="text-sm text-muted-foreground max-w-sm font-body">
             We couldn't find any twins matching "{searchVal}". Try filtering by another category or checking your spelling.
           </p>
         </div>

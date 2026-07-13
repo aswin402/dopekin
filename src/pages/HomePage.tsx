@@ -252,7 +252,7 @@ export function HomePage() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+        <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-none scroll-smooth">
           {[
             { id: 'vale', vibe: '🎭 Confident • Empathetic', desc: 'You both like fashion' },
             { id: 'sarang', vibe: '💃 Playful • Creative', desc: 'You both like K-pop' },
@@ -264,7 +264,7 @@ export function HomePage() {
             return (
               <div 
                 key={item.id}
-                className="bg-zinc-950 border border-white/5 rounded-2xl flex flex-col relative group overflow-hidden transition-all duration-300 hover:translate-y-[-6px] hover:border-white/15"
+                className="w-44 bg-zinc-950 border border-white/5 rounded-2xl flex flex-col shrink-0 relative group overflow-hidden transition-all duration-300 hover:translate-y-[-4px] hover:border-white/15"
               >
                 {/* 3:4 Aspect Ratio Image wrapper */}
                 <div className="relative aspect-[3/4] w-full overflow-hidden rounded-t-2xl bg-zinc-900">
@@ -289,18 +289,18 @@ export function HomePage() {
                     <Heart className={`w-4 h-4 ${isFav ? 'fill-rose-500 text-rose-500' : 'text-zinc-400'}`} />
                   </button>
 
-                  {/* Hover play buttons */}
-                  <div className="absolute inset-0 flex items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition-all z-20 bg-black/50 backdrop-blur-[2px]">
+                  {/* Hover play buttons (Stacked vertically to fit w-44 card) */}
+                  <div className="absolute inset-0 flex flex-col items-center justify-center gap-2.5 opacity-0 group-hover:opacity-100 transition-all z-20 bg-black/50 backdrop-blur-[2px] p-2">
                     <Link 
                       to={`/chat?twin=${twin.id}`}
-                      className="flex items-center justify-center gap-1.5 bg-[var(--y)] text-black font-extrabold text-[10px] uppercase w-28 py-2 rounded-lg hover:scale-105 active:scale-95 transition-all shadow-[2px_2px_0px_rgba(0,0,0,1)] border border-black"
+                      className="flex items-center justify-center gap-1.5 bg-[var(--y)] text-black font-extrabold text-[10px] uppercase w-32 py-2 rounded-lg hover:scale-105 active:scale-95 transition-all shadow-[2px_2px_0px_rgba(0,0,0,1)] border border-black"
                     >
                       <MessageSquare className="w-3.5 h-3.5" />
                       <span>Chat</span>
                     </Link>
                     <Link 
                       to={`/chat?twin=${twin.id}&call=true`}
-                      className="flex items-center justify-center gap-1.5 bg-black border border-[var(--y)] text-[var(--y)] font-extrabold text-[10px] uppercase w-28 py-2 rounded-lg hover:scale-105 active:scale-95 transition-all shadow-[2px_2px_0px_rgba(255,235,31,0.2)]"
+                      className="flex items-center justify-center gap-1.5 bg-black border border-[var(--y)] text-[var(--y)] font-extrabold text-[10px] uppercase w-32 py-2 rounded-lg hover:scale-105 active:scale-95 transition-all shadow-[2px_2px_0px_rgba(255,235,31,0.2)]"
                     >
                       <Phone className="w-3.5 h-3.5" />
                       <span>Call</span>

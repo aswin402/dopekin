@@ -2,16 +2,13 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppStore } from '../store/useAppStore';
 import { 
-  Search, Bell, Users, Clock, MessageSquare, Flame, 
+  Users, Clock, MessageSquare, Flame, 
   ChevronRight, Play, Heart, Phone, Sparkles, Shield
 } from 'lucide-react';
 
 export function HomePage() {
   const navigate = useNavigate();
   const twins = useAppStore((state) => state.twins);
-  
-  // Search input state
-  const [searchVal, setSearchVal] = useState('');
 
   // Local state to mock adding/removing favorites
   const [favorites, setFavorites] = useState<string[]>(['vale', 'rina', 'aiko']);
@@ -22,58 +19,10 @@ export function HomePage() {
     );
   };
 
-  const handleSearchSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchVal.trim()) {
-      navigate(`/explore?q=${encodeURIComponent(searchVal.trim())}`);
-    }
-  };
-
   // Find twin helper
   const getTwin = (id: string) => twins.find(t => t.id === id) || twins[0];
-
   return (
     <div className="flex flex-col gap-8 animate-fade-up px-4 md:px-6 py-6 pb-24 text-left max-w-7xl mx-auto">
-      
-      {/* HEADER SECTION: GREETINGS & SEARCH */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/5 pb-6">
-        <div>
-          <h1 className="text-2xl md:text-3xl font-heading font-black text-white tracking-tight flex items-center gap-2">
-            <span>Good evening, Alex</span>
-            <span className="animate-bounce">👋</span>
-          </h1>
-          <p className="text-xs text-zinc-400 mt-1 font-body">What would you like to do today?</p>
-        </div>
-
-        {/* Search & Notifications Controls */}
-        <div className="flex items-center gap-4 shrink-0">
-          <form onSubmit={handleSearchSubmit} className="relative w-full max-w-xs md:w-64">
-            <input
-              type="text"
-              placeholder="Search companions..."
-              value={searchVal}
-              onChange={(e) => setSearchVal(e.target.value)}
-              className="w-full h-10 bg-zinc-900/80 border border-white/10 rounded-full pl-10 pr-12 text-xs text-white placeholder-white/30 focus:outline-none focus:border-[var(--y)] font-body"
-            />
-            <Search className="absolute left-3.5 top-3 w-4 h-4 text-white/30" />
-            <kbd className="absolute right-3.5 top-3 px-1.5 py-0.5 rounded bg-zinc-950 border border-white/10 text-[8px] text-zinc-500 font-mono font-bold uppercase pointer-events-none">
-              ⌘ K
-            </kbd>
-          </form>
-
-          {/* Notifications button */}
-          <button 
-            onClick={() => navigate('/pricing')}
-            className="relative w-10 h-10 rounded-full bg-zinc-900 border border-white/10 flex items-center justify-center text-zinc-400 hover:text-white hover:border-white/20 transition-all cursor-pointer"
-          >
-            <Bell className="w-5 h-5" />
-            <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-rose-500 text-white text-[9px] font-black flex items-center justify-center shadow-md border-2 border-black">
-              8
-            </span>
-          </button>
-        </div>
-      </div>
-
       {/* METRICS / STAT CARDS ROW */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Stat 1 */}

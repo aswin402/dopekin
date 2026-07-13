@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { Home, Compass, MessageSquare, Radio, Plus, Tag, Rss, Menu, Sparkles } from 'lucide-react';
+import { Home, Compass, MessageSquare, Plus, Tag, Rss, Menu } from 'lucide-react';
 import { useAppStore } from '../store/useAppStore';
 import { HamsterIcon } from './HamsterIcon';
 
@@ -17,11 +17,9 @@ export function Sidebar() {
 
   const links = [
     { to: '/', label: 'Home', icon: Home },
-    { to: '/landing', label: 'Experience', icon: Sparkles },
     { to: '/explore', label: 'Explore', icon: Compass },
     { to: '/chat', label: 'Chat', icon: MessageSquare, badge: totalUnread > 0 ? totalUnread : undefined },
     { to: '/feed', label: 'Feed', icon: Rss },
-    { to: '/live', label: 'Live Stream', icon: Radio, isLive: true },
     { to: '/pricing', label: 'Pricing', icon: Tag },
   ];
 
@@ -77,9 +75,6 @@ export function Sidebar() {
                         {link.badge}
                       </span>
                     )}
-                    {link.isLive && (
-                      <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 rounded-full bg-[var(--error)] border border-black group-hover:opacity-0 transition-opacity duration-200 animate-pulse" />
-                    )}
                   </div>
                   <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 ml-4 whitespace-nowrap font-mono text-xs uppercase tracking-wider font-bold">
                     {link.label}
@@ -90,11 +85,6 @@ export function Sidebar() {
                   {link.badge !== undefined && (
                     <span className="bg-red-500 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded-full min-w-5 text-center">
                       {link.badge}
-                    </span>
-                  )}
-                  {link.isLive && (
-                    <span className="px-1.5 py-0.5 rounded bg-[var(--error)]/10 border border-[var(--error)]/30 text-[var(--error)] text-[8px] font-bold uppercase tracking-wider animate-pulse">
-                      LIVE
                     </span>
                   )}
                 </div>

@@ -1,9 +1,9 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppStore } from '../store/useAppStore';
 import { 
   Search, Compass, MessageSquare, PhoneCall, Play, 
-  ChevronDown, Flame, Zap, Shield, Sparkles, HelpCircle 
+  ChevronDown, Flame, Shield, Sparkles, HelpCircle 
 } from 'lucide-react';
 
 export function HomePage() {
@@ -14,24 +14,6 @@ export function HomePage() {
   const [searchVal, setSearchVal] = useState('');
   const [activeCategory, setActiveCategory] = useState('all');
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
-
-  // Video hover refs
-  const videoRefs = useRef<{ [key: string]: HTMLVideoElement | null }>({});
-
-  const handleMouseEnter = (id: string) => {
-    const video = videoRefs.current[id];
-    if (video) {
-      video.play().catch((err) => console.log('Video play error:', err));
-    }
-  };
-
-  const handleMouseLeave = (id: string) => {
-    const video = videoRefs.current[id];
-    if (video) {
-      video.pause();
-      video.currentTime = 0;
-    }
-  };
 
   // Filter companions
   const filteredTwins = twins.filter((twin) => {
@@ -172,68 +154,6 @@ export function HomePage() {
         </div>
       </div>
 
-      {/* 3. FEATURED LIVE VIDEO LOOPS ROW */}
-      <div className="flex flex-col gap-4">
-        <h3 className="text-sm font-mono font-black uppercase text-white/50 tracking-wider flex items-center gap-1.5">
-          <Zap className="w-4 h-4 text-[var(--y)]" />
-          <span>Live Streams</span>
-        </h3>
-
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {twins.slice(0, 4).map((twin) => (
-            <div 
-              key={`live-${twin.id}`}
-              className="relative aspect-video rounded-2xl overflow-hidden border border-white/5 bg-zinc-950 group cursor-pointer"
-              onMouseEnter={() => handleMouseEnter(twin.id)}
-              onMouseLeave={() => handleMouseLeave(twin.id)}
-              onClick={() => navigate(`/chat?twin=${twin.id}&call=true`)}
-            >
-              {/* Static Cover Image */}
-              <img 
-                src={twin.avatarUrl} 
-                alt="" 
-                className="absolute inset-0 w-full h-full object-cover group-hover:opacity-0 transition-opacity duration-300"
-              />
-              
-              {/* Silent Loop Video */}
-              <video 
-                ref={(el) => { videoRefs.current[twin.id] = el; }}
-                src={twin.videoUrl}
-                loop 
-                muted 
-                playsInline
-                className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-              />
-
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
-
-              {/* LIVE Badge */}
-              <div className="absolute top-2 left-2 flex items-center gap-1 bg-red-600/90 text-white font-mono text-[9px] font-black uppercase px-2 py-0.5 rounded-full animate-pulse-glow">
-                <span className="w-1 h-1 rounded-full bg-white" />
-                LIVE
-              </div>
-
-              {/* Title & Overlay */}
-              <div className="absolute bottom-2 left-3 text-left">
-                <span className="text-xs font-heading font-black uppercase tracking-tight text-white block">
-                  {twin.name}
-                </span>
-                <span className="text-[9px] text-[var(--y)] font-mono font-bold tracking-widest uppercase">
-                  {twin.profession}
-                </span>
-              </div>
-
-              {/* Watch Now Button on Hover */}
-              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20 bg-black/40 backdrop-blur-[2px]">
-                <span className="flex items-center gap-1 px-4 py-1.5 rounded-full bg-[var(--y)] text-black text-[10px] font-extrabold uppercase shadow-lg scale-95 group-hover:scale-100 transition-transform">
-                  <Play className="w-3 h-3 fill-current" />
-                  Call Live
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
 
       {/* 4. MAIN CHARACTER EXPLORER CATALOG */}
       <div className="flex flex-col gap-6 pt-4">
@@ -463,7 +383,7 @@ export function HomePage() {
       {/* 8. FOOTER */}
       <footer className="border-t border-white/5 pt-8 mt-4 flex flex-col md:flex-row items-center justify-between gap-6 w-full text-zinc-500 font-mono text-[10px]">
         <div className="flex items-center gap-1.5">
-          <Zap className="w-4 h-4 text-[var(--y)]" />
+          <Sparkles className="w-4 h-4 text-[var(--y)]" />
           <span className="font-bold text-zinc-400">DopeKin AI Platform</span>
         </div>
         <div className="flex gap-4">

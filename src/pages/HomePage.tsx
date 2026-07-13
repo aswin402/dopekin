@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAppStore } from '../store/useAppStore';
 import { 
   Search, Bell, Users, Clock, MessageSquare, Flame, 
-  ChevronRight, Play, Heart, Phone, Video, Sparkles, Shield
+  ChevronRight, Play, Heart, Phone, Sparkles, Shield
 } from 'lucide-react';
 
 export function HomePage() {
@@ -419,44 +419,45 @@ export function HomePage() {
         </div>
       </div>
 
-      {/* DOUBLE SECTION ROW: RECENT CALLS & LATEST EPISODES */}
+      {/* DOUBLE SECTION ROW: RECENT CHATS & LATEST FEEDS */}
       <div className="grid lg:grid-cols-2 gap-8 pt-4">
-        {/* Recent Calls */}
+        {/* Recent Chats */}
         <div className="flex flex-col gap-4">
           <div className="flex justify-between items-center">
             <h3 className="text-sm font-mono font-black uppercase text-white/50 tracking-wider">
-              Recent Calls
+              Recent Chats
             </h3>
-            <span className="text-zinc-500 hover:text-white text-xs font-bold uppercase tracking-wider cursor-pointer" onClick={() => navigate('/landing')}>View all</span>
+            <span className="text-zinc-500 hover:text-white text-xs font-bold uppercase tracking-wider cursor-pointer font-mono" onClick={() => navigate('/chat')}>View all</span>
           </div>
 
-          <div className="flex flex-col gap-3 bg-zinc-950 border border-white/5 rounded-2xl p-4 font-body">
+          <div className="flex flex-col gap-4 bg-zinc-950 border border-white/5 rounded-3xl p-6 font-body">
             {[
-              { id: 'serena', type: 'Video Call', time: 'Yesterday', duration: '14 min', icon: Video },
-              { id: 'cody', type: 'Voice Call', time: 'Yesterday', duration: '22 min', icon: Phone },
-              { id: 'rina', type: 'Video Call', time: '2 days ago', duration: '18 min', icon: Video }
-            ].map((call, idx) => {
-              const twin = getTwin(call.id);
-              const CallIcon = call.icon;
+              { id: 'serena', lastMsg: 'Hey! Let\'s talk about wellness today.', time: '10 min ago' },
+              { id: 'cody', lastMsg: 'Check out my latest coin pick!', time: '22 min ago' },
+              { id: 'rina', lastMsg: 'Did you listen to my new song?', time: '1h ago' }
+            ].map((chat, idx) => {
+              const twin = getTwin(chat.id);
               return (
-                <div key={idx} className="flex items-center justify-between gap-4 p-1 rounded-xl hover:bg-white/5 transition-colors">
-                  <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-full border border-white/10 overflow-hidden shrink-0 bg-zinc-950">
+                <div key={idx} className="flex items-center justify-between gap-4 p-1.5 rounded-2xl hover:bg-white/5 transition-colors">
+                  <div className="flex items-center gap-4 min-w-0">
+                    <div className="w-12 h-12 rounded-full border border-white/10 overflow-hidden shrink-0 bg-zinc-950">
                       <img src={twin.avatarUrl} alt="" className="w-full h-full object-cover" />
                     </div>
-                    <div className="flex flex-col text-left">
-                      <span className="font-bold text-white text-xs">{twin.name}</span>
-                      <span className="text-[9px] text-zinc-500 font-mono mt-0.5">{call.type} • {call.time}</span>
+                    <div className="flex flex-col text-left min-w-0">
+                      <span className="font-heading font-black text-sm text-white truncate">{twin.name}</span>
+                      <p className="text-xs text-zinc-400 font-body truncate mt-0.5 max-w-[15rem] sm:max-w-[20rem]">
+                        "{chat.lastMsg}"
+                      </p>
                     </div>
                   </div>
                   
-                  <div className="flex items-center gap-4">
-                    <span className="text-[10px] text-zinc-400 font-mono">{call.duration}</span>
+                  <div className="flex items-center gap-4 shrink-0">
+                    <span className="text-[10px] text-zinc-500 font-mono hidden sm:inline">{chat.time}</span>
                     <button 
-                      onClick={() => navigate(`/chat?twin=${call.id}&call=true`)}
-                      className="w-8 h-8 rounded-lg bg-zinc-900 border border-white/5 hover:border-[var(--y)] hover:bg-[var(--y)] hover:text-black flex items-center justify-center text-zinc-400 transition-all cursor-pointer"
+                      onClick={() => navigate(`/chat?twin=${chat.id}`)}
+                      className="w-10 h-10 rounded-xl bg-zinc-900 border border-white/5 hover:border-[var(--y)] hover:bg-[var(--y)] hover:text-black flex items-center justify-center text-zinc-400 transition-all cursor-pointer"
                     >
-                      <CallIcon className="w-4 h-4" />
+                      <MessageSquare className="w-4 h-4" />
                     </button>
                   </div>
                 </div>
@@ -465,41 +466,44 @@ export function HomePage() {
           </div>
         </div>
 
-        {/* Latest Episodes */}
+        {/* Latest Feeds */}
         <div className="flex flex-col gap-4">
           <div className="flex justify-between items-center">
             <h3 className="text-sm font-mono font-black uppercase text-white/50 tracking-wider">
-              Latest Episodes
+              Latest Feeds
             </h3>
-            <span className="text-zinc-500 hover:text-white text-xs font-bold uppercase tracking-wider cursor-pointer" onClick={() => navigate('/feed')}>View all</span>
+            <span className="text-zinc-500 hover:text-white text-xs font-bold uppercase tracking-wider cursor-pointer font-mono" onClick={() => navigate('/feed')}>View all</span>
           </div>
 
-          <div className="flex flex-col gap-3 bg-zinc-950 border border-white/5 rounded-2xl p-4 font-body">
+          <div className="flex flex-col gap-4 bg-zinc-950 border border-white/5 rounded-3xl p-6 font-body">
             {[
-              { title: 'Cyberpunk Summer', episode: 'Episode 5', cast: 'Serena & Rina', isNew: true },
-              { title: 'Midnight Talks', episode: 'Episode 3', cast: 'Cody', isNew: false },
-              { title: 'Office Secrets', episode: 'Episode 2', cast: 'Aiko', isNew: false }
-            ].map((ep, idx) => {
+              { title: 'Cyberpunk Summer', description: 'Behind the scenes with Serena and Rina.', cast: 'Serena & Rina', isNew: true },
+              { title: 'Midnight Talks', description: 'Late night crypto insights and banter.', cast: 'Cody', isNew: false },
+              { title: 'Office Secrets', description: 'Preparing for the next major showcase.', cast: 'Aiko', isNew: false }
+            ].map((feed, idx) => {
               return (
-                <div key={idx} className="flex items-center justify-between gap-4 p-1 rounded-xl hover:bg-white/5 transition-colors">
-                  <div className="flex items-center gap-3">
-                    <div className="w-16 h-10 bg-zinc-900 border border-white/10 rounded-lg overflow-hidden shrink-0 relative flex items-center justify-center text-[10px] font-bold text-zinc-500 font-mono">
-                      EP {idx + 1}
+                <div key={idx} className="flex items-center justify-between gap-4 p-1.5 rounded-2xl hover:bg-white/5 transition-colors">
+                  <div className="flex items-center gap-4 min-w-0">
+                    <div className="w-20 h-14 bg-gradient-to-br from-zinc-900 to-black border border-white/10 rounded-xl overflow-hidden shrink-0 relative flex flex-col items-center justify-center text-[10px] font-black text-zinc-600 font-mono">
+                      <span>FEED</span>
+                      <span className="text-[8px] opacity-60">#{idx + 1}</span>
                     </div>
-                    <div className="flex flex-col text-left">
-                      <div className="flex items-center gap-1.5">
-                        <span className="font-bold text-white text-xs">{ep.title}</span>
-                        {ep.isNew && (
+                    <div className="flex flex-col text-left min-w-0">
+                      <div className="flex items-center gap-2">
+                        <span className="font-heading font-black text-sm text-white truncate">{feed.title}</span>
+                        {feed.isNew && (
                           <span className="text-[7px] font-mono font-black bg-rose-500 text-white px-1.5 py-0.5 rounded uppercase tracking-wider">New</span>
                         )}
                       </div>
-                      <span className="text-[9px] text-zinc-500 font-mono mt-0.5">{ep.episode} • {ep.cast}</span>
+                      <p className="text-xs text-zinc-400 font-body truncate mt-0.5 max-w-[15rem] sm:max-w-[20rem]">
+                        {feed.description}
+                      </p>
                     </div>
                   </div>
                   
                   <button 
                     onClick={() => navigate('/feed')}
-                    className="h-8 px-4 bg-[var(--y)] text-black text-[10px] font-black uppercase rounded-lg hover:scale-102 active:scale-98 transition-all border border-black shadow-[2px_2px_0px_rgba(0,0,0,1)] cursor-pointer shrink-0"
+                    className="h-10 px-5 bg-[var(--y)] text-black text-xs font-black uppercase rounded-lg hover:scale-102 active:scale-98 transition-all border border-black shadow-[2px_2px_0px_rgba(0,0,0,1)] cursor-pointer shrink-0"
                   >
                     Watch
                   </button>

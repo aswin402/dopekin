@@ -10,6 +10,26 @@ export function HomePage() {
   const navigate = useNavigate();
   const twins = useAppStore((state) => state.twins);
 
+  // Helper to parse fan count strings (e.g. "15.9M FANS" -> 15900000)
+  const getFansCount = (fansStr: string): number => {
+    const clean = fansStr.toUpperCase().replace('FANS', '').trim();
+    if (clean.includes('M')) {
+      return parseFloat(clean.replace('M', '')) * 1_000_000;
+    }
+    if (clean.includes('K')) {
+      return parseFloat(clean.replace('K', '')) * 1_000;
+    }
+    return parseFloat(clean) || 0;
+  };
+
+  const trendingCompanions = [...twins]
+    .sort((a, b) => getFansCount(b.fans) - getFansCount(a.fans))
+    .slice(0, 3);
+
+  // Temporary reference to satisfy noUnusedLocals under Task 1
+  void trendingCompanions;
+
+
   // Local state to mock adding/removing favorites
   const [favorites, setFavorites] = useState<string[]>(['vale', 'rina', 'aiko']);
 

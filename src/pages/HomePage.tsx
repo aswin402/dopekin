@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAppStore } from '../store/useAppStore';
 import { 
   Users, Clock, MessageSquare, Flame, 
-  ChevronRight, Play, Heart, Phone, Sparkles, Shield
+  ChevronRight, Play, Heart, Phone, Sparkles, Shield, PhoneCall
 } from 'lucide-react';
 
 // Helper to parse fan count strings (e.g. "15.9M FANS" -> 15900000)
@@ -412,7 +412,7 @@ export function HomePage() {
           {twins.map((twin) => (
             <div 
               key={twin.id}
-              className="w-44 p-3 bg-black border border-white/5 rounded-2xl flex flex-col relative group overflow-hidden transition-all duration-300 hover:translate-y-[-6px] hover:border-white/10 shrink-0 text-left"
+              className="w-44 p-3 bg-black border border-[var(--border)] rounded-2xl flex flex-col relative group overflow-hidden transition-all duration-300 hover:translate-y-[-6px] hover:border-[var(--border2)] shrink-0 text-left"
             >
               {/* Aspect Ratio 3:4 */}
               <div className="relative aspect-[3/4] w-full overflow-hidden rounded-xl bg-black">
@@ -447,11 +447,12 @@ export function HomePage() {
                     to={`/chat?twin=${twin.id}&call=true`}
                     className="flex items-center justify-center gap-1.5 bg-black border border-[var(--y)] text-[var(--y)] font-extrabold text-[10px] uppercase w-32 py-2 rounded-lg hover:scale-105 active:scale-95 transition-all shadow-[2px_2px_0px_rgba(255,235,31,0.2)]"
                   >
-                    <Phone className="w-3.5 h-3.5" />
+                    <PhoneCall className="w-3.5 h-3.5" />
                     <span>Call</span>
                   </Link>
                 </div>
               </div>
+
 
               {/* Text Info */}
               <div className="mt-3 px-1 flex flex-col gap-0.5">

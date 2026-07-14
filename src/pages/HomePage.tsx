@@ -464,8 +464,11 @@ export function HomePage() {
               {/* Overlaid Text Info */}
               <div className="absolute bottom-0 left-0 right-0 p-4 z-10 flex flex-col gap-1 text-left">
                 <div className="flex justify-between items-baseline">
-                  <h4 className="font-heading font-black text-lg text-white">
-                    {twin.name}
+                  <h4 className="font-heading font-black text-lg text-white flex items-center gap-1.5">
+                    <span>{twin.name}</span>
+                    {twin.isCustom && (
+                      <span className="text-[7px] bg-white/10 px-1.5 py-0.5 rounded text-[#f5f5f5]/60 font-mono font-normal">Trained</span>
+                    )}
                   </h4>
                   <span className="text-[9px] font-bold text-[var(--y)] tracking-wide uppercase">
                     {twin.vibe}

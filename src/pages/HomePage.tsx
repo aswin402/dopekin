@@ -396,6 +396,84 @@ export function HomePage() {
         </div>
       </div>
 
+      {/* FEATURED TWINS SECTION */}
+      <div className="flex flex-col gap-4">
+        <div className="flex justify-between items-center">
+          <h3 className="text-sm font-mono font-black uppercase text-white/50 tracking-wider">
+            Featured Twins
+          </h3>
+          <Link to="/explore" className="text-zinc-500 hover:text-white text-xs font-bold uppercase tracking-wider flex items-center gap-0.5">
+            <span>View all</span>
+            <ChevronRight className="w-3.5 h-3.5" />
+          </Link>
+        </div>
+
+        <div className="flex flex-wrap gap-6 justify-start">
+          {twins.map((twin) => (
+            <div 
+              key={twin.id}
+              className="w-44 p-3 bg-black border border-white/5 rounded-2xl flex flex-col relative group overflow-hidden transition-all duration-300 hover:translate-y-[-6px] hover:border-white/10 shrink-0 text-left"
+            >
+              {/* Aspect Ratio 3:4 */}
+              <div className="relative aspect-[3/4] w-full overflow-hidden rounded-xl bg-black">
+                <img 
+                  src={twin.avatarUrl} 
+                  alt={twin.name} 
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 group-hover:opacity-85 transition-opacity" />
+
+                {/* Badges */}
+                <div className="absolute top-2 left-2 flex gap-1.5 z-20">
+                  <span className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-red-500/90 text-white text-[8px] font-extrabold uppercase animate-pulse-glow">
+                    <span className="w-1 h-1 rounded-full bg-white animate-ping" />
+                    Live
+                  </span>
+                  <span className="px-1.5 py-0.5 rounded bg-black/60 text-[#f5f5f5]/90 text-[8px] font-bold">
+                    {twin.price}
+                  </span>
+                </div>
+
+                {/* Hover Quick Actions */}
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-2.5 opacity-0 group-hover:opacity-100 transition-all z-20 bg-black/50 backdrop-blur-[2px] p-2">
+                  <Link 
+                    to={`/chat?twin=${twin.id}`}
+                    className="flex items-center justify-center gap-1.5 bg-[var(--y)] text-black font-extrabold text-[10px] uppercase w-32 py-2 rounded-lg hover:scale-105 active:scale-95 transition-all shadow-[2px_2px_0px_rgba(0,0,0,1)] border border-black"
+                  >
+                    <MessageSquare className="w-3.5 h-3.5" />
+                    <span>Chat</span>
+                  </Link>
+                  <Link 
+                    to={`/chat?twin=${twin.id}&call=true`}
+                    className="flex items-center justify-center gap-1.5 bg-black border border-[var(--y)] text-[var(--y)] font-extrabold text-[10px] uppercase w-32 py-2 rounded-lg hover:scale-105 active:scale-95 transition-all shadow-[2px_2px_0px_rgba(255,235,31,0.2)]"
+                  >
+                    <Phone className="w-3.5 h-3.5" />
+                    <span>Call</span>
+                  </Link>
+                </div>
+              </div>
+
+              {/* Text Info */}
+              <div className="mt-3 px-1 flex flex-col gap-0.5">
+                <div className="flex justify-between items-center">
+                  <h3 className="font-heading font-black text-xs flex items-center gap-1">
+                    <span>{twin.name}</span>
+                    {twin.isCustom && (
+                      <span className="text-[7px] bg-white/10 px-1 py-0.5 rounded text-[#f5f5f5]/60 font-mono">Trained</span>
+                    )}
+                  </h3>
+                  <span className="text-[8px] text-[#f5f5f5]/40 uppercase font-mono font-semibold">{twin.fans}</span>
+                </div>
+                <div className="flex justify-between items-center text-[10px] text-[#f5f5f5]/60 font-body">
+                  <span className="truncate max-w-20">{twin.profession}</span>
+                  <span className="text-[var(--y)] font-semibold text-[9px] shrink-0">{twin.vibe}</span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* DOUBLE SECTION ROW: RECENT CHATS & LATEST FEEDS */}
       <div className="grid lg:grid-cols-2 gap-8 pt-4">
         {/* Trending Companions */}

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppStore } from '../store/useAppStore';
 import { 
@@ -6,25 +6,35 @@ import {
   ChevronRight, Play, Heart, Phone, Sparkles, Shield
 } from 'lucide-react';
 
+// Helper to parse fan count strings (e.g. "15.9M FANS" -> 15900000)
+const getFansCount = (fansStr: string | null | undefined): number => {
+  if (!fansStr || typeof fansStr !== 'string') return 0;
+  const clean = fansStr.toUpperCase().replace('FANS', '').trim();
+  if (clean.includes('M')) {
+    return parseFloat(clean.replace('M', '')) * 1_000_000;
+  }
+  if (clean.includes('K')) {
+    return parseFloat(clean.replace('K', '')) * 1_000;
+  }
+  return parseFloat(clean) || 0;
+};
+
+const BADGES = ['🔥 Hot', '📈 Trending', '⭐ Rising'];
+const BADGE_COLORS = [
+  'bg-rose-500/10 text-rose-400 border border-rose-500/25',
+  'bg-amber-500/10 text-amber-400 border border-amber-500/25',
+  'bg-indigo-500/10 text-indigo-400 border border-indigo-500/25'
+];
+
 export function HomePage() {
   const navigate = useNavigate();
   const twins = useAppStore((state) => state.twins);
 
-  // Helper to parse fan count strings (e.g. "15.9M FANS" -> 15900000)
-  const getFansCount = (fansStr: string): number => {
-    const clean = fansStr.toUpperCase().replace('FANS', '').trim();
-    if (clean.includes('M')) {
-      return parseFloat(clean.replace('M', '')) * 1_000_000;
-    }
-    if (clean.includes('K')) {
-      return parseFloat(clean.replace('K', '')) * 1_000;
-    }
-    return parseFloat(clean) || 0;
-  };
-
-  const trendingCompanions = [...twins]
-    .sort((a, b) => getFansCount(b.fans) - getFansCount(a.fans))
-    .slice(0, 3);
+  const trendingCompanions = useMemo(() => {
+    return [...twins]
+      .sort((a, b) => getFansCount(b.fans) - getFansCount(a.fans))
+      .slice(0, 3);
+  }, [twins]);
 
 
 
@@ -394,17 +404,11 @@ export function HomePage() {
             <h3 className="text-sm font-mono font-black uppercase text-white/50 tracking-wider">
               Trending Companions
             </h3>
-            <span className="text-zinc-500 hover:text-white text-xs font-bold uppercase tracking-wider cursor-pointer font-mono" onClick={() => navigate('/explore')}>View all</span>
+            <Link to="/explore" className="text-zinc-500 hover:text-white text-xs font-bold uppercase tracking-wider cursor-pointer font-mono">View all</Link>
           </div>
 
           <div className="flex-1 flex flex-col justify-between gap-4 bg-zinc-950 border border-white/5 rounded-3xl p-6 font-body">
             {trendingCompanions.map((twin, idx) => {
-              const badges = ['🔥 Hot', '📈 Trending', '⭐ Rising'];
-              const badgeColors = [
-                'bg-rose-500/10 text-rose-400 border border-rose-500/25',
-                'bg-amber-500/10 text-amber-400 border border-amber-500/25',
-                'bg-indigo-500/10 text-indigo-400 border border-indigo-500/25'
-              ];
               return (
                 <div key={twin.id} className="flex items-center justify-between gap-4 p-1.5 rounded-2xl hover:bg-white/5 transition-colors group">
                   <div className="flex items-center gap-4 min-w-0">
@@ -414,8 +418,8 @@ export function HomePage() {
                     <div className="flex flex-col text-left min-w-0">
                       <div className="flex items-center gap-2">
                         <span className="font-heading font-black text-sm text-white truncate">{twin.name}</span>
-                        <span className={`text-[8px] font-mono font-black px-1.5 py-0.5 rounded uppercase tracking-wider shrink-0 ${badgeColors[idx] || badgeColors[2]}`}>
-                          {badges[idx] || '⭐ Rising'}
+                        <span className={`text-[8px] font-mono font-black px-1.5 py-0.5 rounded uppercase tracking-wider shrink-0 ${BADGE_COLORS[idx] || BADGE_COLORS[2]}`}>
+                          {BADGES[idx] || '⭐ Rising'}
                         </span>
                       </div>
                       <p className="text-xs text-zinc-400 font-body truncate mt-0.5 max-w-[15rem] sm:max-w-[20rem]">
@@ -426,17 +430,18 @@ export function HomePage() {
                   
                   <div className="flex items-center gap-4 shrink-0 font-mono">
                     <span className="text-[10px] text-zinc-500 font-bold hidden sm:inline">{twin.fans}</span>
-                    <button 
-                      onClick={() => navigate(`/chat?twin=${twin.id}`)}
+                    <Link 
+                      to={`/chat?twin=${twin.id}`}
                       className="w-10 h-10 rounded-xl bg-zinc-900 border border-white/5 hover:border-[var(--y)] hover:bg-[var(--y)] hover:text-black flex items-center justify-center text-zinc-400 transition-all cursor-pointer"
                     >
                       <MessageSquare className="w-4 h-4" />
-                    </button>
+                    </Link>
                   </div>
                 </div>
               );
             })}
           </div>
+
         </div>
 
         {/* Latest Feeds */}

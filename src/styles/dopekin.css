@@ -18,6 +18,7 @@
   
   /* ─── Layout Metrics ─── */
   --sidebar-w: 220px;
+  --content-max-width: 1600px;
   
   /* ─── Shadow & Brutalist depth ─── */
   --glow-y: 0 0 20px rgba(255, 231, 1, 0.55), 0 0 50px rgba(255, 231, 1, 0.25);

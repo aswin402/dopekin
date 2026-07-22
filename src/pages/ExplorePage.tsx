@@ -94,7 +94,7 @@ export function ExplorePage() {
   };
 
   return (
-    <div className="flex flex-col gap-6 animate-fade-up px-4 md:px-6 py-6 pb-24 text-left max-w-7xl mx-auto">
+    <div className="flex flex-col gap-6 animate-fade-up px-4 md:px-6 py-6 pb-24 text-left w-full mx-auto">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/5 pb-6">
         <div>
@@ -158,7 +158,7 @@ export function ExplorePage() {
           {sortedTwins.map((twin) => (
             <div 
               key={twin.id}
-              className="w-44 p-3 bg-black border border-[var(--border)] rounded-2xl flex flex-col relative group overflow-hidden transition-all duration-300 hover:translate-y-[-6px] hover:border-[var(--border2)] shrink-0"
+              className="w-56 p-3 bg-black border border-[var(--border)] rounded-2xl flex flex-col relative group overflow-hidden transition-all duration-300 hover:translate-y-[-6px] hover:border-[var(--border2)] shrink-0"
             >
               {/* Aspect Ratio 3:4 */}
               <div className="relative aspect-[3/4] w-full overflow-hidden rounded-xl bg-black">
@@ -194,18 +194,18 @@ export function ExplorePage() {
                   </button>
                 )}
 
-                {/* Hover Quick Actions (Stacked vertically to fit w-44 card) */}
+                {/* Hover Quick Actions (Stacked vertically to fit w-56 card) */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center gap-2.5 opacity-0 group-hover:opacity-100 transition-all z-20 bg-black/50 backdrop-blur-[2px] p-2">
                   <Link 
                     to={`/chat?twin=${twin.id}`}
-                    className="flex items-center justify-center gap-1.5 bg-[var(--y)] text-black font-extrabold text-[10px] uppercase w-32 py-2 rounded-lg hover:scale-105 active:scale-95 transition-all shadow-[2px_2px_0px_rgba(0,0,0,1)] border border-black"
+                    className="flex items-center justify-center gap-1.5 bg-[var(--y)] text-black font-extrabold text-[10px] uppercase w-40 py-2 rounded-lg hover:scale-105 active:scale-95 transition-all shadow-[2px_2px_0px_rgba(0,0,0,1)] border border-black"
                   >
                     <MessageSquare className="w-3.5 h-3.5" />
                     <span>Chat</span>
                   </Link>
                   <Link 
                     to={`/chat?twin=${twin.id}&call=true`}
-                    className="flex items-center justify-center gap-1.5 bg-black border border-[var(--y)] text-[var(--y)] font-extrabold text-[10px] uppercase w-32 py-2 rounded-lg hover:scale-105 active:scale-95 transition-all shadow-[2px_2px_0px_rgba(255,235,31,0.2)]"
+                    className="flex items-center justify-center gap-1.5 bg-black border border-[var(--y)] text-[var(--y)] font-extrabold text-[10px] uppercase w-40 py-2 rounded-lg hover:scale-105 active:scale-95 transition-all shadow-[2px_2px_0px_rgba(255,235,31,0.2)]"
                   >
                     <PhoneCall className="w-3.5 h-3.5" />
                     <span>Call</span>
@@ -225,7 +225,7 @@ export function ExplorePage() {
                   <span className="text-[8px] text-[#f5f5f5]/40 uppercase font-mono font-semibold">{twin.fans}</span>
                 </div>
                 <div className="flex justify-between items-center text-[10px] text-[#f5f5f5]/60 font-body">
-                  <span className="truncate max-w-20">{twin.profession}</span>
+                  <span className="truncate max-w-28">{twin.profession}</span>
                   <span className="text-[var(--y)] font-semibold text-[9px] shrink-0">{twin.vibe}</span>
                 </div>
               </div>

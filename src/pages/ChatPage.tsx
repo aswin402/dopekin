@@ -4,7 +4,7 @@ import { useAppStore } from '../store/useAppStore';
 import type { Message } from '../types/twin';
 import { 
   PhoneCall, PhoneOff, Mic, MicOff, Video, VideoOff, 
-  ArrowLeft, ShieldAlert, Sparkles, PanelRight, Users, 
+  ArrowLeft, ShieldAlert, Sparkles, PanelRight, 
   X, Wallet, MessageSquare, Maximize2, Minimize2
 } from 'lucide-react';
 
@@ -40,7 +40,6 @@ export function ChatPage() {
   const [isTyping, setIsTyping] = useState(false);
   const [showProfile, setShowProfile] = useState(true);
   const [showChatList, setShowChatList] = useState(false);
-  const [showChatOverlay, setShowChatOverlay] = useState(false);
   
   // Call states
   const [isCalling, setIsCalling] = useState(searchParams.get('call') === 'true');
@@ -256,67 +255,102 @@ export function ChatPage() {
   return (
     <div className="h-[calc(100vh-8rem)] lg:h-screen flex bg-black overflow-hidden relative">
       
-      {/* 1. Left Twin List Panel */}
+      {/* 1. Left Chat Panel (WhatsApp-style small chat panel) */}
       {showChatList && (
-        <div className="w-80 border-r border-zinc-900 flex flex-col bg-black shrink-0 z-20 absolute inset-y-0 left-0 md:relative md:flex animate-in slide-in-from-left duration-300">
-          {/* Panel Header */}
-          <div className="p-4 border-b border-zinc-900 flex items-center justify-between">
-            <span className="text-lg font-heading font-black text-white uppercase tracking-wider">Chat</span>
-            <div className="flex items-center gap-2">
-              <button 
-                onClick={() => alert("Group creation coming soon!")}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-900 border border-white/5 hover:border-[var(--y)] hover:text-[var(--y)] text-[10px] font-black uppercase tracking-wider transition-all cursor-pointer active:scale-95"
-              >
-                <Users className="w-3.5 h-3.5" />
-                <span>New Group</span>
-              </button>
-              <button 
-                onClick={() => setShowChatList(false)}
-                className="p-1.5 text-zinc-400 hover:text-white rounded-lg bg-zinc-900 border border-white/5 cursor-pointer hover:border-zinc-700 transition-colors"
-                title="Hide Chat List"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
+        <div className="w-80 border-r border-zinc-900 flex flex-col bg-black shrink-0 z-20 absolute inset-y-0 left-0 md:relative md:flex animate-in slide-in-from-left duration-300 p-4 justify-between h-full font-body">
+          {/* Header */}
+          <div className="flex justify-between items-center border-b border-zinc-900 pb-3 mb-4 shrink-0">
+            <span className="text-sm font-bold text-white">Avatar chat</span>
+            <button 
+              onClick={() => setShowChatList(false)} 
+              className="p-1 hover:bg-white/5 rounded-lg text-zinc-400 hover:text-white cursor-pointer transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
           </div>
 
-          {/* Conversations list */}
-          <div className="flex-1 overflow-y-auto p-2 flex flex-col gap-1">
-            {twins.map((twin) => {
-              const isActive = twin.id === activeTwinId;
-              const messages = chats[twin.id] || [];
-              const lastMsg = messages[messages.length - 1];
-              return (
-                <button
-                  key={twin.id}
-                  onClick={() => setSearchParams({ twin: twin.id })}
-                  className={`flex items-center gap-3 p-3 rounded-xl text-left transition-all cursor-pointer ${
-                    isActive 
-                      ? 'bg-zinc-900/60 border-l-2 border-[var(--y)]' 
-                      : 'bg-transparent border-l-2 border-transparent hover:bg-white/5'
-                  }`}
-                >
-                  <div className="relative shrink-0">
-                    <img src={twin.avatarUrl} alt={twin.name} className="w-10 h-10 rounded-full object-cover border border-white/10" />
-                    <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 border border-black animate-pulse" />
-                  </div>
-                  <div className="flex-1 min-w-0 flex flex-col gap-0.5">
-                    <div className="flex justify-between items-center">
-                      <span className="font-bold text-[#f5f5f5] text-sm truncate">{twin.name}</span>
-                      <span className="text-[9px] text-white/30 font-mono shrink-0">7:53PM</span>
+          {/* Message logs */}
+          <div className="flex-1 overflow-y-auto pr-1 flex flex-col gap-4 scrollbar-none mb-4">
+            {currentChats.length === 0 ? (
+              <div className="flex-1 flex flex-col items-center justify-center text-center p-6 text-zinc-500 gap-2">
+                <MessageSquare className="w-8 h-8 opacity-25" />
+                <p className="text-xs font-body">No messages yet. Send a message to start conversation!</p>
+              </div>
+            ) : (
+              currentChats.map((msg) => {
+                const isUser = msg.sender === 'user';
+                return (
+                  <div key={msg.id} className={`flex items-start gap-2.5 max-w-[85%] ${isUser ? 'self-end flex-row-reverse' : 'self-start'}`}>
+                    {/* Left Avatar circle for AI messages */}
+                    {!isUser && (
+                      <div className="w-8 h-8 rounded-full border border-white/10 overflow-hidden shrink-0 bg-zinc-950">
+                        <img src={activeTwin?.avatarUrl} alt="" className="w-full h-full object-cover" />
+                      </div>
+                    )}
+                    
+                    {/* Message text bubble */}
+                    <div className="flex flex-col gap-0.5">
+                      <div className={`px-4 py-2.5 text-xs rounded-[16px] leading-relaxed ${
+                        isUser 
+                          ? 'bg-[var(--y)] text-black font-semibold rounded-tr-none' 
+                          : 'bg-zinc-800 text-white rounded-tl-none border border-white/5'
+                      }`}>
+                        {msg.content}
+                      </div>
+                      <span className="text-[8px] text-white/20 font-mono mt-1 text-right">{msg.timestamp}</span>
                     </div>
-                    <p className="text-xs text-[#f5f5f5]/65 truncate">
-                      {lastMsg ? lastMsg.content : `${twin.profession} · ${twin.vibe}`}
-                    </p>
                   </div>
-                </button>
-              );
-            })}
+                );
+              })
+            )}
+            {isTyping && (
+              <div className="flex items-start gap-2.5 self-start">
+                <div className="w-8 h-8 rounded-full border border-white/10 overflow-hidden shrink-0 bg-zinc-950">
+                  <img src={activeTwin?.avatarUrl} alt="" className="w-full h-full object-cover" />
+                </div>
+                <div className="bg-zinc-800 text-zinc-400 px-4 py-2.5 rounded-[16px] rounded-tl-none border border-white/5 text-xs flex gap-1 items-center animate-pulse">
+                  <span>Typing</span>
+                  <span className="animate-bounce">.</span>
+                  <span className="animate-bounce [animation-delay:-0.2s]">.</span>
+                  <span className="animate-bounce [animation-delay:-0.4s]">.</span>
+                </div>
+              </div>
+            )}
+            <div ref={messagesEndRef} />
           </div>
+
+          {/* WhatsApp-style Input & Privacy Form */}
+          <form onSubmit={handleSendMessage} className="flex flex-col gap-2 shrink-0">
+            <div className="relative flex items-center">
+              <input
+                type="text"
+                placeholder={`Message ${activeTwin?.name}`}
+                value={inputText}
+                onChange={(e) => setInputText(e.target.value)}
+                className="w-full bg-[#18181a] border border-white/5 rounded-full pl-5 pr-12 py-3 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-[var(--y)] transition-all font-body"
+              />
+              <button 
+                type="submit" 
+                className="absolute right-2.5 p-2 rounded-full bg-[var(--y)] text-black hover:scale-105 active:scale-95 transition-all cursor-pointer flex items-center justify-center"
+              >
+                <svg className="w-3.5 h-3.5 transform rotate-45 -translate-x-[1px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Privacy Notice */}
+            <div className="flex items-center justify-center gap-1.5 mt-1 text-[9px] text-zinc-500 select-none font-body">
+              <svg className="w-3.5 h-3.5 text-zinc-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M2.166 4.9L10 1.154l7.834 3.746a1 1 0 01.616.92v5.33a8.949 8.949 0 01-3.664 7.227l-4.484 3.254a1 1 0 01-1.187 0L4.898 18.38A8.949 8.949 0 011.234 11.15V5.82a1 1 0 01.616-.92zM10 13a1 1 0 100-2 1 1 0 000 2zm0-4a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
+              </svg>
+              <span>We don't share or train on your chats</span>
+            </div>
+          </form>
         </div>
       )}
 
-      {/* 2. Middle Workspace Panel (Interactive Video Panel) */}
+      {/* 2. Middle Workspace Panel (Interactive FaceTime Video Panel) */}
       <div className="flex-1 flex flex-col bg-zinc-950 relative overflow-hidden">
         
         {/* Header */}
@@ -342,7 +376,7 @@ export function ChatPage() {
             <button
               onClick={() => setShowChatList(!showChatList)}
               className={`p-2 hover:bg-zinc-900 rounded-lg transition-all cursor-pointer ${showChatList ? 'text-[var(--y)] bg-zinc-900' : 'text-zinc-400'}`}
-              title="Toggle Chat List"
+              title="Toggle Chat Panel"
             >
               <MessageSquare className="w-5 h-5" />
             </button>
@@ -509,31 +543,11 @@ export function ChatPage() {
                         </button>
 
                         <button
-                          onClick={() => setShowChatOverlay(!showChatOverlay)}
-                          className={`w-9 h-9 rounded-full flex items-center justify-center border border-white/5 cursor-pointer transition-colors ${
-                            showChatOverlay ? 'bg-[var(--y)] text-black' : 'bg-zinc-900 hover:bg-zinc-800 text-zinc-300'
-                          }`}
-                          title="Open Text Chat Panel"
-                        >
-                          <MessageSquare className="w-4 h-4" />
-                        </button>
-
-                        <button
-                          onClick={toggleFullscreen}
-                          className={`w-9 h-9 rounded-full flex items-center justify-center border border-white/5 cursor-pointer transition-colors ${
-                            isFullscreen ? 'bg-[var(--y)] text-black' : 'bg-zinc-900 hover:bg-zinc-800 text-zinc-300'
-                          }`}
-                          title={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
-                        >
-                          {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
-                        </button>
-
-                        <button
                           onClick={handleCallEnd}
-                          className="w-10 h-10 rounded-full bg-red-600 hover:bg-red-700 text-white flex items-center justify-center transition-all hover:scale-105 active:scale-95 cursor-pointer border border-black shadow-lg"
-                          title="End Call"
+                          className="w-12 h-9 rounded-full bg-red-600 hover:bg-red-700 text-white flex items-center justify-center cursor-pointer transition-colors"
+                          title="End FaceTime Call"
                         >
-                          <PhoneOff className="w-4.5 h-4.5" />
+                          <PhoneOff className="w-4 h-4" />
                         </button>
                       </div>
 
@@ -544,52 +558,6 @@ export function ChatPage() {
                 </div>
               </div>
             </div>
-
-            {/* Floating Message Input Overlay */}
-            {showChatOverlay && (
-              <div className="absolute inset-x-4 top-16 bottom-28 bg-black/80 backdrop-blur-md rounded-2xl border border-white/10 p-4 z-30 flex flex-col justify-between shadow-2xl animate-in fade-in duration-200">
-                {/* Header */}
-                <div className="flex justify-between items-center border-b border-white/5 pb-2 mb-3">
-                  <span className="text-xs font-mono font-bold text-zinc-400 uppercase">Text Chat Session</span>
-                  <button 
-                    onClick={() => setShowChatOverlay(false)} 
-                    className="p-1 hover:bg-zinc-800 rounded text-zinc-400 hover:text-white"
-                  >
-                    <X className="w-4 h-4" />
-                  </button>
-                </div>
-
-                {/* Message logs */}
-                <div className="flex-1 overflow-y-auto pr-1 flex flex-col gap-3 scrollbar-none mb-3">
-                  {currentChats.map((msg) => {
-                    const isUser = msg.sender === 'user';
-                    return (
-                      <div key={msg.id} className={`flex flex-col max-w-[85%] gap-0.5 ${isUser ? 'self-end items-end' : 'self-start items-start'}`}>
-                        <div className={`px-3 py-2 text-xs rounded-xl ${isUser ? 'bg-[var(--y)] text-black font-semibold' : 'bg-zinc-900 text-white border border-white/5'}`}>
-                          {msg.content}
-                        </div>
-                        <span className="text-[8px] text-white/30 font-mono mt-0.5">{msg.timestamp}</span>
-                      </div>
-                    );
-                  })}
-                  <div ref={messagesEndRef} />
-                </div>
-
-                {/* Simple input field */}
-                <form onSubmit={handleSendMessage} className="flex gap-2">
-                  <input
-                    type="text"
-                    placeholder="Write a message..."
-                    value={inputText}
-                    onChange={(e) => setInputText(e.target.value)}
-                    className="flex-1 bg-zinc-950 border border-white/5 rounded-xl px-3 py-2 text-xs text-white focus:outline-none"
-                  />
-                  <button type="submit" className="px-3 bg-[var(--y)] text-black font-black text-xs uppercase rounded-xl">
-                    Send
-                  </button>
-                </form>
-              </div>
-            )}
           </div>
         )}
 

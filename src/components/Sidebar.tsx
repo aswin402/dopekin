@@ -21,7 +21,7 @@ export function Sidebar() {
   }, 0);
 
   const links = [
-    { to: '/home', label: 'Home', icon: Home },
+    {to: '/', label: 'Home', icon: Home},
     { to: '/explore', label: 'Explore', icon: Compass },
     { to: '/chat', label: 'FaceTime Call', icon: MessageSquare, badge: totalUnread > 0 ? totalUnread : undefined },
     { to: '/create', label: 'Create Twin', icon: Plus },

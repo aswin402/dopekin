@@ -295,19 +295,12 @@ export function ChatPage() {
         
         {/* Header */}
         <div className="h-14 border-b border-zinc-900 px-4 flex items-center justify-between bg-black shrink-0 z-10 font-body">
-          <div className="flex items-center gap-2 text-white">
+          <div className="flex items-center gap-2 text-white lg:pl-3">
             <button 
               onClick={() => navigate('/explore')} 
               className="md:hidden p-1 text-zinc-400 hover:text-white rounded-lg"
             >
               <ArrowLeft className="w-5 h-5" />
-            </button>
-            <button
-              onClick={() => setShowChatList(!showChatList)}
-              className={`p-2 hover:bg-zinc-900 rounded-lg transition-all cursor-pointer ${showChatList ? 'text-[var(--y)] bg-zinc-900' : 'text-zinc-400'}`}
-              title="Toggle Chat List"
-            >
-              <MessageSquare className="w-5 h-5" />
             </button>
             <span className="font-bold text-sm tracking-wide text-[#f5f5f5]">{activeTwin?.name}</span>
             <button 
@@ -325,6 +318,13 @@ export function ChatPage() {
             >
               <Sparkles className="w-3.5 h-3.5 text-[var(--y)]" />
               <span>Create interactive AI avatar</span>
+            </button>
+            <button
+              onClick={() => setShowChatList(!showChatList)}
+              className={`p-2 hover:bg-zinc-900 rounded-lg transition-all cursor-pointer ${showChatList ? 'text-[var(--y)] bg-zinc-900' : 'text-zinc-400'}`}
+              title="Toggle Chat List"
+            >
+              <MessageSquare className="w-5 h-5" />
             </button>
             <button
               onClick={() => setShowProfile(!showProfile)}

@@ -408,7 +408,16 @@ export function ChatPage() {
                       <img 
                         src={activeTwin?.avatarUrl} 
                         alt={activeTwin?.name} 
-                        className="w-full h-full object-cover object-top"
+                        className="w-full h-full object-cover"
+                        style={{ 
+                          objectPosition: activeTwin?.id === 'aiko' 
+                            ? 'center 25%' 
+                            : activeTwin?.id === 'sarang' 
+                            ? 'center 20%' 
+                            : ['vale', 'serena'].includes(activeTwin?.id || '') 
+                            ? 'center 35%' 
+                            : 'center 30%' 
+                        }}
                       />
                       
                       {/* Speaking indicator wave lines */}

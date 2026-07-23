@@ -260,7 +260,16 @@ export function ChatPage() {
         <div className="w-80 border-r border-zinc-900 flex flex-col bg-black shrink-0 z-20 absolute inset-y-0 left-0 md:relative md:flex animate-in slide-in-from-left duration-300 p-4 justify-between h-full font-body">
           {/* Header */}
           <div className="flex justify-between items-center border-b border-zinc-900 pb-3 mb-4 shrink-0">
-            <span className="text-sm font-bold text-white">Avatar chat</span>
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-full border border-white/10 overflow-hidden bg-zinc-900 shrink-0 relative">
+                <img src={activeTwin?.avatarUrl} alt={activeTwin?.name} className="w-full h-full object-cover" />
+                <span className="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-emerald-500 border border-black animate-pulse" />
+              </div>
+              <div className="flex flex-col text-left">
+                <span className="text-sm font-black text-white tracking-tight uppercase leading-none">{activeTwin?.name}</span>
+                <span className="text-[9px] text-zinc-500 font-mono tracking-wider uppercase font-bold mt-0.5">Online</span>
+              </div>
+            </div>
             <button 
               onClick={() => setShowChatList(false)} 
               className="p-1 hover:bg-white/5 rounded-lg text-zinc-400 hover:text-white cursor-pointer transition-colors"

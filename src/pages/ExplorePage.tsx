@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { useAppStore } from '../store/useAppStore';
-import { Search, Compass, MessageSquare, PhoneCall, Trash2, Heart } from 'lucide-react';
+import { Search, Compass, Trash2, Heart } from 'lucide-react';
 
 export function ExplorePage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -211,18 +211,18 @@ export function ExplorePage() {
           {sortedTwins.map((twin) => {
             const vibeData = getVibeIconAndText(twin.id, twin.vibe);
             return (
-              <div 
+              <Link 
                 key={twin.id}
-                className="w-full max-w-[280px] mx-auto p-3.5 bg-zinc-950 border border-white/5 rounded-[24px] flex flex-col relative group overflow-hidden transition-all duration-300 hover:translate-y-[-6px] hover:border-white/10 hover:shadow-xl shrink-0"
+                to={`/chat?twin=${twin.id}`}
+                className="w-full max-w-[280px] mx-auto p-3.5 bg-zinc-950 border border-white/5 rounded-[24px] flex flex-col relative group overflow-hidden transition-all duration-300 hover:translate-y-[-6px] hover:border-white/10 hover:shadow-xl shrink-0 cursor-pointer"
               >
                 {/* Aspect Ratio 3:4 */}
-                <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[18px] bg-black border border-white/5">
+                <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[18px] bg-black">
                   <img 
                     src={twin.avatarUrl} 
                     alt={twin.name} 
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent opacity-65 group-hover:opacity-85 transition-opacity" />
 
                   {/* Online Badge Tag */}
                   <div className="absolute top-3 left-3 flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/5 text-[9px] font-bold text-white uppercase tracking-wider select-none">
@@ -234,6 +234,7 @@ export function ExplorePage() {
                   <button 
                     onClick={(e) => {
                       e.preventDefault();
+                      e.stopPropagation();
                       toggleLike(twin.id);
                     }}
                     className="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 backdrop-blur-md border border-white/5 text-zinc-400 hover:text-red-500 hover:scale-105 active:scale-95 transition-all flex items-center justify-center cursor-pointer z-30"
@@ -247,6 +248,7 @@ export function ExplorePage() {
                     <button 
                       onClick={(e) => {
                         e.preventDefault();
+                        e.stopPropagation();
                         setTwinToDelete(twin.id);
                       }}
                       className="absolute top-3 right-12 w-8 h-8 rounded-full bg-red-500/85 hover:bg-red-600 text-white transition-colors z-30 cursor-pointer flex items-center justify-center"
@@ -255,24 +257,6 @@ export function ExplorePage() {
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
                   )}
-
-                  {/* Hover Quick Actions */}
-                  <div className="absolute inset-0 flex flex-col items-center justify-center gap-2.5 opacity-0 group-hover:opacity-100 transition-all z-20 bg-black/50 backdrop-blur-[2px] p-2">
-                    <Link 
-                      to={`/chat?twin=${twin.id}`}
-                      className="flex items-center justify-center gap-1.5 bg-[var(--y)] text-black font-extrabold text-[10px] uppercase w-36 py-2 rounded-lg hover:scale-105 active:scale-95 transition-all shadow-[2px_2px_0px_rgba(0,0,0,1)] border border-black"
-                    >
-                      <MessageSquare className="w-3.5 h-3.5" />
-                      <span>Chat</span>
-                    </Link>
-                    <Link 
-                      to={`/chat?twin=${twin.id}&call=true`}
-                      className="flex items-center justify-center gap-1.5 bg-black border border-[var(--y)] text-[var(--y)] font-extrabold text-[10px] uppercase w-36 py-2 rounded-lg hover:scale-105 active:scale-95 transition-all shadow-[2px_2px_0px_rgba(255,235,31,0.2)]"
-                    >
-                      <PhoneCall className="w-3.5 h-3.5" />
-                      <span>Call</span>
-                    </Link>
-                  </div>
                 </div>
 
                 {/* Text Info */}
@@ -295,7 +279,7 @@ export function ExplorePage() {
                     {getPersonalizationHook(twin.id)}
                   </p>
                 </div>
-              </div>
+              </Link>
             );
           })}
         </div>

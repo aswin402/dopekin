@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { useAppStore } from '../store/useAppStore';
-import { Search, Compass, MessageSquare, PhoneCall, Trash2 } from 'lucide-react';
+import { Search, Compass, MessageSquare, PhoneCall, Trash2, Heart } from 'lucide-react';
 
 export function ExplorePage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -16,6 +16,9 @@ export function ExplorePage() {
   const [activeCategory, setActiveCategory] = useState(categoryParam);
   const [sortBy, setSortBy] = useState('popular');
   const [twinToDelete, setTwinToDelete] = useState<string | null>(null);
+
+  // Stateful favorite system
+  const [likedTwins, setLikedTwins] = useState<string[]>(['vale', 'sarang']);
 
   // Synchronize URL params with local state
   useEffect(() => {
@@ -50,6 +53,12 @@ export function ExplorePage() {
     });
   };
 
+  const toggleLike = (id: string) => {
+    setLikedTwins((prev) => 
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+    );
+  };
+
   // Filter and Sort twins
   const filteredTwins = twins.filter((twin) => {
     const matchesSearch = 
@@ -62,20 +71,18 @@ export function ExplorePage() {
       activeCategory === 'all' || 
       twin.category === activeCategory;
 
-    // Filter by favorites if query filter is set
-    const matchesFilter = filterParam !== 'favorites' || ['vale', 'rina', 'aiko'].includes(twin.id);
+    // Filter by user's actual liked list if favorites filter is selected
+    const matchesFilter = filterParam !== 'favorites' || likedTwins.includes(twin.id);
 
     return matchesSearch && matchesCategory && matchesFilter;
   });
 
   const sortedTwins = [...filteredTwins].sort((a, b) => {
     if (sortBy === 'newest') {
-      // Custom twins first, then default
       if (a.isCustom && !b.isCustom) return -1;
       if (!a.isCustom && b.isCustom) return 1;
       return 0;
     }
-    // Mock popular sort
     return 0;
   });
 
@@ -91,6 +98,52 @@ export function ExplorePage() {
   const handleDeleteConfirm = (id: string) => {
     deleteTwin(id);
     setTwinToDelete(null);
+  };
+
+  const getVibeIconAndText = (id: string, vibe: string) => {
+    switch (id) {
+      case 'vale':
+        return { emoji: '🎭', text: 'CONFIDENT • EMPATHETIC' };
+      case 'serena':
+        return { emoji: '🌿', text: 'WARM • EMPATHETIC' };
+      case 'aiko':
+        return { emoji: '💼', text: 'FOCUSED • ATTENTIVE' };
+      case 'cody':
+        return { emoji: '⚡', text: 'WITTY • FAST' };
+      case 'sarang':
+        return { emoji: '💃', text: 'PLAYFUL • CREATIVE' };
+      case 'carlos':
+        return { emoji: '🔥', text: 'AMBITIOUS • SMART' };
+      case 'ben':
+        return { emoji: '🕹️', text: 'ENERGETIC • FRIENDLY' };
+      case 'etherik':
+        return { emoji: '🧬', text: 'ANALYTICAL • DEEP' };
+      default:
+        return { emoji: '✨', text: vibe.toUpperCase() };
+    }
+  };
+
+  const getPersonalizationHook = (id: string) => {
+    switch (id) {
+      case 'vale':
+        return 'You both like fashion';
+      case 'serena':
+        return 'You both like wellness';
+      case 'aiko':
+        return 'You both like productivity';
+      case 'cody':
+        return 'You both like crypto';
+      case 'sarang':
+        return 'You both like K-pop';
+      case 'carlos':
+        return 'You both like comedy';
+      case 'ben':
+        return 'You both play games';
+      case 'etherik':
+        return 'You both like tech';
+      default:
+        return 'Recommended companion';
+    }
   };
 
   return (
@@ -152,85 +205,99 @@ export function ExplorePage() {
         ))}
       </div>
 
-      {/* Twins Flex Container */}
+      {/* Twins Grid Container */}
       {sortedTwins.length > 0 ? (
-        <div className="flex flex-wrap gap-6 justify-start">
-          {sortedTwins.map((twin) => (
-            <div 
-              key={twin.id}
-              className="w-56 p-3 bg-black border border-[var(--border)] rounded-2xl flex flex-col relative group overflow-hidden transition-all duration-300 hover:translate-y-[-6px] hover:border-[var(--border2)] shrink-0"
-            >
-              {/* Aspect Ratio 3:4 */}
-              <div className="relative aspect-[3/4] w-full overflow-hidden rounded-xl bg-black">
-                <img 
-                  src={twin.avatarUrl} 
-                  alt={twin.name} 
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 group-hover:opacity-85 transition-opacity" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 w-full">
+          {sortedTwins.map((twin) => {
+            const vibeData = getVibeIconAndText(twin.id, twin.vibe);
+            return (
+              <div 
+                key={twin.id}
+                className="w-full max-w-[280px] mx-auto p-3.5 bg-zinc-950 border border-white/5 rounded-[24px] flex flex-col relative group overflow-hidden transition-all duration-300 hover:translate-y-[-6px] hover:border-white/10 hover:shadow-xl shrink-0"
+              >
+                {/* Aspect Ratio 3:4 */}
+                <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[18px] bg-black border border-white/5">
+                  <img 
+                    src={twin.avatarUrl} 
+                    alt={twin.name} 
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent opacity-65 group-hover:opacity-85 transition-opacity" />
 
-                {/* Badges */}
-                <div className="absolute top-2 left-2 flex gap-1.5 z-20">
-                  <span className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-red-500/90 text-white text-[8px] font-extrabold uppercase animate-pulse-glow">
-                    <span className="w-1 h-1 rounded-full bg-white animate-ping" />
-                    Live
-                  </span>
-                  <span className="px-1.5 py-0.5 rounded bg-black/60 text-[#f5f5f5]/90 text-[8px] font-bold">
-                    {twin.price}
-                  </span>
-                </div>
+                  {/* Online Badge Tag */}
+                  <div className="absolute top-3 left-3 flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/5 text-[9px] font-bold text-white uppercase tracking-wider select-none">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                    <span>Online</span>
+                  </div>
 
-                {/* Custom Delete Icon */}
-                {twin.isCustom && (
+                  {/* Favorite Heart Button */}
                   <button 
                     onClick={(e) => {
                       e.preventDefault();
-                      setTwinToDelete(twin.id);
+                      toggleLike(twin.id);
                     }}
-                    className="absolute top-2 right-2 p-1.5 rounded bg-red-500/80 text-white hover:bg-red-600 transition-colors z-30 cursor-pointer"
-                    title="Delete Custom Twin"
+                    className="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 backdrop-blur-md border border-white/5 text-zinc-400 hover:text-red-500 hover:scale-105 active:scale-95 transition-all flex items-center justify-center cursor-pointer z-30"
+                    title="Favorite Companion"
                   >
-                    <Trash2 className="w-3.5 h-3.5" />
+                    <Heart className={`w-4 h-4 transition-colors ${likedTwins.includes(twin.id) ? 'fill-red-500 text-red-500' : 'text-zinc-400'}`} />
                   </button>
-                )}
 
-                {/* Hover Quick Actions (Stacked vertically to fit w-56 card) */}
-                <div className="absolute inset-0 flex flex-col items-center justify-center gap-2.5 opacity-0 group-hover:opacity-100 transition-all z-20 bg-black/50 backdrop-blur-[2px] p-2">
-                  <Link 
-                    to={`/chat?twin=${twin.id}`}
-                    className="flex items-center justify-center gap-1.5 bg-[var(--y)] text-black font-extrabold text-[10px] uppercase w-40 py-2 rounded-lg hover:scale-105 active:scale-95 transition-all shadow-[2px_2px_0px_rgba(0,0,0,1)] border border-black"
-                  >
-                    <MessageSquare className="w-3.5 h-3.5" />
-                    <span>Chat</span>
-                  </Link>
-                  <Link 
-                    to={`/chat?twin=${twin.id}&call=true`}
-                    className="flex items-center justify-center gap-1.5 bg-black border border-[var(--y)] text-[var(--y)] font-extrabold text-[10px] uppercase w-40 py-2 rounded-lg hover:scale-105 active:scale-95 transition-all shadow-[2px_2px_0px_rgba(255,235,31,0.2)]"
-                  >
-                    <PhoneCall className="w-3.5 h-3.5" />
-                    <span>Call</span>
-                  </Link>
+                  {/* Custom Delete Icon */}
+                  {twin.isCustom && (
+                    <button 
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setTwinToDelete(twin.id);
+                      }}
+                      className="absolute top-3 right-12 w-8 h-8 rounded-full bg-red-500/85 hover:bg-red-600 text-white transition-colors z-30 cursor-pointer flex items-center justify-center"
+                      title="Delete Custom Twin"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  )}
+
+                  {/* Hover Quick Actions */}
+                  <div className="absolute inset-0 flex flex-col items-center justify-center gap-2.5 opacity-0 group-hover:opacity-100 transition-all z-20 bg-black/50 backdrop-blur-[2px] p-2">
+                    <Link 
+                      to={`/chat?twin=${twin.id}`}
+                      className="flex items-center justify-center gap-1.5 bg-[var(--y)] text-black font-extrabold text-[10px] uppercase w-36 py-2 rounded-lg hover:scale-105 active:scale-95 transition-all shadow-[2px_2px_0px_rgba(0,0,0,1)] border border-black"
+                    >
+                      <MessageSquare className="w-3.5 h-3.5" />
+                      <span>Chat</span>
+                    </Link>
+                    <Link 
+                      to={`/chat?twin=${twin.id}&call=true`}
+                      className="flex items-center justify-center gap-1.5 bg-black border border-[var(--y)] text-[var(--y)] font-extrabold text-[10px] uppercase w-36 py-2 rounded-lg hover:scale-105 active:scale-95 transition-all shadow-[2px_2px_0px_rgba(255,235,31,0.2)]"
+                    >
+                      <PhoneCall className="w-3.5 h-3.5" />
+                      <span>Call</span>
+                    </Link>
+                  </div>
                 </div>
-              </div>
 
-              {/* Text Info */}
-              <div className="mt-3 px-1 flex flex-col gap-0.5">
-                <div className="flex justify-between items-center">
-                  <h3 className="font-heading font-black text-xs flex items-center gap-1">
+                {/* Text Info */}
+                <div className="mt-3.5 px-1 flex flex-col text-left">
+                  <h3 className="font-heading font-black text-lg text-white tracking-tight flex items-center gap-2">
                     <span>{twin.name}</span>
                     {twin.isCustom && (
-                      <span className="text-[7px] bg-white/10 px-1 py-0.5 rounded text-[#f5f5f5]/60 font-mono">Trained</span>
+                      <span className="text-[7px] bg-[var(--y)]/10 text-[var(--y)] px-1.5 py-0.5 rounded uppercase font-mono tracking-wider">Custom</span>
                     )}
                   </h3>
-                  <span className="text-[8px] text-[#f5f5f5]/40 uppercase font-mono font-semibold">{twin.fans}</span>
-                </div>
-                <div className="flex justify-between items-center text-[10px] text-[#f5f5f5]/60 font-body">
-                  <span className="truncate max-w-28">{twin.profession}</span>
-                  <span className="text-[var(--y)] font-semibold text-[9px] shrink-0">{twin.vibe}</span>
+                  
+                  {/* Vibe line */}
+                  <div className="flex items-center gap-1.5 text-[9px] font-extrabold uppercase tracking-wide text-[var(--y)] mt-1">
+                    <span>{vibeData.emoji}</span>
+                    <span>{vibeData.text}</span>
+                  </div>
+
+                  {/* Personalization hook */}
+                  <p className="text-[11px] text-zinc-500 font-body mt-1.5 leading-relaxed">
+                    {getPersonalizationHook(twin.id)}
+                  </p>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       ) : (
         <div className="p-16 border border-dashed border-white/10 rounded-2xl text-center flex flex-col items-center gap-4">
@@ -248,20 +315,20 @@ export function ExplorePage() {
           <div className="bg-black border-2 border-red-500/50 p-6 rounded-2xl max-w-sm w-full shadow-2xl flex flex-col gap-4 animate-zoom-in">
             <h3 className="text-xl font-heading font-bold text-red-500 uppercase">Confirm Deletion</h3>
             <p className="text-sm text-[#f5f5f5]/70 leading-relaxed font-body">
-              Are you sure you want to delete this custom twin? This action is permanent and will clear all message logs and vocal configurations.
+              Are you sure you want to permanently delete this custom trained twin? This action cannot be undone and all active chat history will be lost.
             </p>
-            <div className="flex gap-3 justify-end mt-2">
+            <div className="flex gap-3">
               <button 
                 onClick={() => setTwinToDelete(null)}
-                className="px-4 py-2 rounded-lg bg-transparent border border-white/20 hover:bg-white/5 text-sm font-semibold cursor-pointer"
+                className="flex-1 py-2.5 rounded-xl border border-white/10 text-white font-bold text-xs uppercase transition-all hover:bg-white/5 active:scale-95 cursor-pointer"
               >
                 Cancel
               </button>
               <button 
                 onClick={() => handleDeleteConfirm(twinToDelete)}
-                className="px-4 py-2 rounded-lg bg-red-500 text-white font-bold hover:bg-red-600 transition-colors text-sm cursor-pointer"
+                className="flex-1 py-2.5 rounded-xl bg-red-600 text-white font-bold text-xs uppercase transition-all hover:bg-red-750 active:scale-95 cursor-pointer"
               >
-                Delete Seed
+                Delete
               </button>
             </div>
           </div>
@@ -270,4 +337,5 @@ export function ExplorePage() {
     </div>
   );
 }
+
 export default ExplorePage;

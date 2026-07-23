@@ -3,14 +3,15 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useAppStore } from '../store/useAppStore';
 import type { Message } from '../types/twin';
 import { 
-  Send, PhoneCall, PhoneOff, Mic, MicOff, Video, VideoOff, 
-  Trash2, ArrowLeft, ShieldAlert, Sparkles, ChevronLeft, ChevronRight,
-  PanelRight, Search, Users, Settings, Image as ImageIcon, Clapperboard,
-  X, Wallet
+  Send, PhoneOff, Mic, MicOff, Video, VideoOff, 
+  ArrowLeft, ShieldAlert, Sparkles, ChevronLeft, ChevronRight,
+  Search, Users, Settings, Image as ImageIcon,
+  X, Wallet, BadgeCheck, SlidersHorizontal, Check, Pin, MoreHorizontal,
+  Phone, Star, Heart
 } from 'lucide-react';
 
 const InstagramIcon = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round" {...props}>
+  <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round" {...props}>
     <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
     <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
     <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
@@ -18,14 +19,32 @@ const InstagramIcon = (props: React.SVGProps<SVGSVGElement>) => (
 );
 
 const TiktokIcon = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round" {...props}>
+  <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round" {...props}>
     <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" />
+  </svg>
+);
+
+const SpotifyIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" {...props}>
+    <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.586 14.424c-.18.295-.565.387-.86.207-2.377-1.454-5.37-1.783-8.894-1.007-.33.078-.656-.125-.734-.456-.078-.33.125-.657.456-.734 3.86-.882 7.15-.5 9.825 1.135.295.18.387.565.207.86zm1.224-2.72c-.226.367-.707.487-1.074.26-2.72-1.672-6.87-2.157-10.076-1.183-.412.125-.843-.107-.968-.52-.125-.412.107-.843.52-.968 3.67-1.114 8.24-.567 11.338 1.338.367.226.487.707.26 1.074zm.106-2.833C14.738 8.87 9.5 8.7 6.463 9.62c-.48.146-.983-.13-1.13-.61-.146-.48.13-.983.61-1.13 3.5-1.06 9.27-.86 12.96 1.33.432.257.575.815.318 1.25-.257.432-.815.575-1.25.318z"/>
+  </svg>
+);
+
+const YoutubeIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" {...props}>
+    <path d="M23.498 6.163a3.003 3.003 0 0 0-2.11-2.108C19.524 3.545 12 3.545 12 3.545s-7.525 0-9.387.51A3.003 3.003 0 0 0 .502 6.163C0 8.07 0 12 0 12s0 3.93.502 5.837a3.003 3.003 0 0 0 2.11 2.108c1.862.51 9.387.51 9.387.51s7.524 0 9.387-.51a3.003 3.003 0 0 0 2.11-2.108C24 15.93 24 12 24 12s0-3.93-.502-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
   </svg>
 );
 
 const AudioWavesIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round" {...props}>
     <path d="M3 10v4M6 6v12M9 3v18M12 7v10M15 5v14M18 8v8M21 11v2" />
+  </svg>
+);
+
+const Sparkline = () => (
+  <svg className="w-8 h-5 text-[var(--y)] ml-2 shrink-0 inline-block" viewBox="0 0 40 20" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+    <path d="M2 18 L10 14 L18 16 L26 8 L34 10 L38 2" />
   </svg>
 );
 
@@ -253,7 +272,7 @@ export function ChatPage() {
       <div className="w-80 border-r border-[var(--border)] flex flex-col bg-black shrink-0 hidden md:flex">
         {/* Panel Header */}
         <div className="p-4 border-b border-white/5 flex items-center justify-between">
-          <span className="text-lg font-heading font-black text-white uppercase tracking-wider">Chat</span>
+          <span className="text-lg font-heading font-black text-white uppercase tracking-wider">Messages</span>
           <button 
             onClick={() => alert("Group creation coming soon!")}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-900 border border-white/5 hover:border-[var(--y)] hover:text-[var(--y)] text-[10px] font-black uppercase tracking-wider transition-all cursor-pointer active:scale-95"
@@ -264,15 +283,24 @@ export function ChatPage() {
         </div>
 
         {/* Search profile input */}
-        <div className="p-3 border-b border-white/5 relative">
-          <Search className="w-4 h-4 text-zinc-500 absolute left-6 top-1/2 -translate-y-1/2" />
-          <input 
-            type="text" 
-            placeholder="Search for a profile..." 
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-4 py-1.5 bg-zinc-900/60 border border-white/5 rounded-xl text-xs text-[#f5f5f5] placeholder-[#f5f5f5]/30 focus:outline-none focus:border-[var(--y)] focus:bg-zinc-900 transition-all font-body"
-          />
+        <div className="p-3 border-b border-white/5 flex gap-2 items-center">
+          <div className="relative flex-1">
+            <Search className="w-4 h-4 text-zinc-500 absolute left-3 top-1/2 -translate-y-1/2" />
+            <input 
+              type="text" 
+              placeholder="Search people or groups..." 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-9 pr-4 py-1.5 bg-zinc-900/60 border border-white/5 rounded-xl text-xs text-[#f5f5f5] placeholder-[#f5f5f5]/30 focus:outline-none focus:border-[var(--y)] focus:bg-zinc-900 transition-all font-body"
+            />
+          </div>
+          <button 
+            onClick={() => alert("Filters coming soon!")}
+            className="p-2 rounded-xl bg-zinc-900 border border-white/5 text-zinc-400 hover:text-white transition-all cursor-pointer active:scale-95 shrink-0"
+            title="Filters"
+          >
+            <SlidersHorizontal className="w-4 h-4" />
+          </button>
         </div>
 
         {/* Conversations list */}
@@ -281,6 +309,32 @@ export function ChatPage() {
             const isActive = twin.id === activeTwinId;
             const messages = chats[twin.id] || [];
             const lastMsg = messages[messages.length - 1];
+            
+            // Mock unread count and times to match layout 2
+            let unreadCount = 0;
+            let lastMsgTime = "7:53 PM";
+            if (twin.id === 'vale') {
+              unreadCount = 2;
+              lastMsgTime = "7:53 PM";
+            } else if (twin.id === 'serena') {
+              unreadCount = 1;
+              lastMsgTime = "7:40 PM";
+            } else if (twin.id === 'aiko') {
+              lastMsgTime = "7:28 PM";
+            } else if (twin.id === 'cody') {
+              lastMsgTime = "7:10 PM";
+            } else if (twin.id === 'sarang') {
+              lastMsgTime = "6:55 PM";
+            } else if (twin.id === 'carlos') {
+              lastMsgTime = "6:42 PM";
+            } else if (twin.id === 'ben') {
+              lastMsgTime = "6:30 PM";
+            } else if (twin.id === 'rina') {
+              lastMsgTime = "6:18 PM";
+            } else if (twin.id === 'etherik') {
+              lastMsgTime = "6:05 PM";
+            }
+
             return (
               <button
                 key={twin.id}
@@ -297,12 +351,28 @@ export function ChatPage() {
                 </div>
                 <div className="flex-1 min-w-0 flex flex-col gap-0.5">
                   <div className="flex justify-between items-center">
-                    <span className="font-bold text-[#f5f5f5] text-sm truncate">{twin.name}</span>
-                    <span className="text-[9px] text-white/30 font-mono shrink-0">7:53PM</span>
+                    <span className="font-bold text-[#f5f5f5] text-sm truncate flex items-center gap-1">
+                      <span>{twin.name}</span>
+                      <BadgeCheck className="w-3.5 h-3.5 text-[var(--y)] fill-black shrink-0" />
+                    </span>
+                    <span className={`text-[9px] font-mono shrink-0 ${unreadCount > 0 ? 'text-[var(--y)] font-bold' : 'text-white/30'}`}>
+                      {lastMsgTime}
+                    </span>
                   </div>
-                  <p className="text-xs text-[#f5f5f5]/65 truncate">
-                    {lastMsg ? lastMsg.content : `${twin.profession} · ${twin.vibe}`}
-                  </p>
+                  <div className="flex justify-between items-center min-w-0">
+                    <p className="text-xs text-[#f5f5f5]/65 truncate">
+                      {lastMsg ? lastMsg.content : `${twin.profession} · ${twin.vibe}`}
+                    </p>
+                    {unreadCount > 0 ? (
+                      <span className="w-5 h-5 rounded-full bg-[var(--y)] text-black text-[10px] font-black flex items-center justify-center shrink-0 ml-2">
+                        {unreadCount}
+                      </span>
+                    ) : (
+                      <span className="text-white/20 shrink-0 ml-2">
+                        <Check className="w-3.5 h-3.5" />
+                      </span>
+                    )}
+                  </div>
                 </div>
               </button>
             );
@@ -323,40 +393,50 @@ export function ChatPage() {
             >
               <ArrowLeft className="w-5 h-5" />
             </button>
-            <img src={activeTwin?.avatarUrl} alt={activeTwin?.name} className="w-9 h-9 rounded-full object-cover border border-white/10" />
-            <div className="min-w-0 flex flex-col">
-              <span className="font-bold text-sm truncate text-[#f5f5f5]">{activeTwin?.name}</span>
+            <div className="relative">
+              <img src={activeTwin?.avatarUrl} alt={activeTwin?.name} className="w-9 h-9 rounded-full object-cover border border-white/10" />
+              <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 border border-black animate-pulse" />
+            </div>
+            <div className="min-w-0 flex flex-col items-start">
+              <span className="font-bold text-sm truncate text-[#f5f5f5] flex items-center gap-1">
+                <span>{activeTwin?.name}</span>
+                <BadgeCheck className="w-3.5 h-3.5 text-[var(--y)] fill-black shrink-0" />
+              </span>
+              <span className="text-[10px] text-emerald-500 font-medium flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                <span>Online</span>
+              </span>
             </div>
           </div>
 
           <div className="flex items-center gap-4 shrink-0 text-zinc-400">
             <button
-              onClick={() => alert("Stream simulation starting soon!")}
-              className="hover:text-white transition-colors cursor-pointer"
-              title="Stream Video"
+              onClick={handleCallStart}
+              className="hover:text-white hover:scale-105 transition-all cursor-pointer"
+              title="Video Call"
             >
-              <Clapperboard className="w-5 h-5" />
+              <Video className="w-5 h-5" />
             </button>
             <button
               onClick={handleCallStart}
               className="hover:text-[var(--y)] hover:scale-105 transition-all cursor-pointer"
-              title="FaceTime Call"
+              title="Voice Call"
             >
-              <PhoneCall className="w-5 h-5 text-[var(--y)]" />
+              <Phone className="w-5 h-5 text-zinc-400 hover:text-[var(--y)]" />
+            </button>
+            <button
+              onClick={() => alert("Pinned chats")}
+              className="hover:text-white transition-colors cursor-pointer"
+              title="Pin Chat"
+            >
+              <Pin className="w-4.5 h-4.5" />
             </button>
             <button
               onClick={handleClear}
-              className="hover:text-red-500 transition-colors cursor-pointer"
+              className="hover:text-white transition-colors cursor-pointer"
               title="Clear chat history"
             >
-              <Trash2 className="w-5 h-5" />
-            </button>
-            <button
-              onClick={() => setShowProfile(!showProfile)}
-              className={`hover:text-white transition-colors cursor-pointer ${showProfile ? 'text-[var(--y)]' : 'text-zinc-400'}`}
-              title="Toggle Profile Sidebar"
-            >
-              <PanelRight className="w-5 h-5" />
+              <MoreHorizontal className="w-5 h-5" />
             </button>
           </div>
         </div>
@@ -418,10 +498,48 @@ export function ChatPage() {
                 );
               })
             ) : (
-              <div className="flex-1 flex flex-col items-center justify-center gap-4 text-center opacity-40">
-                <Sparkles className="w-10 h-10 text-[var(--y)]" />
-                <h3 className="font-bold text-sm">Beginning of communication</h3>
-                <p className="text-xs max-w-xs">Send a text message or launch a FaceTime call to train the avatar.</p>
+              <div className="flex-1 flex flex-col items-center justify-center gap-4 text-center">
+                <div className="p-4 rounded-full bg-zinc-900/20 border border-[var(--y)]/10 animate-pulse mb-1">
+                  <Sparkles className="w-10 h-10 text-[var(--y)]" />
+                </div>
+                <h3 className="font-heading font-black uppercase text-base text-[#f5f5f5] tracking-wide">
+                  Beginning of communication
+                </h3>
+                <p className="text-xs text-zinc-500 max-w-xs mt-1">
+                  Send a text message or launch a FaceTime call to train the avatar.
+                </p>
+
+                {/* Pre-defined action buttons */}
+                <div className="flex flex-wrap justify-center gap-2 mt-6 max-w-md">
+                  <button 
+                    onClick={() => setInputText("👋 Wave hello")}
+                    className="px-4 py-2 rounded-xl bg-zinc-900 border border-white/5 text-zinc-300 hover:text-white hover:border-[var(--y)]/30 text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer hover:bg-zinc-800"
+                  >
+                    <span>👋</span>
+                    <span>Wave hello</span>
+                  </button>
+                  <button 
+                    onClick={() => setInputText("🎵 Share a song")}
+                    className="px-4 py-2 rounded-xl bg-zinc-900 border border-white/5 text-zinc-300 hover:text-white hover:border-[var(--y)]/30 text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer hover:bg-zinc-800"
+                  >
+                    <span>🎵</span>
+                    <span>Share a song</span>
+                  </button>
+                  <button 
+                    onClick={handleCallStart}
+                    className="px-4 py-2 rounded-xl bg-zinc-900 border border-white/5 text-zinc-300 hover:text-white hover:border-[var(--y)]/30 text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer hover:bg-zinc-800"
+                  >
+                    <span>📹</span>
+                    <span>Video call</span>
+                  </button>
+                  <button 
+                    onClick={() => setInputText("🎙️ Voice message")}
+                    className="px-4 py-2 rounded-xl bg-zinc-900 border border-white/5 text-zinc-300 hover:text-white hover:border-[var(--y)]/30 text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer hover:bg-zinc-800"
+                  >
+                    <span>🎙️</span>
+                    <span>Voice message</span>
+                  </button>
+                </div>
               </div>
             )}
 
@@ -444,7 +562,7 @@ export function ChatPage() {
           <form onSubmit={handleSendMessage} className="p-4 border-t border-[var(--border)] bg-black shrink-0 flex flex-col gap-3">
             <div className="relative bg-zinc-900 border border-white/10 rounded-2xl p-3 flex flex-col gap-2 shadow-[inset_0_2px_4px_rgba(0,0,0,0.4)]">
               <textarea
-                placeholder="Write a message..."
+                placeholder="Type a message..."
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
                 onKeyDown={(e) => {
@@ -484,13 +602,23 @@ export function ChatPage() {
                   </button>
                 </div>
 
-                <button
-                  type="submit"
-                  disabled={!inputText.trim()}
-                  className="w-9 h-9 rounded-full bg-[var(--y)] text-[var(--blk)] flex items-center justify-center hover:scale-105 active:scale-95 disabled:opacity-40 disabled:scale-100 disabled:cursor-not-allowed transition-all cursor-pointer border border-black shadow-[1px_1px_0px_rgba(255,231,1,0.5)] shrink-0"
-                >
-                  <Send className="w-3.5 h-3.5" />
-                </button>
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => alert("Emojis list coming soon!")}
+                    className="p-1.5 text-zinc-500 hover:text-white transition-colors cursor-pointer"
+                    title="Insert Emoji"
+                  >
+                    <span className="text-lg">😊</span>
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={!inputText.trim()}
+                    className="w-9 h-9 rounded-full bg-[var(--y)] text-[var(--blk)] flex items-center justify-center hover:scale-105 active:scale-95 disabled:opacity-40 disabled:scale-100 disabled:cursor-not-allowed transition-all cursor-pointer border border-black shadow-[1px_1px_0px_rgba(255,231,1,0.5)] shrink-0"
+                  >
+                    <Send className="w-3.5 h-3.5" />
+                  </button>
+                </div>
               </div>
             </div>
           </form>
@@ -650,27 +778,45 @@ export function ChatPage() {
               <ChevronRight className="w-4.5 h-4.5" />
             </button>
 
+            {/* V2.0 Badge - Top Left */}
+            <div className="absolute top-3 left-3 bg-[#e4e4e7]/10 text-white backdrop-blur-md text-[9px] font-black px-2 py-0.5 rounded-md border border-white/10 uppercase tracking-wider z-10">
+              v2.0
+            </div>
+
+            {/* Heart Favorite Trigger - Top Right */}
+            <button 
+              type="button"
+              onClick={() => alert("Added to favorites!")}
+              className="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-zinc-400 hover:text-yellow-400 hover:scale-105 active:scale-95 flex items-center justify-center transition-all cursor-pointer z-10"
+            >
+              <Heart className="w-4 h-4" />
+            </button>
+
             {/* Pagination Indicators */}
             <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5 z-10 bg-black/40 px-2.5 py-1 rounded-full border border-white/5 backdrop-blur-[2px]">
               <span className={`w-1.5 h-1.5 rounded-full transition-all ${carouselIndex === 0 ? 'bg-[var(--y)] w-3' : 'bg-white/30'}`} />
               <span className={`w-1.5 h-1.5 rounded-full transition-all ${carouselIndex === 1 ? 'bg-[var(--y)] w-3' : 'bg-white/30'}`} />
             </div>
-
-            {/* Badge Indicator */}
-            <div className="absolute top-3 right-3 bg-[var(--y)] text-black text-[9px] font-black px-2 py-0.5 rounded-md border border-black shadow-[1px_1px_0px_rgba(0,0,0,1)] uppercase tracking-wider z-10">
-              v2.0
-            </div>
           </div>
 
           {/* Twin Details info */}
           <div className="mt-4 flex flex-col gap-1.5 text-left">
-            <h3 className="font-heading font-black text-xl text-white tracking-tight uppercase flex items-center gap-2">
-              <span>{activeTwin?.name}</span>
-              {activeTwin?.isCustom && (
-                <span className="text-[7px] bg-[var(--y)]/10 text-[var(--y)] px-1.5 py-0.5 rounded uppercase font-mono tracking-wider">Custom</span>
-              )}
-            </h3>
-            <p className="text-xs text-zinc-400 font-body leading-relaxed">
+            <div className="flex justify-between items-center">
+              <h3 className="font-heading font-black text-xl text-white tracking-tight uppercase flex items-center gap-1">
+                <span>{activeTwin?.name}</span>
+                <BadgeCheck className="w-4.5 h-4.5 text-[var(--y)] fill-black shrink-0" />
+              </h3>
+              <span className="text-[10px] text-emerald-500 font-mono font-bold flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                <span>ONLINE</span>
+              </span>
+            </div>
+            
+            <p className="text-xs text-[var(--y)] font-mono font-bold">
+              {activeTwin?.profession} • {activeTwin?.vibe}
+            </p>
+            
+            <p className="text-xs text-zinc-400 font-body leading-relaxed mt-1">
               {activeTwin?.bio}
             </p>
 
@@ -692,14 +838,39 @@ export function ChatPage() {
               >
                 <TiktokIcon className="w-5 h-5" />
               </a>
+              <a 
+                href="https://spotify.com" 
+                target="_blank" 
+                rel="noreferrer" 
+                className="w-10 h-10 rounded-xl bg-zinc-950 border border-white/5 hover:border-[var(--y)] hover:text-[var(--y)] flex items-center justify-center text-zinc-400 transition-all cursor-pointer hover:shadow-[0_0_15px_rgba(255,231,1,0.15)]"
+              >
+                <SpotifyIcon className="w-5 h-5" />
+              </a>
+              <a 
+                href="https://youtube.com" 
+                target="_blank" 
+                rel="noreferrer" 
+                className="w-10 h-10 rounded-xl bg-zinc-950 border border-white/5 hover:border-[var(--y)] hover:text-[var(--y)] flex items-center justify-center text-zinc-400 transition-all cursor-pointer hover:shadow-[0_0_15px_rgba(255,231,1,0.15)]"
+              >
+                <YoutubeIcon className="w-5 h-5" />
+              </a>
             </div>
           </div>
 
           {/* Dynamic About Me fields */}
           <div className="border-t border-white/5 pt-5 mt-5 flex flex-col gap-4 text-left">
-            <h4 className="text-xs font-mono font-black uppercase text-zinc-500 tracking-wider">
-              About me:
-            </h4>
+            <div className="flex justify-between items-center">
+              <h4 className="text-xs font-mono font-black uppercase text-zinc-500 tracking-wider">
+                About me
+              </h4>
+              <button 
+                onClick={() => alert("About details expanded")}
+                className="text-[10px] font-mono font-bold text-[var(--y)] hover:underline cursor-pointer"
+              >
+                View all &gt;
+              </button>
+            </div>
+
             <div className="grid grid-cols-2 gap-2.5 font-body">
               <div className="p-3 bg-zinc-900/40 border border-white/5 rounded-xl flex flex-col gap-0.5 text-left">
                 <span className="text-[9px] font-mono font-bold text-zinc-500 uppercase tracking-wide">Profession</span>
@@ -709,15 +880,27 @@ export function ChatPage() {
                 <span className="text-[9px] font-mono font-bold text-zinc-500 uppercase tracking-wide">Vibe</span>
                 <span className="text-xs font-extrabold text-[var(--y)] truncate">{activeTwin?.vibe}</span>
               </div>
-              <div className="p-3 bg-zinc-900/40 border border-white/5 rounded-xl flex flex-col gap-0.5 text-left">
+              <div className="p-3 bg-zinc-900/40 border border-white/5 rounded-xl flex flex-col gap-0.5 text-left relative overflow-hidden">
                 <span className="text-[9px] font-mono font-bold text-zinc-500 uppercase tracking-wide">Fans/Reach</span>
-                <span className="text-xs font-extrabold text-[#f5f5f5] truncate">{activeTwin?.fans}</span>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-extrabold text-[#f5f5f5] truncate">{activeTwin?.fans}</span>
+                  <Sparkline />
+                </div>
               </div>
               <div className="p-3 bg-zinc-900/40 border border-white/5 rounded-xl flex flex-col gap-0.5 text-left">
                 <span className="text-[9px] font-mono font-bold text-zinc-500 uppercase tracking-wide">Tier</span>
                 <span className="text-xs font-extrabold text-[#f5f5f5] truncate">{activeTwin?.price}</span>
               </div>
             </div>
+
+            {/* Train Avatar Action Button */}
+            <button
+              onClick={() => alert(`Starting training simulation for ${activeTwin?.name}'s AI model...`)}
+              className="mt-4 w-full py-3 rounded-2xl bg-[var(--y)] text-black font-extrabold uppercase text-xs md:text-sm tracking-wider shadow-[3px_3px_0px_rgba(0,0,0,1)] border-2 border-black hover:translate-y-[-2px] hover:shadow-[5px_5px_0px_rgba(0,0,0,1)] active:translate-y-[1px] active:shadow-[1px_1px_0px_rgba(0,0,0,1)] transition-all cursor-pointer flex items-center justify-center gap-2"
+            >
+              <Star className="w-4 h-4 fill-current" />
+              <span>Train Avatar</span>
+            </button>
           </div>
 
         </div>

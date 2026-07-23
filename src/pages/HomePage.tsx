@@ -381,7 +381,7 @@ export function HomePage() {
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
-        className="group relative w-full rounded-3xl overflow-hidden aspect-[21/9] sm:aspect-[3/1] lg:aspect-[4/1] border border-white/10 shadow-2xl transition-all duration-700 ease-in-out select-none cursor-grab active:cursor-grabbing"
+        className="group relative w-full rounded-3xl overflow-hidden aspect-[16/10] sm:aspect-[3/1] lg:aspect-[4/1] border border-white/10 shadow-2xl transition-all duration-700 ease-in-out select-none cursor-grab active:cursor-grabbing"
       >
         {/* Layered background gradients for smooth cross-fading */}
         {banners.map((banner, index) => (
@@ -411,7 +411,7 @@ export function HomePage() {
         {/* Content Wrapper for Left Text */}
         <div 
           key={`text-${currentSlide}`}
-          className={`absolute inset-y-0 left-6 sm:left-12 flex flex-col justify-center gap-2 max-w-sm sm:max-w-md z-20 pointer-events-none ${
+          className={`absolute inset-y-0 left-6 sm:left-12 flex flex-col justify-center gap-2 max-w-[85%] sm:max-w-md z-20 pointer-events-none ${
             slideDirection === 'next' ? 'animate-scroll-next-text' : 'animate-scroll-prev-text'
           }`}
         >

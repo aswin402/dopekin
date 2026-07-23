@@ -214,10 +214,10 @@ export function ExplorePage() {
               <Link 
                 key={twin.id}
                 to={`/chat?twin=${twin.id}`}
-                className="w-full max-w-[280px] mx-auto p-3.5 bg-zinc-950 border border-white/5 rounded-[24px] flex flex-col relative group overflow-hidden transition-all duration-300 hover:translate-y-[-6px] hover:border-white/10 hover:shadow-xl shrink-0 cursor-pointer"
+                className="w-full max-w-[280px] mx-auto bg-zinc-950 border border-white/5 rounded-[24px] flex flex-col relative group overflow-hidden transition-all duration-300 hover:translate-y-[-6px] hover:border-white/10 hover:shadow-xl shrink-0 cursor-pointer"
               >
                 {/* Aspect Ratio 3:4 */}
-                <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[18px] bg-black">
+                <div className="relative aspect-[3/4] w-full overflow-hidden bg-black">
                   <img 
                     src={twin.avatarUrl} 
                     alt={twin.name} 
@@ -260,7 +260,7 @@ export function ExplorePage() {
                 </div>
 
                 {/* Text Info */}
-                <div className="mt-3.5 px-1 flex flex-col text-left">
+                <div className="p-4.5 pb-4 flex flex-col text-left">
                   <h3 className="font-heading font-black text-lg text-white tracking-tight flex items-center gap-2">
                     <span>{twin.name}</span>
                     {twin.isCustom && (

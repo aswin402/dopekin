@@ -4,8 +4,8 @@ import { useAppStore } from '../store/useAppStore';
 import type { Message } from '../types/twin';
 import { 
   PhoneCall, PhoneOff, Mic, MicOff, Video, VideoOff, 
-  ArrowLeft, ShieldAlert, Sparkles, ChevronLeft, ChevronRight,
-  PanelRight, Users, X, Wallet, ChevronDown, HelpCircle, MessageSquare
+  ArrowLeft, ShieldAlert, Sparkles, PanelRight, Users, 
+  X, Wallet, ChevronDown, MessageSquare
 } from 'lucide-react';
 
 const InstagramIcon = (props: React.SVGProps<SVGSVGElement>) => (
@@ -40,7 +40,6 @@ export function ChatPage() {
   const [isTyping, setIsTyping] = useState(false);
   const [showProfile, setShowProfile] = useState(true);
   const [showChatList, setShowChatList] = useState(false);
-  const [carouselIndex, setCarouselIndex] = useState(0);
   const [showChatOverlay, setShowChatOverlay] = useState(false);
   
   // Call states
@@ -92,11 +91,6 @@ export function ChatPage() {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [chats, activeTwinId, isTyping]);
-
-  // Reset carousel index when changing active twin
-  useEffect(() => {
-    setCarouselIndex(0);
-  }, [activeTwinId]);
 
   // Voice synthesis helper
   const speakAnswer = (text: string) => {
@@ -230,7 +224,7 @@ export function ChatPage() {
         </div>
       )}
 
-      {/* 1. Left Twin List Panel (Hidden by default, toggled via top-left chat icon) */}
+      {/* 1. Left Twin List Panel */}
       {showChatList && (
         <div className="w-80 border-r border-zinc-900 flex flex-col bg-black shrink-0 z-20 absolute inset-y-0 left-0 md:relative md:flex animate-in slide-in-from-left duration-300">
           {/* Panel Header */}
@@ -303,21 +297,15 @@ export function ChatPage() {
               <ArrowLeft className="w-5 h-5" />
             </button>
             <span className="font-bold text-sm tracking-wide text-[#f5f5f5]">{activeTwin?.name}</span>
-            <button 
-              onClick={() => alert(`Twin Details: ${activeTwin?.bio}`)}
-              className="p-1 text-zinc-500 hover:text-zinc-300 transition-colors"
-            >
-              <HelpCircle className="w-3.5 h-3.5" />
-            </button>
           </div>
 
           <div className="flex items-center gap-3">
             <button
-              onClick={() => alert("Creating custom avatar stream...")}
+              onClick={() => navigate('/create')}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-zinc-900 hover:bg-zinc-800 text-zinc-300 text-[10px] font-extrabold uppercase border border-white/5 transition-all cursor-pointer shadow-md"
             >
               <Sparkles className="w-3.5 h-3.5 text-[var(--y)]" />
-              <span>Create interactive AI avatar</span>
+              <span>Create Twin</span>
             </button>
             <button
               onClick={() => setShowChatList(!showChatList)}
@@ -465,7 +453,7 @@ export function ChatPage() {
             {/* Bottom Controls Bar */}
             <div className="w-full pb-6 pt-3 px-4 flex justify-center items-center z-20 mt-auto bg-transparent">
               {!isCalling ? (
-                /* Pre-Call Setup controls (Image 2) */
+                /* Pre-Call Setup controls */
                 <div className="flex items-center gap-3">
                   <button 
                     onClick={() => alert("Selecting custom avatars...")}
@@ -490,7 +478,7 @@ export function ChatPage() {
                   </button>
                 </div>
               ) : (
-                /* Active Call controls (Image 3) */
+                /* Active Call controls */
                 <div className="w-full max-w-xl flex justify-between items-center relative gap-4">
                   {/* Left Counter */}
                   <span className="font-mono text-xs font-bold text-zinc-400 bg-zinc-950/80 px-3 py-1 rounded-lg border border-white/5 select-none shrink-0">
@@ -524,7 +512,7 @@ export function ChatPage() {
                       className="px-3.5 py-2 bg-zinc-900 hover:bg-zinc-800 border border-white/5 text-zinc-300 text-xs font-bold rounded-full transition-all cursor-pointer flex items-center gap-1"
                     >
                       <span>Avatars</span>
-                      <ChevronDown className="w-3 h-3 opacity-60" />
+                      <ChevronDown className="w-3.5 h-3.5 opacity-60" />
                     </button>
 
                     <button
@@ -571,52 +559,13 @@ export function ChatPage() {
             </button>
           </div>
 
-          {/* Profile Image View */}
+          {/* Profile Image View (Image only, video carousel removed) */}
           <div className="relative aspect-square w-full bg-zinc-950 overflow-hidden group rounded-2xl border border-white/5">
-            {carouselIndex === 0 ? (
-              <img 
-                src={activeTwin?.avatarUrl} 
-                alt={activeTwin?.name} 
-                className="w-full h-full object-cover transition-transform duration-500 hover:scale-103" 
-              />
-            ) : activeTwin?.videoUrl ? (
-              <video 
-                src={activeTwin?.videoUrl} 
-                autoPlay 
-                loop 
-                muted 
-                playsInline 
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              <div className="w-full h-full flex flex-col items-center justify-center bg-zinc-900 text-zinc-500">
-                <Video className="w-10 h-10 mb-2 opacity-50 text-[var(--y)]" />
-                <span className="text-[9px] font-bold uppercase tracking-wider font-mono">No video training file</span>
-              </div>
-            )}
-            
-            {/* Carousel Navigation Arrows */}
-            <button 
-              type="button"
-              onClick={() => setCarouselIndex(0)}
-              className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/60 backdrop-blur-md border border-white/5 text-[#f5f5f5] flex items-center justify-center hover:bg-black/80 transition-all cursor-pointer z-10 hover:border-[var(--y)]/30 active:scale-90"
-            >
-              <ChevronLeft className="w-4.5 h-4.5" />
-            </button>
-            <button 
-              type="button"
-              onClick={() => setCarouselIndex(1)}
-              className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/60 backdrop-blur-md border border-white/5 text-[#f5f5f5] flex items-center justify-center hover:bg-black/80 transition-all cursor-pointer z-10 hover:border-[var(--y)]/30 active:scale-90"
-            >
-              <ChevronRight className="w-4.5 h-4.5" />
-            </button>
-
-            {/* Pagination Indicators */}
-            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5 z-10 bg-black/40 px-2.5 py-1 rounded-full border border-white/5 backdrop-blur-[2px]">
-              <span className={`w-1.5 h-1.5 rounded-full transition-all ${carouselIndex === 0 ? 'bg-[var(--y)] w-3' : 'bg-white/30'}`} />
-              <span className={`w-1.5 h-1.5 rounded-full transition-all ${carouselIndex === 1 ? 'bg-[var(--y)] w-3' : 'bg-white/30'}`} />
-            </div>
-
+            <img 
+              src={activeTwin?.avatarUrl} 
+              alt={activeTwin?.name} 
+              className="w-full h-full object-cover transition-transform duration-500 hover:scale-103" 
+            />
             {/* Badge Indicator */}
             <div className="absolute top-3 right-3 bg-[var(--y)] text-black text-[9px] font-black px-2 py-0.5 rounded-md border border-black shadow-[1px_1px_0px_rgba(0,0,0,1)] uppercase tracking-wider z-10">
               v2.0

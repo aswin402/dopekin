@@ -45,8 +45,8 @@ export function Sidebar() {
           <div 
             className="flex items-center h-12 px-2 overflow-hidden select-none"
           >
-            <div className="w-8 h-8 rounded-full bg-[var(--y)] text-[var(--blk)] flex items-center justify-center font-heading font-black text-lg shadow-[0_0_15px_rgba(255,231,1,0.3)] shrink-0">
-              <img src={DopeIcon} className="w-5 h-5 object-contain" alt="Dopekin Logo" />
+            <div className="w-8 h-8 flex items-center justify-center shrink-0">
+              <img src={DopeIcon} className="w-7 h-7 object-contain" alt="Dopekin Logo" />
             </div>
             <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 font-heading font-black text-base text-[var(--y)] ml-3 tracking-tighter uppercase whitespace-nowrap">
               DopeKin

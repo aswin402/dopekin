@@ -207,14 +207,14 @@ export function ExplorePage() {
 
       {/* Twins Grid Container */}
       {sortedTwins.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 w-full">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 xl:gap-12 w-full">
           {sortedTwins.map((twin) => {
             const vibeData = getVibeIconAndText(twin.id, twin.vibe);
             return (
               <Link 
                 key={twin.id}
                 to={`/chat?twin=${twin.id}`}
-                className="w-full max-w-md sm:max-w-[280px] mx-auto bg-zinc-950 border border-white/5 rounded-[24px] flex flex-col relative group overflow-hidden transition-all duration-300 hover:translate-y-[-6px] hover:border-white/10 hover:shadow-xl shrink-0 cursor-pointer"
+                className="w-full max-w-[270px] mx-auto bg-zinc-950 border border-white/5 rounded-[24px] flex flex-col relative group overflow-hidden transition-all duration-300 hover:translate-y-[-6px] hover:border-white/10 hover:shadow-xl shrink-0 cursor-pointer"
               >
                 {/* Aspect Ratio 3:4 */}
                 <div className="relative aspect-[3/4] w-full overflow-hidden bg-black">

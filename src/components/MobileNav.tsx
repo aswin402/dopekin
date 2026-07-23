@@ -14,7 +14,7 @@ export function MobileNav() {
 
   const items = [
     { to: '/', label: 'Home', icon: Home },
-    { to: '/explore', label: 'Explore', icon: Compass },
+    { to: '/explore', label: 'Discover', icon: Compass },
     { to: '/create', label: 'Create', icon: Plus, isCenter: true },
     { to: '/chat', label: 'Chat', icon: MessageSquare, badge: totalUnread > 0 ? totalUnread : undefined },
     { to: '/pricing', label: 'Pricing', icon: Tag },

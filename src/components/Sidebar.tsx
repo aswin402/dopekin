@@ -22,7 +22,7 @@ export function Sidebar() {
 
   const links = [
     {to: '/', label: 'Home', icon: Home},
-    { to: '/explore', label: 'Explore', icon: Compass },
+    { to: '/explore', label: 'Discover', icon: Compass },
     { to: '/chat', label: 'Chat', icon: MessageSquare, badge: totalUnread > 0 ? totalUnread : undefined },
     { to: '/create', label: 'Create Twin', icon: Plus },
     { to: '/feed', label: 'Feed', icon: Rss },

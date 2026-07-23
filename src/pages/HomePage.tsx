@@ -505,7 +505,7 @@ export function HomePage() {
           </span>
         </div>
         
-        <div className="flex flex-nowrap gap-6 sm:gap-8 overflow-x-auto pb-2 scrollbar-none scroll-smooth">
+        <div className="flex flex-nowrap gap-6 sm:gap-8 overflow-x-auto pt-3 pb-2 scrollbar-none scroll-smooth">
           {['etherik', 'sarang', 'aiko', 'cody', 'vale'].map((newId, idx) => {
             const twin = getTwin(newId);
             return (

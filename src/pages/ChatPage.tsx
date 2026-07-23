@@ -393,7 +393,7 @@ export function ChatPage() {
                 className={`w-full transition-all duration-300 relative overflow-hidden bg-black flex flex-col justify-between border border-white/5 ${
                   isFullscreen 
                     ? 'fixed inset-0 max-w-none h-full w-full rounded-none border-none z-50' 
-                    : 'aspect-video max-w-[95%] xl:max-w-[90%] rounded-2xl md:rounded-3xl shadow-2xl animate-in fade-in duration-300'
+                    : 'aspect-[3/4] sm:aspect-video max-w-[95%] xl:max-w-[90%] rounded-2xl md:rounded-3xl shadow-2xl animate-in fade-in duration-300'
                 }`}
               >
                 {/* Background image / simulated video */}
@@ -475,7 +475,7 @@ export function ChatPage() {
                         className="px-8 py-3 bg-emerald-500 hover:bg-emerald-600 border border-emerald-400/20 text-white text-xs font-black uppercase tracking-wider rounded-full transition-all hover:scale-105 active:scale-95 flex items-center gap-2 cursor-pointer shadow-[0_0_20px_rgba(16,185,129,0.3)]"
                       >
                         <PhoneCall className="w-3.5 h-3.5 fill-current" />
-                        <span>Start video chat</span>
+                        <span>START VIDEO CHAT</span>
                       </button>
                     </div>
                   ) : (

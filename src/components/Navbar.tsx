@@ -1,6 +1,6 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAppStore } from '../store/useAppStore';
-import { Menu, Search, Wallet, LogIn } from 'lucide-react';
+import { Menu, Search, Wallet } from 'lucide-react';
 import { useState } from 'react';
 import DopeIcon from '../assets/DopeIcon.svg';
 
@@ -10,17 +10,9 @@ interface NavbarProps {
 
 export function Navbar({ onToggleMobileMenu }: NavbarProps) {
   const navigate = useNavigate();
-  const user = useAppStore((state) => state.user);
   const userTokens = useAppStore((state) => state.userTokens);
-  const isPro = useAppStore((state) => state.isPro);
-  const isElite = useAppStore((state) => state.isElite);
-  const claimDailyBonus = useAppStore((state) => state.claimDailyBonus);
-  const lastDailyClaim = useAppStore((state) => state.lastDailyClaim);
   
   const [searchVal, setSearchVal] = useState('');
-
-  const todayStr = new Date().toDateString();
-  const hasClaimedToday = lastDailyClaim === todayStr;
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,7 +27,7 @@ export function Navbar({ onToggleMobileMenu }: NavbarProps) {
       <div className="flex items-center gap-4">
         <button 
           onClick={onToggleMobileMenu} 
-          className="lg:hidden text-[#f5f5f5] p-1.5 hover:bg-white/5 rounded-lg"
+          className="lg:hidden text-[#f5f5f5] p-1.5 hover:bg-white/5 rounded-lg cursor-pointer"
           aria-label="Toggle Navigation Menu"
         >
           <Menu className="w-6 h-6" />
@@ -47,7 +39,7 @@ export function Navbar({ onToggleMobileMenu }: NavbarProps) {
         </div>
       </div>
 
-      {/* Search Bar - Hidden on small screens unless on explore page */}
+      {/* Search Bar - Hidden on small screens */}
       <form onSubmit={handleSearchSubmit} className="hidden md:flex items-center relative max-w-md w-full mx-8">
         <input
           type="text"
@@ -59,46 +51,20 @@ export function Navbar({ onToggleMobileMenu }: NavbarProps) {
         <Search className="absolute left-3.5 w-4 h-4 text-[#f5f5f5]/30" />
       </form>
 
-      {/* Auth / Tokens Controls */}
+      {/* Tokens Controls (Rendered on mobile right side matching Reference Image 2) */}
       <div className="flex items-center gap-3">
-        {user ? (
-          <div className="flex items-center gap-3">
-            {/* Tokens Badge */}
-            <button 
-              onClick={() => {
-                claimDailyBonus();
-                navigate('/pricing');
-              }}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-zinc-900 border border-[var(--border)] text-xs font-semibold cursor-pointer transition-all hover:border-[var(--y)] hover:bg-zinc-800 ${!hasClaimedToday ? 'animate-pulse' : ''}`}
-              title={!hasClaimedToday ? "Claim Daily +20 Tokens!" : "Daily tokens claimed"}
-            >
-              <Wallet className="w-3.5 h-3.5 text-[var(--y)]" />
-              <span>{userTokens} Tokens</span>
-              {!hasClaimedToday && (
-                <span className="w-1.5 h-1.5 rounded-full bg-[var(--y)] animate-ping" />
-              )}
-            </button>
-
-            {/* Profile link */}
-            <Link 
-              to="/pricing" 
-              className="hidden sm:flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[var(--y)] text-[var(--blk)] text-xs font-bold uppercase tracking-wider shadow-[var(--brutal)] hover:translate-y-[-2px] active:translate-y-[1px] transition-transform border border-[var(--blk)]"
-            >
-              {isElite ? 'Elite Member' : isPro ? 'Pro Active' : 'Upgrade'}
-            </Link>
-          </div>
-        ) : (
-          <div className="flex items-center gap-2">
-            <Link 
-              to="/pricing"
-              className="flex items-center gap-1 px-3.5 py-1.5 rounded-lg bg-[var(--y)] text-[var(--blk)] text-xs font-bold uppercase tracking-wide shadow-[var(--brutal)] hover:translate-y-[-2px] active:translate-y-[1px] transition-transform border border-[var(--blk)]"
-            >
-              <LogIn className="w-3.5 h-3.5" />
-              <span>Try Free Trial</span>
-            </Link>
-          </div>
-        )}
+        <button 
+          onClick={() => navigate('/pricing')}
+          className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-zinc-950 border border-zinc-800 hover:border-[var(--y)] hover:bg-zinc-900 text-xs font-bold cursor-pointer transition-all shadow-md select-none"
+          title="Tokens Balance"
+        >
+          <Wallet className="w-3.5 h-3.5 text-[var(--y)]" />
+          <span className="text-[#f5f5f5]">{userTokens} Tokens</span>
+          <span className="w-1.5 h-1.5 rounded-full bg-[var(--y)]" />
+        </button>
       </div>
     </nav>
   );
 }
+
+export default Navbar;

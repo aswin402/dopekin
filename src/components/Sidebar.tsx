@@ -29,7 +29,7 @@ export function Sidebar() {
   ];
 
   return (
-    <aside className="sticky top-16 lg:top-0 h-[calc(100vh-4rem)] lg:h-screen border-r border-[var(--border)] bg-black group hover:w-64 w-16 transition-all duration-300 flex flex-col justify-between select-none shrink-0 font-body z-30">
+    <aside className="hidden lg:flex sticky top-0 h-screen border-r border-[var(--border)] bg-black group hover:w-64 w-16 transition-all duration-300 flex-col justify-between select-none shrink-0 font-body z-30">
       
       <div className="flex flex-col w-full">
         {/* Top Header Block: Hamburger Menu */}

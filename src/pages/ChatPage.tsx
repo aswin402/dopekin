@@ -5,8 +5,7 @@ import type { Message } from '../types/twin';
 import { 
   PhoneCall, PhoneOff, Mic, MicOff, Video, VideoOff, 
   ArrowLeft, ShieldAlert, Sparkles, ChevronLeft, ChevronRight,
-  PanelRight, Search, Users,
-  X, Wallet, ChevronDown, HelpCircle, MessageSquare
+  PanelRight, Users, X, Wallet, ChevronDown, HelpCircle, MessageSquare
 } from 'lucide-react';
 
 const InstagramIcon = (props: React.SVGProps<SVGSVGElement>) => (
@@ -39,8 +38,8 @@ export function ChatPage() {
 
   const [inputText, setInputText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
   const [showProfile, setShowProfile] = useState(true);
+  const [showChatList, setShowChatList] = useState(false);
   const [carouselIndex, setCarouselIndex] = useState(0);
   const [showChatOverlay, setShowChatOverlay] = useState(false);
   
@@ -195,12 +194,6 @@ export function ChatPage() {
 
   const currentChats = chats[activeTwin?.id] || [];
 
-  // Filter twins by search text
-  const filteredTwins = twins.filter(t => 
-    t.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    t.profession.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
   return (
     <div className="h-[calc(100vh-6rem)] lg:h-[calc(100vh-4rem)] flex bg-black overflow-hidden relative">
       
@@ -237,66 +230,65 @@ export function ChatPage() {
         </div>
       )}
 
-      {/* 1. Left Twin List Panel (Search lists swapped to Left) */}
-      <div className="w-80 border-r border-zinc-900 flex flex-col bg-black shrink-0 hidden md:flex">
-        {/* Panel Header */}
-        <div className="p-4 border-b border-zinc-900 flex items-center justify-between">
-          <span className="text-lg font-heading font-black text-white uppercase tracking-wider">Chat</span>
-          <button 
-            onClick={() => alert("Group creation coming soon!")}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-900 border border-white/5 hover:border-[var(--y)] hover:text-[var(--y)] text-[10px] font-black uppercase tracking-wider transition-all cursor-pointer active:scale-95"
-          >
-            <Users className="w-3.5 h-3.5" />
-            <span>New Group</span>
-          </button>
-        </div>
-
-        {/* Search profile input */}
-        <div className="p-3 border-b border-zinc-900/50 relative">
-          <Search className="w-4 h-4 text-zinc-500 absolute left-6 top-1/2 -translate-y-1/2" />
-          <input 
-            type="text" 
-            placeholder="Search for a profile..." 
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-4 py-1.5 bg-zinc-900/40 border border-white/5 rounded-xl text-xs text-[#f5f5f5] placeholder-[#f5f5f5]/30 focus:outline-none focus:border-[var(--y)] focus:bg-zinc-900 transition-all font-body"
-          />
-        </div>
-
-        {/* Conversations list */}
-        <div className="flex-1 overflow-y-auto p-2 flex flex-col gap-1">
-          {filteredTwins.map((twin) => {
-            const isActive = twin.id === activeTwinId;
-            const messages = chats[twin.id] || [];
-            const lastMsg = messages[messages.length - 1];
-            return (
-              <button
-                key={twin.id}
-                onClick={() => setSearchParams({ twin: twin.id })}
-                className={`flex items-center gap-3 p-3 rounded-xl text-left transition-all cursor-pointer ${
-                  isActive 
-                    ? 'bg-zinc-900/60 border-l-2 border-[var(--y)]' 
-                    : 'bg-transparent border-l-2 border-transparent hover:bg-white/5'
-                }`}
+      {/* 1. Left Twin List Panel (Hidden by default, toggled via top-left chat icon) */}
+      {showChatList && (
+        <div className="w-80 border-r border-zinc-900 flex flex-col bg-black shrink-0 z-20 absolute inset-y-0 left-0 md:relative md:flex animate-in slide-in-from-left duration-300">
+          {/* Panel Header */}
+          <div className="p-4 border-b border-zinc-900 flex items-center justify-between">
+            <span className="text-lg font-heading font-black text-white uppercase tracking-wider">Chat</span>
+            <div className="flex items-center gap-2">
+              <button 
+                onClick={() => alert("Group creation coming soon!")}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-900 border border-white/5 hover:border-[var(--y)] hover:text-[var(--y)] text-[10px] font-black uppercase tracking-wider transition-all cursor-pointer active:scale-95"
               >
-                <div className="relative shrink-0">
-                  <img src={twin.avatarUrl} alt={twin.name} className="w-10 h-10 rounded-full object-cover border border-white/10" />
-                  <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 border border-black animate-pulse" />
-                </div>
-                <div className="flex-1 min-w-0 flex flex-col gap-0.5">
-                  <div className="flex justify-between items-center">
-                    <span className="font-bold text-[#f5f5f5] text-sm truncate">{twin.name}</span>
-                    <span className="text-[9px] text-white/30 font-mono shrink-0">7:53PM</span>
-                  </div>
-                  <p className="text-xs text-[#f5f5f5]/65 truncate">
-                    {lastMsg ? lastMsg.content : `${twin.profession} · ${twin.vibe}`}
-                  </p>
-                </div>
+                <Users className="w-3.5 h-3.5" />
+                <span>New Group</span>
               </button>
-            );
-          })}
+              <button 
+                onClick={() => setShowChatList(false)}
+                className="p-1.5 text-zinc-400 hover:text-white rounded-lg bg-zinc-900 border border-white/5 cursor-pointer hover:border-zinc-700 transition-colors"
+                title="Hide Chat List"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+
+          {/* Conversations list */}
+          <div className="flex-1 overflow-y-auto p-2 flex flex-col gap-1">
+            {twins.map((twin) => {
+              const isActive = twin.id === activeTwinId;
+              const messages = chats[twin.id] || [];
+              const lastMsg = messages[messages.length - 1];
+              return (
+                <button
+                  key={twin.id}
+                  onClick={() => setSearchParams({ twin: twin.id })}
+                  className={`flex items-center gap-3 p-3 rounded-xl text-left transition-all cursor-pointer ${
+                    isActive 
+                      ? 'bg-zinc-900/60 border-l-2 border-[var(--y)]' 
+                      : 'bg-transparent border-l-2 border-transparent hover:bg-white/5'
+                  }`}
+                >
+                  <div className="relative shrink-0">
+                    <img src={twin.avatarUrl} alt={twin.name} className="w-10 h-10 rounded-full object-cover border border-white/10" />
+                    <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 border border-black animate-pulse" />
+                  </div>
+                  <div className="flex-1 min-w-0 flex flex-col gap-0.5">
+                    <div className="flex justify-between items-center">
+                      <span className="font-bold text-[#f5f5f5] text-sm truncate">{twin.name}</span>
+                      <span className="text-[9px] text-white/30 font-mono shrink-0">7:53PM</span>
+                    </div>
+                    <p className="text-xs text-[#f5f5f5]/65 truncate">
+                      {lastMsg ? lastMsg.content : `${twin.profession} · ${twin.vibe}`}
+                    </p>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* 2. Middle Workspace Panel (Interactive Video Panel) */}
       <div className="flex-1 flex flex-col bg-zinc-950 relative overflow-hidden">
@@ -309,6 +301,13 @@ export function ChatPage() {
               className="md:hidden p-1 text-zinc-400 hover:text-white rounded-lg"
             >
               <ArrowLeft className="w-5 h-5" />
+            </button>
+            <button
+              onClick={() => setShowChatList(!showChatList)}
+              className={`p-2 hover:bg-zinc-900 rounded-lg transition-all cursor-pointer ${showChatList ? 'text-[var(--y)] bg-zinc-900' : 'text-zinc-400'}`}
+              title="Toggle Chat List"
+            >
+              <MessageSquare className="w-5 h-5" />
             </button>
             <span className="font-bold text-sm tracking-wide text-[#f5f5f5]">{activeTwin?.name}</span>
             <button 
@@ -557,7 +556,7 @@ export function ChatPage() {
 
       </div>
 
-      {/* 3. Right Profile Sidebar (Swapped to Right) */}
+      {/* 3. Right Profile Sidebar */}
       {showProfile && (
         <div className="w-80 border-l border-zinc-900 bg-black shrink-0 flex flex-col overflow-y-auto p-4 z-20 absolute inset-y-0 right-0 md:relative md:flex animate-in slide-in-from-right duration-300">
           

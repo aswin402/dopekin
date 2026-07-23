@@ -611,16 +611,12 @@ export function ChatPage() {
           </div>
 
           {/* Profile Image View */}
-          <div className="relative aspect-square w-full bg-zinc-950 overflow-hidden group rounded-2xl border border-white/5">
+          <div className="relative w-36 h-36 aspect-square bg-zinc-950 overflow-hidden rounded-full border border-white/10 mx-auto shrink-0 shadow-lg">
             <img 
               src={activeTwin?.avatarUrl} 
               alt={activeTwin?.name} 
-              className="w-full h-full object-cover transition-transform duration-500 hover:scale-103" 
+              className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" 
             />
-            {/* Badge Indicator */}
-            <div className="absolute top-3 right-3 bg-[var(--y)] text-black text-[9px] font-black px-2 py-0.5 rounded-md border border-black shadow-[1px_1px_0px_rgba(0,0,0,1)] uppercase tracking-wider z-10">
-              v2.0
-            </div>
           </div>
 
           {/* Twin Details info */}

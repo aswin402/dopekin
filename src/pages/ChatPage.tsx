@@ -176,6 +176,42 @@ export function ChatPage() {
     }, 1500);
   };
 
+  const handleSendVoiceNote = () => {
+    if (isLocked) return;
+
+    const userMsg: Message = {
+      id: Math.random().toString(),
+      sender: 'user',
+      content: '🎤 Voice message (0:05)',
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    };
+
+    addMessage(activeTwin.id, userMsg);
+    setIsTyping(true);
+
+    setTimeout(() => {
+      let chosenText = "I received your voice message! 🎧 That sounds wonderful. Let's keep chatting!";
+      if (activeTwin.id === 'vale') chosenText = "Listening to your voice note now... 🎵 That's a great vibe! Let me know if you want to FaceTime.";
+      if (activeTwin.id === 'serena') chosenText = "Thank you for the voice message. 🌸 Take a deep breath and connect with your inner self.";
+      if (activeTwin.id === 'cody') chosenText = "Got your audio! 🚀 Sounds like you are ready to send it. What's the next coin you are looking at?";
+
+      const aiMsg: Message = {
+        id: Math.random().toString(),
+        sender: 'ai',
+        content: chosenText,
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      };
+
+      addMessage(activeTwin.id, aiMsg);
+      setIsTyping(false);
+
+      if (isCalling) {
+        setCallSubtitle(chosenText);
+        speakAnswer(chosenText);
+      }
+    }, 1500);
+  };
+
   const formatTime = (secs: number) => {
     const mins = Math.floor(secs / 60);
     const remainingSecs = secs % 60;
@@ -338,14 +374,26 @@ export function ChatPage() {
                 onChange={(e) => setInputText(e.target.value)}
                 className="w-full bg-[#18181a] border border-white/5 rounded-full pl-5 pr-12 py-3 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-[var(--y)] transition-all font-body"
               />
-              <button 
-                type="submit" 
-                className="absolute right-2.5 p-2 rounded-full bg-[var(--y)] text-black hover:scale-105 active:scale-95 transition-all cursor-pointer flex items-center justify-center"
-              >
-                <svg className="w-3.5 h-3.5 transform rotate-45 -translate-x-[1px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
-                </svg>
-              </button>
+              {inputText.trim() === '' ? (
+                <button 
+                  type="button" 
+                  onClick={handleSendVoiceNote}
+                  className="absolute right-2.5 p-2 rounded-full bg-[var(--y)] text-black hover:scale-105 active:scale-95 transition-all cursor-pointer flex items-center justify-center"
+                  title="Send voice note"
+                >
+                  <Mic className="w-3.5 h-3.5" />
+                </button>
+              ) : (
+                <button 
+                  type="submit" 
+                  className="absolute right-2.5 p-2 rounded-full bg-[var(--y)] text-black hover:scale-105 active:scale-95 transition-all cursor-pointer flex items-center justify-center"
+                  title="Send message"
+                >
+                  <svg className="w-3.5 h-3.5 transform rotate-45 -translate-x-[1px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+                  </svg>
+                </button>
+              )}
             </div>
 
             {/* Privacy Notice */}

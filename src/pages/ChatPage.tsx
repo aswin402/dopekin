@@ -219,7 +219,7 @@ export function ChatPage() {
   const currentChats = chats[activeTwin?.id] || [];
 
   return (
-    <div className="h-[calc(100vh-6rem)] lg:h-[calc(100vh-4rem)] flex bg-black overflow-hidden relative">
+    <div className="h-[calc(100vh-8rem)] lg:h-screen flex bg-black overflow-hidden relative">
       
       {/* Login Wallet Modal Overlay */}
       {!user && (
@@ -382,16 +382,16 @@ export function ChatPage() {
           </div>
         ) : (
           /* Main Interactive Video Area */
-          <div className="flex-1 bg-zinc-950 relative flex flex-col justify-between overflow-hidden p-4">
+          <div className="flex-1 bg-zinc-950 relative flex flex-col justify-between overflow-hidden p-4 md:p-6">
             
-            {/* Centered Landscape video container */}
-            <div className="flex-1 flex items-center justify-center">
+            {/* Landscape Screen container for Desktop/Tab */}
+            <div className="flex-1 flex items-center justify-center h-full w-full">
               <div 
                 id="video-call-container"
-                className={`w-full max-w-4xl transition-all duration-300 relative overflow-hidden bg-black flex items-center justify-center border border-white/5 ${
+                className={`w-full transition-all duration-300 relative overflow-hidden bg-black flex flex-col justify-between border border-white/5 ${
                   isFullscreen 
                     ? 'fixed inset-0 max-w-none h-full w-full rounded-none border-none z-50' 
-                    : 'aspect-video rounded-2xl md:rounded-3xl shadow-2xl'
+                    : 'aspect-video max-w-[95%] xl:max-w-[90%] rounded-2xl md:rounded-3xl shadow-2xl animate-in fade-in duration-300'
                 }`}
               >
                 {/* Background image / simulated video */}
@@ -404,16 +404,16 @@ export function ChatPage() {
                       <span className="text-sm font-semibold uppercase tracking-wider">Avatar Video Disabled</span>
                     </div>
                   ) : (
-                    <div className="relative w-full h-full">
+                    <div className="relative w-full h-full flex items-center justify-center">
                       <img 
                         src={activeTwin?.avatarUrl} 
                         alt={activeTwin?.name} 
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover object-top"
                       />
                       
                       {/* Speaking indicator wave lines */}
                       {isCalling && window.speechSynthesis?.speaking && (
-                        <div className="absolute inset-x-0 bottom-6 flex justify-center z-10">
+                        <div className="absolute inset-x-0 bottom-24 flex justify-center z-10">
                           <div className="flex gap-1.5 animate-pulse bg-black/60 px-4 py-2 rounded-full border border-white/5 backdrop-blur-md">
                             <span className="w-1 bg-[var(--y)] h-4 animate-bounce" />
                             <span className="w-1 bg-[var(--y)] h-6 animate-bounce [animation-delay:-0.2s]" />
@@ -438,7 +438,7 @@ export function ChatPage() {
 
                 {/* Floating Call Subtitles / Text Speech Bubble */}
                 {isCalling && callSubtitle && (
-                  <div className="absolute bottom-6 inset-x-4 max-w-xl mx-auto z-10 animate-fade-up">
+                  <div className="absolute bottom-24 inset-x-4 max-w-xl mx-auto z-10 animate-fade-up">
                     <div className="p-3 rounded-xl bg-black/80 backdrop-blur-md border border-white/5 text-center text-xs md:text-sm text-[#f5f5f5] leading-relaxed shadow-2xl">
                       {callSubtitle}
                     </div>
@@ -453,6 +453,84 @@ export function ChatPage() {
                 >
                   {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
                 </button>
+
+                {/* Bottom Controls Bar (Nested inside the video container for layout & fullscreen support) */}
+                <div className="w-full pb-4 pt-3 px-4 flex justify-center items-center z-20 mt-auto bg-gradient-to-t from-black/80 via-black/30 to-transparent">
+                  {!isCalling ? (
+                    /* Pre-Call Setup controls */
+                    <div className="flex items-center justify-center">
+                      <button
+                        onClick={handleCallStart}
+                        className="px-8 py-3 bg-emerald-500 hover:bg-emerald-600 border border-emerald-400/20 text-white text-xs font-black uppercase tracking-wider rounded-full transition-all hover:scale-105 active:scale-95 flex items-center gap-2 cursor-pointer shadow-[0_0_20px_rgba(16,185,129,0.3)]"
+                      >
+                        <PhoneCall className="w-3.5 h-3.5 fill-current" />
+                        <span>Start video chat</span>
+                      </button>
+                    </div>
+                  ) : (
+                    /* Active Call controls */
+                    <div className="w-full max-w-xl flex justify-between items-center relative gap-4">
+                      {/* Left Counter */}
+                      <span className="font-mono text-xs font-bold text-zinc-400 bg-zinc-950/80 px-3 py-1 rounded-lg border border-white/5 select-none shrink-0">
+                        {formatTime(callTime)}
+                      </span>
+
+                      {/* Center Control Panel */}
+                      <div className="flex items-center gap-2 mx-auto">
+                        <button
+                          onClick={() => setIsMuted(!isMuted)}
+                          className={`w-9 h-9 rounded-full flex items-center justify-center border border-white/5 cursor-pointer transition-colors ${
+                            isMuted ? 'bg-red-500/85 text-white' : 'bg-zinc-900 hover:bg-zinc-800 text-zinc-300'
+                          }`}
+                          title={isMuted ? "Unmute Mic" : "Mute Mic"}
+                        >
+                          {isMuted ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
+                        </button>
+                        
+                        <button
+                          onClick={() => setIsVideoOff(!isVideoOff)}
+                          className={`w-9 h-9 rounded-full flex items-center justify-center border border-white/5 cursor-pointer transition-colors ${
+                            isVideoOff ? 'bg-red-500/85 text-white' : 'bg-zinc-900 hover:bg-zinc-800 text-zinc-300'
+                          }`}
+                          title={isVideoOff ? "Enable Video" : "Disable Video"}
+                        >
+                          {isVideoOff ? <VideoOff className="w-4 h-4" /> : <Video className="w-4 h-4" />}
+                        </button>
+
+                        <button
+                          onClick={() => setShowChatOverlay(!showChatOverlay)}
+                          className={`w-9 h-9 rounded-full flex items-center justify-center border border-white/5 cursor-pointer transition-colors ${
+                            showChatOverlay ? 'bg-[var(--y)] text-black' : 'bg-zinc-900 hover:bg-zinc-800 text-zinc-300'
+                          }`}
+                          title="Open Text Chat Panel"
+                        >
+                          <MessageSquare className="w-4 h-4" />
+                        </button>
+
+                        <button
+                          onClick={toggleFullscreen}
+                          className={`w-9 h-9 rounded-full flex items-center justify-center border border-white/5 cursor-pointer transition-colors ${
+                            isFullscreen ? 'bg-[var(--y)] text-black' : 'bg-zinc-900 hover:bg-zinc-800 text-zinc-300'
+                          }`}
+                          title={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
+                        >
+                          {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
+                        </button>
+
+                        <button
+                          onClick={handleCallEnd}
+                          className="w-10 h-10 rounded-full bg-red-600 hover:bg-red-700 text-white flex items-center justify-center transition-all hover:scale-105 active:scale-95 cursor-pointer border border-black shadow-lg"
+                          title="End Call"
+                        >
+                          <PhoneOff className="w-4.5 h-4.5" />
+                        </button>
+                      </div>
+
+                      {/* Empty right node to balance layout */}
+                      <div className="w-10 shrink-0 hidden sm:block" />
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
 
@@ -493,7 +571,7 @@ export function ChatPage() {
                     placeholder="Write a message..."
                     value={inputText}
                     onChange={(e) => setInputText(e.target.value)}
-                    className="flex-1 bg-zinc-900 border border-white/5 rounded-xl px-3 py-2 text-xs text-white focus:outline-none"
+                    className="flex-1 bg-zinc-950 border border-white/5 rounded-xl px-3 py-2 text-xs text-white focus:outline-none"
                   />
                   <button type="submit" className="px-3 bg-[var(--y)] text-black font-black text-xs uppercase rounded-xl">
                     Send
@@ -501,84 +579,6 @@ export function ChatPage() {
                 </form>
               </div>
             )}
-
-            {/* Bottom Controls Bar */}
-            <div className="w-full pb-4 pt-3 px-4 flex justify-center items-center z-20 mt-auto bg-transparent">
-              {!isCalling ? (
-                /* Pre-Call Setup controls (Avatar and Region dropdowns removed) */
-                <div className="flex items-center justify-center">
-                  <button
-                    onClick={handleCallStart}
-                    className="px-8 py-3 bg-emerald-500 hover:bg-emerald-600 border border-emerald-400/20 text-white text-xs font-black uppercase tracking-wider rounded-full transition-all hover:scale-105 active:scale-95 flex items-center gap-2 cursor-pointer shadow-[0_0_20px_rgba(16,185,129,0.3)]"
-                  >
-                    <PhoneCall className="w-3.5 h-3.5 fill-current" />
-                    <span>Start video chat</span>
-                  </button>
-                </div>
-              ) : (
-                /* Active Call controls (Avatars dropdown removed, fullscreen added) */
-                <div className="w-full max-w-xl flex justify-between items-center relative gap-4">
-                  {/* Left Counter */}
-                  <span className="font-mono text-xs font-bold text-zinc-400 bg-zinc-950/80 px-3 py-1 rounded-lg border border-white/5 select-none shrink-0">
-                    {formatTime(callTime)}
-                  </span>
-
-                  {/* Center Control Panel */}
-                  <div className="flex items-center gap-2 mx-auto">
-                    <button
-                      onClick={() => setIsMuted(!isMuted)}
-                      className={`w-9 h-9 rounded-full flex items-center justify-center border border-white/5 cursor-pointer transition-colors ${
-                        isMuted ? 'bg-red-500/85 text-white' : 'bg-zinc-900 hover:bg-zinc-800 text-zinc-300'
-                      }`}
-                      title={isMuted ? "Unmute Mic" : "Mute Mic"}
-                    >
-                      {isMuted ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
-                    </button>
-                    
-                    <button
-                      onClick={() => setIsVideoOff(!isVideoOff)}
-                      className={`w-9 h-9 rounded-full flex items-center justify-center border border-white/5 cursor-pointer transition-colors ${
-                        isVideoOff ? 'bg-red-500/85 text-white' : 'bg-zinc-900 hover:bg-zinc-800 text-zinc-300'
-                      }`}
-                      title={isVideoOff ? "Enable Video" : "Disable Video"}
-                    >
-                      {isVideoOff ? <VideoOff className="w-4 h-4" /> : <Video className="w-4 h-4" />}
-                    </button>
-
-                    <button
-                      onClick={() => setShowChatOverlay(!showChatOverlay)}
-                      className={`w-9 h-9 rounded-full flex items-center justify-center border border-white/5 cursor-pointer transition-colors ${
-                        showChatOverlay ? 'bg-[var(--y)] text-black' : 'bg-zinc-900 hover:bg-zinc-800 text-zinc-300'
-                      }`}
-                      title="Open Text Chat Panel"
-                    >
-                      <MessageSquare className="w-4 h-4" />
-                    </button>
-
-                    <button
-                      onClick={toggleFullscreen}
-                      className={`w-9 h-9 rounded-full flex items-center justify-center border border-white/5 cursor-pointer transition-colors ${
-                        isFullscreen ? 'bg-[var(--y)] text-black' : 'bg-zinc-900 hover:bg-zinc-800 text-zinc-300'
-                      }`}
-                      title={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
-                    >
-                      {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
-                    </button>
-
-                    <button
-                      onClick={handleCallEnd}
-                      className="w-10 h-10 rounded-full bg-red-600 hover:bg-red-700 text-white flex items-center justify-center transition-all hover:scale-105 active:scale-95 cursor-pointer border border-black shadow-lg"
-                      title="End Call"
-                    >
-                      <PhoneOff className="w-4.5 h-4.5" />
-                    </button>
-                  </div>
-
-                  {/* Empty right node to balance layout */}
-                  <div className="w-10 shrink-0 hidden sm:block" />
-                </div>
-              )}
-            </div>
           </div>
         )}
 

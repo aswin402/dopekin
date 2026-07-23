@@ -436,7 +436,7 @@ export function ChatPage() {
                 className={`w-full transition-all duration-300 relative overflow-hidden bg-black flex flex-col justify-between border border-white/5 ${
                   isFullscreen 
                     ? 'fixed inset-0 max-w-none h-full w-full rounded-none border-none z-50' 
-                    : 'aspect-[3/4] sm:aspect-video max-w-[95%] xl:max-w-[90%] rounded-2xl md:rounded-3xl shadow-2xl animate-in fade-in duration-300'
+                    : 'aspect-[3/4] sm:aspect-video max-w-[95%] sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-4xl rounded-2xl md:rounded-3xl shadow-2xl animate-in fade-in duration-300'
                 }`}
               >
                 {/* Background image / simulated video */}

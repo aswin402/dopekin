@@ -3,10 +3,9 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useAppStore } from '../store/useAppStore';
 import type { Message } from '../types/twin';
 import { 
-  Send, PhoneCall, PhoneOff, Mic, MicOff, Video, VideoOff, 
-  Trash2, ArrowLeft, ShieldAlert, Sparkles, ChevronLeft, ChevronRight,
-  PanelLeft, Search, Users, Settings, Image as ImageIcon, Clapperboard,
-  X, Wallet
+  PhoneCall, PhoneOff, Mic, MicOff, Video, VideoOff, 
+  ArrowLeft, ShieldAlert, Sparkles, ChevronLeft, ChevronRight,
+  PanelLeft, Search, Users, X, Wallet, ChevronDown, HelpCircle, MessageSquare
 } from 'lucide-react';
 
 const InstagramIcon = (props: React.SVGProps<SVGSVGElement>) => (
@@ -23,19 +22,12 @@ const TiktokIcon = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-const AudioWavesIcon = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round" {...props}>
-    <path d="M3 10v4M6 6v12M9 3v18M12 7v10M15 5v14M18 8v8M21 11v2" />
-  </svg>
-);
-
 export function ChatPage() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const twins = useAppStore((state) => state.twins);
   const chats = useAppStore((state) => state.chats);
   const addMessage = useAppStore((state) => state.addMessage);
-  const clearChat = useAppStore((state) => state.clearChat);
   const subscribedTwinIds = useAppStore((state) => state.subscribedTwinIds);
   const subscribeToTwin = useAppStore((state) => state.subscribeToTwin);
   const user = useAppStore((state) => state.user);
@@ -49,6 +41,7 @@ export function ChatPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [showProfile, setShowProfile] = useState(true);
   const [carouselIndex, setCarouselIndex] = useState(0);
+  const [showChatOverlay, setShowChatOverlay] = useState(false);
   
   // Call states
   const [isCalling, setIsCalling] = useState(searchParams.get('call') === 'true');
@@ -199,11 +192,6 @@ export function ChatPage() {
     setIsCalling(false);
   };
 
-  const handleClear = () => {
-    if (confirm("Are you sure you want to clear chat history with this twin?")) {
-      clearChat(activeTwin.id);
-    }
-  };
 
   const currentChats = chats[activeTwin?.id] || [];
 
@@ -249,7 +237,7 @@ export function ChatPage() {
         </div>
       )}
 
-      {/* 1. Left Profile Sidebar (Swapped to Left) */}
+      {/* 1. Left Profile Sidebar */}
       {showProfile && (
         <div className="w-80 border-r border-zinc-900 bg-black shrink-0 flex flex-col overflow-y-auto p-4 z-20 absolute inset-y-0 left-0 md:relative md:flex animate-in slide-in-from-left duration-300">
           
@@ -349,7 +337,7 @@ export function ChatPage() {
             </div>
           </div>
 
-          {/* Dynamic Sleek About Me List (Replaces bulky box cards) */}
+          {/* Dynamic Sleek About Me List */}
           <div className="border-t border-zinc-900 pt-5 mt-5 flex flex-col gap-4 text-left">
             <h4 className="text-xs font-mono font-black uppercase text-zinc-500 tracking-wider">
               About me:
@@ -377,50 +365,38 @@ export function ChatPage() {
         </div>
       )}
 
-      {/* 2. Middle Workspace Panel */}
-      <div className="flex-1 flex flex-col bg-zinc-950 relative">
+      {/* 2. Middle Workspace Panel (Interactive Video Feed Layout) */}
+      <div className="flex-1 flex flex-col bg-zinc-950 relative overflow-hidden">
         
-        {/* Chat Header */}
-        <div className="h-14 border-b border-zinc-900 px-4 flex items-center justify-between bg-black shrink-0 z-10">
-          <div className="flex items-center gap-3 min-w-0">
-            {/* Mobile back trigger */}
+        {/* Header (Inspired by Image 2 & 3) */}
+        <div className="h-14 border-b border-zinc-900 px-4 flex items-center justify-between bg-black shrink-0 z-10 font-body">
+          <div className="flex items-center gap-2 text-white">
             <button 
               onClick={() => navigate('/explore')} 
-              className="md:hidden p-1 text-[#f5f5f5]/70 hover:text-white rounded-lg"
+              className="md:hidden p-1 text-zinc-400 hover:text-white rounded-lg"
             >
               <ArrowLeft className="w-5 h-5" />
             </button>
-            <img src={activeTwin?.avatarUrl} alt={activeTwin?.name} className="w-9 h-9 rounded-full object-cover border border-white/10" />
-            <div className="min-w-0 flex flex-col">
-              <span className="font-bold text-sm truncate text-[#f5f5f5]">{activeTwin?.name}</span>
-            </div>
+            <span className="font-bold text-sm tracking-wide text-[#f5f5f5]">{activeTwin?.name}</span>
+            <button 
+              onClick={() => alert(`Twin Details: ${activeTwin?.bio}`)}
+              className="p-1 text-zinc-500 hover:text-zinc-300 transition-colors"
+            >
+              <HelpCircle className="w-3.5 h-3.5" />
+            </button>
           </div>
 
-          <div className="flex items-center gap-4 shrink-0 text-zinc-400">
+          <div className="flex items-center gap-3">
             <button
-              onClick={() => alert("Stream simulation starting soon!")}
-              className="hover:text-white transition-colors cursor-pointer"
-              title="Stream Video"
+              onClick={() => alert("Creating custom avatar stream...")}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-zinc-900 hover:bg-zinc-800 text-zinc-300 text-[10px] font-extrabold uppercase border border-white/5 transition-all cursor-pointer shadow-md"
             >
-              <Clapperboard className="w-5 h-5" />
-            </button>
-            <button
-              onClick={handleCallStart}
-              className="hover:text-[var(--y)] hover:scale-105 transition-all cursor-pointer"
-              title="FaceTime Call"
-            >
-              <PhoneCall className="w-5 h-5 text-[var(--y)]" />
-            </button>
-            <button
-              onClick={handleClear}
-              className="hover:text-red-500 transition-colors cursor-pointer"
-              title="Clear chat history"
-            >
-              <Trash2 className="w-5 h-5" />
+              <Sparkles className="w-3.5 h-3.5 text-[var(--y)]" />
+              <span>Create interactive AI avatar</span>
             </button>
             <button
               onClick={() => setShowProfile(!showProfile)}
-              className={`hover:text-white transition-colors cursor-pointer ${showProfile ? 'text-[var(--y)]' : 'text-zinc-400'}`}
+              className={`p-2 hover:bg-zinc-900 rounded-lg transition-colors cursor-pointer ${showProfile ? 'text-[var(--y)]' : 'text-zinc-400'}`}
               title="Toggle Profile Sidebar"
             >
               <PanelLeft className="w-5 h-5" />
@@ -428,9 +404,9 @@ export function ChatPage() {
           </div>
         </div>
 
-        {/* Message feed / Locked paywall */}
+        {/* Locked paywall overlay */}
         {isLocked ? (
-          <div className="flex-1 flex items-center justify-center p-6 bg-black">
+          <div className="flex-1 flex items-center justify-center p-6 bg-black z-10 animate-fade-in">
             <div className="max-w-md w-full p-8 rounded-3xl bg-zinc-950 border border-white/5 text-center flex flex-col items-center gap-6 shadow-2xl relative overflow-hidden">
               <div className="absolute top-0 inset-x-0 h-1.5 bg-[var(--y)]" />
               <div className="w-14 h-14 rounded-full bg-yellow-500/10 border border-yellow-500/20 flex items-center justify-center text-[var(--y)] mb-2">
@@ -455,145 +431,34 @@ export function ChatPage() {
             </div>
           </div>
         ) : (
-          <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
-            {currentChats.length > 0 ? (
-              currentChats.map((msg) => {
-                const isUser = msg.sender === 'user';
-                return (
-                  <div 
-                    key={msg.id}
-                    className={`flex flex-col max-w-[75%] gap-1 ${
-                      isUser ? 'self-end items-end' : 'self-start items-start'
-                    }`}
-                  >
-                    <div 
-                      className={`px-4 py-2.5 text-sm leading-relaxed ${
-                        isUser 
-                          ? 'bg-[var(--y)] text-[var(--blk)] font-semibold rounded-[16px_16px_4px_16px]'
-                          : 'bg-zinc-900/90 text-[#f5f5f5] rounded-[16px_16px_16px_4px] border border-white/5'
-                      }`}
-                    >
-                      {msg.content}
-                    </div>
-                    
-                    {/* Timestamp with Audio waveform lines for Twin messages */}
-                    <div className="flex items-center gap-1.5 mt-0.5 px-1">
-                      {!isUser && <AudioWavesIcon className="text-[var(--y)] w-3.5 h-3.5 shrink-0" />}
-                      <span className="text-[9px] text-[#f5f5f5]/30 font-mono">{msg.timestamp}</span>
-                    </div>
-                  </div>
-                );
-              })
-            ) : (
-              <div className="flex-1 flex flex-col items-center justify-center gap-4 text-center opacity-40">
-                <Sparkles className="w-10 h-10 text-[var(--y)]" />
-                <h3 className="font-bold text-sm">Beginning of communication</h3>
-                <p className="text-xs max-w-xs">Send a text message or launch a FaceTime call to train the avatar.</p>
-              </div>
-            )}
-
-            {isTyping && (
-              <div className="self-start flex flex-col gap-1 items-start max-w-[70%]">
-                <div className="bg-zinc-900 border border-white/5 px-4 py-3 rounded-[16px_16px_16px_4px] flex items-center gap-1">
-                  <div className="w-2 h-2 rounded-full bg-[var(--y)] animate-bounce [animation-delay:-0.3s]" />
-                  <div className="w-2 h-2 rounded-full bg-[var(--y)] animate-bounce [animation-delay:-0.15s]" />
-                  <div className="w-2 h-2 rounded-full bg-[var(--y)] animate-bounce" />
-                </div>
-              </div>
-            )}
-            
-            <div ref={messagesEndRef} />
-          </div>
-        )}
-
-        {/* Flat simple Input Bar */}
-        {!isLocked && (
-          <form onSubmit={handleSendMessage} className="p-3 bg-black border-t border-zinc-900 flex items-center gap-3 shrink-0">
-            <div className="flex items-center gap-1.5 text-zinc-400">
-              <button
-                type="button"
-                onClick={() => setInputText("Generate an image of you right now!")}
-                className="p-2 hover:text-[var(--y)] hover:bg-zinc-900/60 rounded-lg transition-colors cursor-pointer"
-                title="Generate Image"
-              >
-                <ImageIcon className="w-4.5 h-4.5" />
-              </button>
-              <button
-                type="button"
-                onClick={() => setInputText("Show me a short video clip!")}
-                className="p-2 hover:text-[var(--y)] hover:bg-zinc-900/60 rounded-lg transition-colors cursor-pointer"
-                title="Show Video Clip"
-              >
-                <Video className="w-4.5 h-4.5" />
-              </button>
-              <button
-                type="button"
-                onClick={() => alert("Opening settings...")}
-                className="p-2 hover:text-white hover:bg-zinc-900/60 rounded-lg transition-colors cursor-pointer"
-                title="Settings"
-              >
-                <Settings className="w-4.5 h-4.5" />
-              </button>
-            </div>
-
-            <input
-              type="text"
-              placeholder="Write a message..."
-              value={inputText}
-              onChange={(e) => setInputText(e.target.value)}
-              className="flex-1 bg-zinc-900/60 border border-white/5 rounded-xl px-4 py-2 text-sm text-[#f5f5f5] placeholder-zinc-500 focus:outline-none focus:border-zinc-800 transition-colors font-body"
-            />
-
-            <button
-              type="submit"
-              disabled={!inputText.trim()}
-              className="w-9 h-9 rounded-xl bg-[var(--y)] text-black flex items-center justify-center hover:scale-105 active:scale-95 disabled:opacity-40 disabled:scale-100 disabled:cursor-not-allowed transition-all cursor-pointer shrink-0"
-            >
-              <Send className="w-4 h-4" />
-            </button>
-          </form>
-        )}
-
-        {/* 3. FaceTime Video Overlay (Triggered by isCalling && !isLocked) */}
-        {isCalling && !isLocked && user && (
-          <div className="absolute inset-0 bg-black z-50 flex flex-col justify-between p-6 animate-zoom-in">
-            {/* Header info */}
-            <div className="flex justify-between items-center z-10">
-              <div className="flex items-center gap-3">
-                <img src={activeTwin?.avatarUrl} alt={activeTwin?.name} className="w-11 h-11 rounded-full object-cover border border-white/20" />
-                <div className="flex flex-col">
-                  <h3 className="text-[#f5f5f5] font-heading font-black uppercase text-base">{activeTwin?.name}</h3>
-                  <span className="text-[10px] text-white/50 tracking-widest font-mono">FACETIME CONNECTED</span>
-                </div>
-              </div>
-              <div className="px-3 py-1 bg-black/60 backdrop-blur-md rounded-lg font-mono text-xs font-semibold text-[var(--y)] border border-[var(--y)]/20 shadow-lg">
-                {formatTime(callTime)}
-              </div>
-            </div>
-
-            {/* Main Video feed Area */}
-            <div className="absolute inset-0 flex items-center justify-center select-none overflow-hidden bg-zinc-950">
+          /* Main Interactive Video Area */
+          <div className="flex-1 bg-zinc-950 relative flex flex-col justify-between overflow-hidden">
+            {/* Background image / simulated video */}
+            <div className="absolute inset-0 select-none overflow-hidden bg-zinc-950 flex items-center justify-center">
               <div className="absolute inset-0 bg-radial-gradient(var(--y)/5% 50% 50% 50%) opacity-30 pointer-events-none" />
-              {isVideoOff ? (
+              
+              {isVideoOff && isCalling ? (
                 <div className="flex flex-col items-center gap-4 text-[#f5f5f5]/30">
-                  <VideoOff className="w-16 h-16" />
+                  <VideoOff className="w-16 h-16 animate-pulse" />
                   <span className="text-sm font-semibold uppercase tracking-wider">Avatar Video Disabled</span>
                 </div>
               ) : (
-                <div className="relative w-full h-full flex items-center justify-center">
+                <div className="relative w-full h-full">
                   <img 
                     src={activeTwin?.avatarUrl} 
-                    alt="Active Video" 
-                    className="w-full h-full object-cover max-w-3xl"
+                    alt={activeTwin?.name} 
+                    className="w-full h-full object-cover"
                   />
-                  {window.speechSynthesis?.speaking && (
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-center justify-center">
-                      <div className="flex gap-1.5 mt-auto mb-20 animate-pulse">
-                        <span className="w-1 bg-[var(--y)] h-6 animate-bounce" />
-                        <span className="w-1 bg-[var(--y)] h-10 animate-bounce [animation-delay:-0.2s]" />
-                        <span className="w-1 bg-[var(--y)] h-8 animate-bounce [animation-delay:-0.4s]" />
-                        <span className="w-1 bg-[var(--y)] h-12 animate-bounce [animation-delay:-0.1s]" />
-                        <span className="w-1 bg-[var(--y)] h-6 animate-bounce" />
+                  
+                  {/* Speaking indicator wave lines */}
+                  {isCalling && window.speechSynthesis?.speaking && (
+                    <div className="absolute inset-x-0 bottom-24 flex justify-center z-10">
+                      <div className="flex gap-1.5 animate-pulse bg-black/60 px-4 py-2.5 rounded-full border border-white/5 backdrop-blur-md">
+                        <span className="w-1 bg-[var(--y)] h-5 animate-bounce" />
+                        <span className="w-1 bg-[var(--y)] h-8 animate-bounce [animation-delay:-0.2s]" />
+                        <span className="w-1 bg-[var(--y)] h-6 animate-bounce [animation-delay:-0.4s]" />
+                        <span className="w-1 bg-[var(--y)] h-9 animate-bounce [animation-delay:-0.1s]" />
+                        <span className="w-1 bg-[var(--y)] h-5 animate-bounce" />
                       </div>
                     </div>
                   )}
@@ -601,59 +466,165 @@ export function ChatPage() {
               )}
             </div>
 
-            {/* Subtitle / spoken text bar */}
-            {callSubtitle && (
-              <div className="w-full max-w-2xl mx-auto p-4 rounded-xl bg-black/75 backdrop-blur-md border border-white/10 text-center text-xs md:text-sm text-[#f5f5f5] z-10 leading-relaxed font-body shadow-2xl">
-                {callSubtitle}
+            {/* Quality/Latency Notification (Image 3) */}
+            {isCalling && (
+              <div className="absolute top-4 inset-x-0 flex justify-center z-10">
+                <span className="px-3.5 py-1.5 bg-black/75 border border-white/10 rounded-full text-[10px] font-mono text-zinc-300 font-bold uppercase tracking-wider shadow-lg select-none animate-fade-in">
+                  Network unstable, quality auto-lowered
+                </span>
               </div>
             )}
 
-            {/* Controls panel */}
-            <div className="flex justify-center items-center gap-4 z-10">
-              <button
-                onClick={() => setIsMuted(!isMuted)}
-                className={`w-12 h-12 rounded-full flex items-center justify-center transition-all border border-white/15 cursor-pointer ${
-                  isMuted ? 'bg-red-500/85 text-white' : 'bg-black/60 hover:bg-black/80 text-[#f5f5f5]'
-                }`}
-                title={isMuted ? "Unmute Mic" : "Mute Mic"}
-              >
-                {isMuted ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
-              </button>
-
-              <button
-                onClick={handleCallEnd}
-                className="w-14 h-14 rounded-full bg-red-600 hover:bg-red-700 text-white flex items-center justify-center shadow-2xl transition-transform hover:scale-105 active:scale-95 cursor-pointer border-2 border-black"
-                title="End Call"
-              >
-                <PhoneOff className="w-6 h-6" />
-              </button>
-
-              <button
-                onClick={() => setIsVideoOff(!isVideoOff)}
-                className={`w-12 h-12 rounded-full flex items-center justify-center transition-all border border-white/15 cursor-pointer ${
-                  isVideoOff ? 'bg-red-500/85 text-white' : 'bg-black/60 hover:bg-black/80 text-[#f5f5f5]'
-                }`}
-                title={isVideoOff ? "Enable Video" : "Disable Video"}
-              >
-                {isVideoOff ? <VideoOff className="w-5 h-5" /> : <Video className="w-5 h-5" />}
-              </button>
-            </div>
-
-            {/* Small User Webcam PiP */}
-            {!isMuted && (
-              <div className="absolute bottom-6 right-6 w-24 h-32 bg-zinc-900 border-2 border-[var(--y)] rounded-xl overflow-hidden shadow-2xl hidden sm:block">
-                <div className="absolute inset-0 bg-radial-gradient(var(--y)/5% 50% 50% 50%) opacity-30 pointer-events-none" />
-                <div className="w-full h-full flex items-center justify-center text-[10px] text-white/40 uppercase font-mono font-semibold">
-                  You
+            {/* Floating Call Subtitles / Text Speech Bubble */}
+            {isCalling && callSubtitle && (
+              <div className="absolute bottom-28 inset-x-4 max-w-xl mx-auto z-10 animate-fade-up">
+                <div className="p-4 rounded-2xl bg-black/80 backdrop-blur-md border border-white/5 text-center text-xs md:text-sm text-[#f5f5f5] leading-relaxed shadow-2xl">
+                  {callSubtitle}
                 </div>
               </div>
             )}
+
+            {/* Floating Message Input Overlay (Toggled by the Chat control button) */}
+            {showChatOverlay && (
+              <div className="absolute inset-x-4 top-16 bottom-28 bg-black/80 backdrop-blur-md rounded-2xl border border-white/10 p-4 z-30 flex flex-col justify-between shadow-2xl animate-in fade-in duration-200">
+                {/* Header */}
+                <div className="flex justify-between items-center border-b border-white/5 pb-2 mb-3">
+                  <span className="text-xs font-mono font-bold text-zinc-400 uppercase">Text Chat Session</span>
+                  <button 
+                    onClick={() => setShowChatOverlay(false)} 
+                    className="p-1 hover:bg-zinc-800 rounded text-zinc-400 hover:text-white"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+
+                {/* Message logs */}
+                <div className="flex-1 overflow-y-auto pr-1 flex flex-col gap-3 scrollbar-none mb-3">
+                  {currentChats.map((msg) => {
+                    const isUser = msg.sender === 'user';
+                    return (
+                      <div key={msg.id} className={`flex flex-col max-w-[85%] gap-0.5 ${isUser ? 'self-end items-end' : 'self-start items-start'}`}>
+                        <div className={`px-3 py-2 text-xs rounded-xl ${isUser ? 'bg-[var(--y)] text-black font-semibold' : 'bg-zinc-900 text-white border border-white/5'}`}>
+                          {msg.content}
+                        </div>
+                        <span className="text-[8px] text-white/30 font-mono mt-0.5">{msg.timestamp}</span>
+                      </div>
+                    );
+                  })}
+                  <div ref={messagesEndRef} />
+                </div>
+
+                {/* Simple input field */}
+                <form onSubmit={handleSendMessage} className="flex gap-2">
+                  <input
+                    type="text"
+                    placeholder="Write a message..."
+                    value={inputText}
+                    onChange={(e) => setInputText(e.target.value)}
+                    className="flex-1 bg-zinc-900 border border-white/5 rounded-xl px-3 py-2 text-xs text-white focus:outline-none"
+                  />
+                  <button type="submit" className="px-3 bg-[var(--y)] text-black font-black text-xs uppercase rounded-xl">
+                    Send
+                  </button>
+                </form>
+              </div>
+            )}
+
+            {/* Bottom Controls Bar (Switches based on call connection state) */}
+            <div className="w-full pb-6 pt-3 px-4 flex justify-center items-center z-20 mt-auto bg-gradient-to-t from-black via-black/80 to-transparent">
+              {!isCalling ? (
+                /* Pre-Call Setup controls (Image 2) */
+                <div className="flex items-center gap-3">
+                  <button 
+                    onClick={() => alert("Selecting custom avatars...")}
+                    className="px-4 py-2 bg-zinc-900/80 hover:bg-zinc-800 border border-white/5 hover:border-zinc-700 text-zinc-300 text-xs font-bold rounded-full transition-all cursor-pointer flex items-center gap-1"
+                  >
+                    <span>Avatars</span>
+                    <ChevronDown className="w-3.5 h-3.5 opacity-60" />
+                  </button>
+                  <button 
+                    onClick={() => alert("Selecting regions...")}
+                    className="px-4 py-2 bg-zinc-900/80 hover:bg-zinc-800 border border-white/5 hover:border-zinc-700 text-zinc-300 text-xs font-bold rounded-full transition-all cursor-pointer flex items-center gap-1.5"
+                  >
+                    <span className="text-xs">🇺🇸</span>
+                    <ChevronDown className="w-3.5 h-3.5 opacity-60" />
+                  </button>
+                  <button
+                    onClick={handleCallStart}
+                    className="px-6 py-2 bg-emerald-500 hover:bg-emerald-600 border border-emerald-400/20 text-white text-xs font-black uppercase tracking-wider rounded-full transition-all hover:scale-105 active:scale-95 flex items-center gap-2 cursor-pointer shadow-[0_0_20px_rgba(16,185,129,0.3)]"
+                  >
+                    <PhoneCall className="w-3.5 h-3.5 fill-current" />
+                    <span>Start video chat</span>
+                  </button>
+                </div>
+              ) : (
+                /* Active Call controls (Image 3) */
+                <div className="w-full max-w-xl flex justify-between items-center relative gap-4">
+                  {/* Left Counter */}
+                  <span className="font-mono text-xs font-bold text-zinc-400 bg-zinc-950/80 px-3 py-1 rounded-lg border border-white/5 select-none shrink-0">
+                    {formatTime(callTime)}
+                  </span>
+
+                  {/* Center Control Panel */}
+                  <div className="flex items-center gap-2 mx-auto font-body">
+                    <button
+                      onClick={() => setIsMuted(!isMuted)}
+                      className={`w-9 h-9 rounded-full flex items-center justify-center border border-white/5 cursor-pointer transition-colors ${
+                        isMuted ? 'bg-red-500/85 text-white' : 'bg-zinc-900 hover:bg-zinc-800 text-zinc-300'
+                      }`}
+                      title={isMuted ? "Unmute Mic" : "Mute Mic"}
+                    >
+                      {isMuted ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
+                    </button>
+                    
+                    <button
+                      onClick={() => setIsVideoOff(!isVideoOff)}
+                      className={`w-9 h-9 rounded-full flex items-center justify-center border border-white/5 cursor-pointer transition-colors ${
+                        isVideoOff ? 'bg-red-500/85 text-white' : 'bg-zinc-900 hover:bg-zinc-800 text-zinc-300'
+                      }`}
+                      title={isVideoOff ? "Enable Video" : "Disable Video"}
+                    >
+                      {isVideoOff ? <VideoOff className="w-4 h-4" /> : <Video className="w-4 h-4" />}
+                    </button>
+
+                    <button 
+                      onClick={() => alert("Selecting avatars during call...")}
+                      className="px-3.5 py-2 bg-zinc-900 hover:bg-zinc-800 border border-white/5 text-zinc-300 text-xs font-bold rounded-full transition-all cursor-pointer flex items-center gap-1"
+                    >
+                      <span>Avatars</span>
+                      <ChevronDown className="w-3 h-3 opacity-60" />
+                    </button>
+
+                    <button
+                      onClick={() => setShowChatOverlay(!showChatOverlay)}
+                      className={`w-9 h-9 rounded-full flex items-center justify-center border border-white/5 cursor-pointer transition-colors ${
+                        showChatOverlay ? 'bg-[var(--y)] text-black' : 'bg-zinc-900 hover:bg-zinc-800 text-zinc-300'
+                      }`}
+                      title="Open Text Chat Panel"
+                    >
+                      <MessageSquare className="w-4 h-4" />
+                    </button>
+
+                    <button
+                      onClick={handleCallEnd}
+                      className="w-10 h-10 rounded-full bg-red-600 hover:bg-red-700 text-white flex items-center justify-center transition-all hover:scale-105 active:scale-95 cursor-pointer border border-black shadow-lg"
+                      title="End Call"
+                    >
+                      <PhoneOff className="w-4.5 h-4.5" />
+                    </button>
+                  </div>
+
+                  {/* Empty right node to balance layout */}
+                  <div className="w-10 shrink-0 hidden sm:block" />
+                </div>
+              )}
+            </div>
           </div>
         )}
 
       </div>
 
-      {/* 3. Right Twin List Panel (Swapped to Right) */}
+      {/* 3. Right Twin List Panel */}
       <div className="w-80 border-l border-zinc-900 flex flex-col bg-black shrink-0 hidden md:flex">
         {/* Panel Header */}
         <div className="p-4 border-b border-zinc-900 flex items-center justify-between">

@@ -13,7 +13,7 @@ export function RootLayout() {
   const mobileLinks = [
     { to: '/', label: 'Home', icon: Home },
     { to: '/explore', label: 'Explore', icon: Compass },
-    { to: '/chat', label: 'FaceTime Call', icon: MessageSquare },
+    { to: '/chat', label: 'Chat', icon: MessageSquare },
     { to: '/create', label: 'Create Twin', icon: Plus },
     { to: '/feed', label: 'Feed', icon: Rss },
   ];

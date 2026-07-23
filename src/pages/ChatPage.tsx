@@ -4,8 +4,30 @@ import { useAppStore } from '../store/useAppStore';
 import type { Message } from '../types/twin';
 import { 
   Send, PhoneCall, PhoneOff, Mic, MicOff, Video, VideoOff, 
-  Trash2, ArrowLeft, ShieldAlert, Sparkles 
+  Trash2, ArrowLeft, ShieldAlert, Sparkles, ChevronLeft, ChevronRight,
+  PanelRight, Search, Users, Settings, Image as ImageIcon, Clapperboard,
+  X, Wallet
 } from 'lucide-react';
+
+const InstagramIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+  </svg>
+);
+
+const TiktokIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" />
+  </svg>
+);
+
+const AudioWavesIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M3 10v4M6 6v12M9 3v18M12 7v10M15 5v14M18 8v8M21 11v2" />
+  </svg>
+);
 
 export function ChatPage() {
   const navigate = useNavigate();
@@ -16,12 +38,17 @@ export function ChatPage() {
   const clearChat = useAppStore((state) => state.clearChat);
   const subscribedTwinIds = useAppStore((state) => state.subscribedTwinIds);
   const subscribeToTwin = useAppStore((state) => state.subscribeToTwin);
+  const user = useAppStore((state) => state.user);
+  const setUser = useAppStore((state) => state.setUser);
 
   const activeTwinId = searchParams.get('twin') || twins[0]?.id;
   const activeTwin = twins.find((t) => t.id === activeTwinId) || twins[0];
 
   const [inputText, setInputText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showProfile, setShowProfile] = useState(true);
+  const [carouselIndex, setCarouselIndex] = useState(0);
   
   // Call states
   const [isCalling, setIsCalling] = useState(searchParams.get('call') === 'true');
@@ -73,16 +100,19 @@ export function ChatPage() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [chats, activeTwinId, isTyping]);
 
+  // Reset carousel index when changing active twin
+  useEffect(() => {
+    setCarouselIndex(0);
+  }, [activeTwinId]);
+
   // Voice synthesis helper
   const speakAnswer = (text: string) => {
     if ('speechSynthesis' in window) {
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
       
-      // Select voice based on activeTwin gender/vibe (mocked by picking first match)
       const voices = window.speechSynthesis.getVoices();
       if (voices.length > 0) {
-        // Try to pick a high quality female/male voice based on twin characteristics
         const femaleKeywords = ['female', 'google us english', 'samantha', 'zira', 'karen'];
         const maleKeywords = ['male', 'daniel', 'david', 'google uk english male'];
         
@@ -95,7 +125,7 @@ export function ChatPage() {
         if (matchedVoice) utterance.voice = matchedVoice;
       }
 
-      utterance.rate = 0.95; // slightly slower for better synth realism
+      utterance.rate = 0.95;
       window.speechSynthesis.speak(utterance);
     }
   };
@@ -115,7 +145,6 @@ export function ChatPage() {
     setInputText('');
     setIsTyping(true);
 
-    // Simulate AI response delay
     setTimeout(() => {
       const responses = [
         "Hey! That is actually crazy you mention that. Tell me more!",
@@ -126,7 +155,6 @@ export function ChatPage() {
         "I love talking with you. You always bring such a great energy."
       ];
       
-      // Select specific responses for specific vibes
       let chosenText = responses[Math.floor(Math.random() * responses.length)];
       if (activeTwin.id === 'vale') chosenText = "I've been working on some new music tracks in the studio today. Let me know what you think!";
       if (activeTwin.id === 'serena') chosenText = "Wellness starts from within. Remember to take a deep breath today and release any tension.";
@@ -179,16 +207,77 @@ export function ChatPage() {
 
   const currentChats = chats[activeTwin?.id] || [];
 
+  // Filter twins by search text
+  const filteredTwins = twins.filter(t => 
+    t.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    t.profession.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
-    <div className="h-[calc(100vh-8rem)] flex border border-[var(--border)] rounded-2xl bg-black overflow-hidden animate-fade-up">
+    <div className="h-[calc(100vh-6rem)] lg:h-[calc(100vh-4rem)] flex border border-[var(--border)] rounded-2xl bg-black overflow-hidden animate-fade-up relative">
       
+      {/* Login Wallet Modal Overlay */}
+      {!user && (
+        <div className="absolute inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4">
+          <div className="max-w-md w-full p-8 md:p-10 rounded-[32px] bg-zinc-950 border border-white/10 flex flex-col items-center text-center gap-6 shadow-[0_0_50px_rgba(255,231,1,0.15)] animate-in zoom-in-95 duration-200">
+            {/* Logo Badge */}
+            <div className="w-16 h-16 rounded-full bg-black border border-[var(--y)] flex items-center justify-center shadow-[0_0_15px_rgba(255,231,1,0.2)]">
+              <span className="font-heading font-black text-2xl text-[var(--y)]">W</span>
+            </div>
+
+            {/* Content */}
+            <div className="flex flex-col gap-2.5">
+              <h3 className="text-xl md:text-2xl font-heading font-black uppercase text-white tracking-tight">
+                Connect Your Wallet
+              </h3>
+              <p className="text-xs md:text-sm text-zinc-400 font-body leading-relaxed max-w-xs mx-auto">
+                Connect your AppKit wallet to DopaMint to continue and check your reward eligibility.
+              </p>
+            </div>
+
+            {/* Connect button */}
+            <button
+              onClick={() => {
+                setUser({ name: 'Aswin Dope', email: 'aswin@celestialabs.com' });
+              }}
+              className="mt-2 w-full py-3.5 px-6 rounded-2xl bg-[var(--y)] text-black font-extrabold uppercase text-xs md:text-sm tracking-wider shadow-[3px_3px_0px_rgba(0,0,0,1)] border-2 border-black hover:translate-y-[-2px] hover:shadow-[5px_5px_0px_rgba(0,0,0,1)] active:translate-y-[1px] active:shadow-[1px_1px_0px_rgba(0,0,0,1)] transition-all cursor-pointer flex items-center justify-center gap-2"
+            >
+              <Wallet className="w-4 h-4" />
+              <span>Connect Wallet</span>
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* 1. Left Twin List Panel */}
       <div className="w-80 border-r border-[var(--border)] flex flex-col bg-black shrink-0 hidden md:flex">
-        <div className="p-4 border-b border-white/5 font-heading font-bold text-sm text-[var(--muted2)] tracking-wider uppercase">
-          Conversations
+        {/* Panel Header */}
+        <div className="p-4 border-b border-white/5 flex items-center justify-between">
+          <span className="text-lg font-heading font-black text-white uppercase tracking-wider">Chat</span>
+          <button 
+            onClick={() => alert("Group creation coming soon!")}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-900 border border-white/5 hover:border-[var(--y)] hover:text-[var(--y)] text-[10px] font-black uppercase tracking-wider transition-all cursor-pointer active:scale-95"
+          >
+            <Users className="w-3.5 h-3.5" />
+            <span>New Group</span>
+          </button>
         </div>
+
+        {/* Search profile input */}
+        <div className="p-3 border-b border-white/5 relative">
+          <Search className="w-4 h-4 text-zinc-500 absolute left-6 top-1/2 -translate-y-1/2" />
+          <input 
+            type="text" 
+            placeholder="Search for a profile..." 
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full pl-9 pr-4 py-1.5 bg-zinc-900/60 border border-white/5 rounded-xl text-xs text-[#f5f5f5] placeholder-[#f5f5f5]/30 focus:outline-none focus:border-[var(--y)] focus:bg-zinc-900 transition-all font-body"
+          />
+        </div>
+
+        {/* Conversations list */}
         <div className="flex-1 overflow-y-auto p-2 flex flex-col gap-1">
-          {twins.map((twin) => {
+          {filteredTwins.map((twin) => {
             const isActive = twin.id === activeTwinId;
             const messages = chats[twin.id] || [];
             const lastMsg = messages[messages.length - 1];
@@ -198,18 +287,18 @@ export function ChatPage() {
                 onClick={() => setSearchParams({ twin: twin.id })}
                 className={`flex items-center gap-3 p-3 rounded-xl text-left transition-all cursor-pointer ${
                   isActive 
-                    ? 'bg-zinc-900 border border-[var(--border2)]' 
+                    ? 'bg-zinc-900 border border-[var(--border2)] shadow-[var(--brutal)]' 
                     : 'bg-transparent border border-transparent hover:bg-white/5'
                 }`}
               >
                 <div className="relative shrink-0">
                   <img src={twin.avatarUrl} alt={twin.name} className="w-10 h-10 rounded-full object-cover border border-white/10" />
-                  <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-red-500 border border-black animate-pulse" />
+                  <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 border border-black animate-pulse" />
                 </div>
                 <div className="flex-1 min-w-0 flex flex-col gap-0.5">
                   <div className="flex justify-between items-center">
                     <span className="font-bold text-[#f5f5f5] text-sm truncate">{twin.name}</span>
-                    <span className="text-[10px] text-white/30 font-mono shrink-0">{twin.price}</span>
+                    <span className="text-[9px] text-white/30 font-mono shrink-0">7:53PM</span>
                   </div>
                   <p className="text-xs text-[#f5f5f5]/65 truncate">
                     {lastMsg ? lastMsg.content : `${twin.profession} · ${twin.vibe}`}
@@ -221,11 +310,11 @@ export function ChatPage() {
         </div>
       </div>
 
-      {/* 2. Right Workspace Panel */}
+      {/* 2. Middle Workspace Panel */}
       <div className="flex-1 flex flex-col bg-black relative">
         
         {/* Chat Header */}
-        <div className="h-14 border-b border-[var(--border)] px-4 flex items-center justify-between bg-black shrink-0">
+        <div className="h-14 border-b border-[var(--border)] px-4 flex items-center justify-between bg-black shrink-0 z-10">
           <div className="flex items-center gap-3 min-w-0">
             {/* Mobile back trigger */}
             <button 
@@ -236,31 +325,43 @@ export function ChatPage() {
             </button>
             <img src={activeTwin?.avatarUrl} alt={activeTwin?.name} className="w-9 h-9 rounded-full object-cover border border-white/10" />
             <div className="min-w-0 flex flex-col">
-              <div className="flex items-center gap-1.5">
-                <span className="font-bold text-sm truncate">{activeTwin?.name}</span>
-                <span className="w-1.5 h-1.5 rounded-full bg-[var(--success)] animate-pulse" />
-              </div>
-              <span className="text-[10px] text-[#f5f5f5]/50 truncate">{activeTwin?.profession} · {activeTwin?.vibe}</span>
+              <span className="font-bold text-sm truncate text-[#f5f5f5]">{activeTwin?.name}</span>
             </div>
           </div>
 
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex items-center gap-4 shrink-0 text-zinc-400">
             <button
-              onClick={handleClear}
-              className="p-2 text-[#f5f5f5]/40 hover:text-red-500 rounded-lg transition-colors cursor-pointer"
-              title="Clear chat history"
+              onClick={() => alert("Stream simulation starting soon!")}
+              className="hover:text-white transition-colors cursor-pointer"
+              title="Stream Video"
             >
-              <Trash2 className="w-4.5 h-4.5" />
+              <Clapperboard className="w-5 h-5" />
             </button>
             <button
               onClick={handleCallStart}
-              className="flex items-center gap-1.5 bg-[var(--y)] hover:bg-[var(--y2)] text-[var(--blk)] font-extrabold text-xs uppercase px-4 py-2 rounded-lg cursor-pointer transition-colors shadow-[var(--brutal)] border border-[var(--blk)]"
+              className="hover:text-[var(--y)] hover:scale-105 transition-all cursor-pointer"
+              title="FaceTime Call"
             >
-              <PhoneCall className="w-3.5 h-3.5" />
-              <span>FaceTime</span>
+              <PhoneCall className="w-5 h-5 text-[var(--y)]" />
+            </button>
+            <button
+              onClick={handleClear}
+              className="hover:text-red-500 transition-colors cursor-pointer"
+              title="Clear chat history"
+            >
+              <Trash2 className="w-5 h-5" />
+            </button>
+            <button
+              onClick={() => setShowProfile(!showProfile)}
+              className={`hover:text-white transition-colors cursor-pointer ${showProfile ? 'text-[var(--y)]' : 'text-zinc-400'}`}
+              title="Toggle Profile Sidebar"
+            >
+              <PanelRight className="w-5 h-5" />
             </button>
           </div>
-        </div>         {/* Message feed / Locked paywall */}
+        </div>
+
+        {/* Message feed / Locked paywall */}
         {isLocked ? (
           <div className="flex-1 flex items-center justify-center p-6">
             <div className="max-w-md w-full p-8 rounded-2xl bg-black border-2 border-[var(--border2)] text-center flex flex-col items-center gap-6 shadow-2xl relative overflow-hidden">
@@ -301,13 +402,18 @@ export function ChatPage() {
                     <div 
                       className={`px-4 py-2.5 text-sm leading-relaxed ${
                         isUser 
-                          ? 'bg-[var(--y)] text-[var(--blk)] font-medium rounded-[16px_16px_4px_16px] shadow-[2px_2px_0_rgba(255,231,1,0.2)]'
-                          : 'bg-zinc-900 text-[#f5f5f5] rounded-[16px_16px_16px_4px] border border-white/5'
+                          ? 'bg-[var(--y)] text-[var(--blk)] font-semibold rounded-[16px_16px_4px_16px] shadow-[2px_2px_0_rgba(255,231,1,0.15)]'
+                          : 'bg-zinc-900/90 text-[#f5f5f5] rounded-[16px_16px_16px_4px] border border-white/5'
                       }`}
                     >
                       {msg.content}
                     </div>
-                    <span className="text-[9px] text-[#f5f5f5]/30 px-1 font-mono">{msg.timestamp}</span>
+                    
+                    {/* Timestamp with Audio waveform lines for Twin messages */}
+                    <div className="flex items-center gap-1.5 mt-0.5 px-1">
+                      {!isUser && <AudioWavesIcon className="text-[var(--y)] w-3.5 h-3.5 shrink-0" />}
+                      <span className="text-[9px] text-[#f5f5f5]/30 font-mono">{msg.timestamp}</span>
+                    </div>
                   </div>
                 );
               })
@@ -333,23 +439,60 @@ export function ChatPage() {
           </div>
         )}
 
-        {/* Message Input controls */}
+        {/* Message Input controls (Replica of the user's uploaded layout) */}
         {!isLocked && (
-          <form onSubmit={handleSendMessage} className="h-16 border-t border-[var(--border)] px-4 flex items-center gap-3 bg-black shrink-0">
-            <input
-              type="text"
-              placeholder={`Send message to ${activeTwin?.name}...`}
-              value={inputText}
-              onChange={(e) => setInputText(e.target.value)}
-              className="flex-1 h-10 bg-zinc-950 border border-[var(--border)] rounded-xl px-4 text-sm text-[#f5f5f5] placeholder-[#f5f5f5]/30 focus:outline-none focus:border-[var(--y)] font-body"
-            />
-            <button
-              type="submit"
-              disabled={!inputText.trim()}
-              className="w-10 h-10 rounded-xl bg-[var(--y)] text-[var(--blk)] flex items-center justify-center hover:scale-105 active:scale-95 disabled:opacity-50 disabled:scale-100 disabled:cursor-not-allowed transition-all cursor-pointer border border-[var(--blk)] shadow-[1px_1px_0px_var(--y)]"
-            >
-              <Send className="w-4 h-4" />
-            </button>
+          <form onSubmit={handleSendMessage} className="p-4 border-t border-[var(--border)] bg-black shrink-0 flex flex-col gap-3">
+            <div className="relative bg-zinc-900 border border-white/10 rounded-2xl p-3 flex flex-col gap-2 shadow-[inset_0_2px_4px_rgba(0,0,0,0.4)]">
+              <textarea
+                placeholder="Write a message..."
+                value={inputText}
+                onChange={(e) => setInputText(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    handleSendMessage(e);
+                  }
+                }}
+                className="w-full bg-transparent text-sm text-[#f5f5f5] placeholder-[#f5f5f5]/30 focus:outline-none resize-none min-h-[50px] font-body"
+              />
+              
+              <div className="flex justify-between items-center mt-1">
+                <div className="flex items-center gap-2 text-xs text-zinc-500 font-mono">
+                  <span>Show me the scene:</span>
+                  <button
+                    type="button"
+                    onClick={() => setInputText("Generate an image of you right now!")}
+                    className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-zinc-950 text-zinc-300 hover:bg-[var(--y)] hover:text-black hover:border-black border border-white/5 text-[10px] font-bold transition-all cursor-pointer"
+                  >
+                    <ImageIcon className="w-3 h-3" />
+                    <span>Image</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setInputText("Show me a short video clip!")}
+                    className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-zinc-950 text-zinc-300 hover:bg-[var(--y)] hover:text-black hover:border-black border border-white/5 text-[10px] font-bold transition-all cursor-pointer"
+                  >
+                    <Video className="w-3 h-3" />
+                    <span>Video</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => alert("Opening settings...")}
+                    className="p-1 rounded-full bg-zinc-950 hover:bg-zinc-800 text-zinc-400 hover:text-white transition-colors cursor-pointer border border-white/5"
+                  >
+                    <Settings className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={!inputText.trim()}
+                  className="w-9 h-9 rounded-full bg-[var(--y)] text-[var(--blk)] flex items-center justify-center hover:scale-105 active:scale-95 disabled:opacity-40 disabled:scale-100 disabled:cursor-not-allowed transition-all cursor-pointer border border-black shadow-[1px_1px_0px_rgba(255,231,1,0.5)] shrink-0"
+                >
+                  <Send className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            </div>
           </form>
         )}
 
@@ -385,7 +528,6 @@ export function ChatPage() {
                     alt="Active Video" 
                     className="w-full h-full object-cover max-w-3xl"
                   />
-                  {/* Mock live mouth/face pulse animation to simulate speech aliveness */}
                   {window.speechSynthesis?.speaking && (
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-center justify-center">
                       <div className="flex gap-1.5 mt-auto mb-20 animate-pulse">
@@ -452,7 +594,137 @@ export function ChatPage() {
         )}
 
       </div>
+
+      {/* 3. Right Profile Sidebar (Replica of the user's uploaded layout) */}
+      {showProfile && (
+        <div className="w-80 border-l border-[var(--border)] bg-black shrink-0 flex flex-col overflow-y-auto p-4 z-20 absolute inset-y-0 right-0 md:relative md:flex animate-in slide-in-from-right duration-300">
+          
+          {/* Close button overlay for mobile/small screens */}
+          <div className="flex md:hidden justify-between items-center mb-4 border-b border-white/5 pb-2">
+            <span className="text-xs font-mono font-black uppercase text-zinc-500">Twin Profile</span>
+            <button 
+              onClick={() => setShowProfile(false)}
+              className="p-1 text-zinc-400 hover:text-white rounded-lg bg-zinc-950 border border-white/5"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+
+          {/* Profile Carousel Display */}
+          <div className="relative aspect-square w-full bg-zinc-950 overflow-hidden group rounded-2xl border border-white/5 shadow-2xl">
+            {carouselIndex === 0 ? (
+              <img 
+                src={activeTwin?.avatarUrl} 
+                alt={activeTwin?.name} 
+                className="w-full h-full object-cover transition-transform duration-500 hover:scale-103" 
+              />
+            ) : activeTwin?.videoUrl ? (
+              <video 
+                src={activeTwin?.videoUrl} 
+                autoPlay 
+                loop 
+                muted 
+                playsInline 
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className="w-full h-full flex flex-col items-center justify-center bg-zinc-900 text-zinc-500">
+                <Video className="w-10 h-10 mb-2 opacity-50 text-[var(--y)]" />
+                <span className="text-[9px] font-bold uppercase tracking-wider font-mono">No video training file</span>
+              </div>
+            )}
+            
+            {/* Carousel Navigation Arrows */}
+            <button 
+              type="button"
+              onClick={() => setCarouselIndex(0)}
+              className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/60 backdrop-blur-md border border-white/5 text-[#f5f5f5] flex items-center justify-center hover:bg-black/80 transition-all cursor-pointer z-10 hover:border-[var(--y)]/30 active:scale-90"
+            >
+              <ChevronLeft className="w-4.5 h-4.5" />
+            </button>
+            <button 
+              type="button"
+              onClick={() => setCarouselIndex(1)}
+              className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/60 backdrop-blur-md border border-white/5 text-[#f5f5f5] flex items-center justify-center hover:bg-black/80 transition-all cursor-pointer z-10 hover:border-[var(--y)]/30 active:scale-90"
+            >
+              <ChevronRight className="w-4.5 h-4.5" />
+            </button>
+
+            {/* Pagination Indicators */}
+            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5 z-10 bg-black/40 px-2.5 py-1 rounded-full border border-white/5 backdrop-blur-[2px]">
+              <span className={`w-1.5 h-1.5 rounded-full transition-all ${carouselIndex === 0 ? 'bg-[var(--y)] w-3' : 'bg-white/30'}`} />
+              <span className={`w-1.5 h-1.5 rounded-full transition-all ${carouselIndex === 1 ? 'bg-[var(--y)] w-3' : 'bg-white/30'}`} />
+            </div>
+
+            {/* Badge Indicator */}
+            <div className="absolute top-3 right-3 bg-[var(--y)] text-black text-[9px] font-black px-2 py-0.5 rounded-md border border-black shadow-[1px_1px_0px_rgba(0,0,0,1)] uppercase tracking-wider z-10">
+              v2.0
+            </div>
+          </div>
+
+          {/* Twin Details info */}
+          <div className="mt-4 flex flex-col gap-1.5 text-left">
+            <h3 className="font-heading font-black text-xl text-white tracking-tight uppercase flex items-center gap-2">
+              <span>{activeTwin?.name}</span>
+              {activeTwin?.isCustom && (
+                <span className="text-[7px] bg-[var(--y)]/10 text-[var(--y)] px-1.5 py-0.5 rounded uppercase font-mono tracking-wider">Custom</span>
+              )}
+            </h3>
+            <p className="text-xs text-zinc-400 font-body leading-relaxed">
+              {activeTwin?.bio}
+            </p>
+
+            {/* Social media connections */}
+            <div className="flex gap-2.5 mt-3">
+              <a 
+                href="https://instagram.com" 
+                target="_blank" 
+                rel="noreferrer" 
+                className="w-10 h-10 rounded-xl bg-zinc-950 border border-white/5 hover:border-[var(--y)] hover:text-[var(--y)] flex items-center justify-center text-zinc-400 transition-all cursor-pointer hover:shadow-[0_0_15px_rgba(255,231,1,0.15)]"
+              >
+                <InstagramIcon className="w-5 h-5" />
+              </a>
+              <a 
+                href="https://tiktok.com" 
+                target="_blank" 
+                rel="noreferrer" 
+                className="w-10 h-10 rounded-xl bg-zinc-950 border border-white/5 hover:border-[var(--y)] hover:text-[var(--y)] flex items-center justify-center text-zinc-400 transition-all cursor-pointer hover:shadow-[0_0_15px_rgba(255,231,1,0.15)]"
+              >
+                <TiktokIcon className="w-5 h-5" />
+              </a>
+            </div>
+          </div>
+
+          {/* Dynamic About Me fields */}
+          <div className="border-t border-white/5 pt-5 mt-5 flex flex-col gap-4 text-left">
+            <h4 className="text-xs font-mono font-black uppercase text-zinc-500 tracking-wider">
+              About me:
+            </h4>
+            <div className="grid grid-cols-2 gap-2.5 font-body">
+              <div className="p-3 bg-zinc-900/40 border border-white/5 rounded-xl flex flex-col gap-0.5 text-left">
+                <span className="text-[9px] font-mono font-bold text-zinc-500 uppercase tracking-wide">Profession</span>
+                <span className="text-xs font-extrabold text-[#f5f5f5] truncate">{activeTwin?.profession}</span>
+              </div>
+              <div className="p-3 bg-zinc-900/40 border border-white/5 rounded-xl flex flex-col gap-0.5 text-left">
+                <span className="text-[9px] font-mono font-bold text-zinc-500 uppercase tracking-wide">Vibe</span>
+                <span className="text-xs font-extrabold text-[var(--y)] truncate">{activeTwin?.vibe}</span>
+              </div>
+              <div className="p-3 bg-zinc-900/40 border border-white/5 rounded-xl flex flex-col gap-0.5 text-left">
+                <span className="text-[9px] font-mono font-bold text-zinc-500 uppercase tracking-wide">Fans/Reach</span>
+                <span className="text-xs font-extrabold text-[#f5f5f5] truncate">{activeTwin?.fans}</span>
+              </div>
+              <div className="p-3 bg-zinc-900/40 border border-white/5 rounded-xl flex flex-col gap-0.5 text-left">
+                <span className="text-[9px] font-mono font-bold text-zinc-500 uppercase tracking-wide">Tier</span>
+                <span className="text-xs font-extrabold text-[#f5f5f5] truncate">{activeTwin?.price}</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      )}
+
     </div>
   );
 }
+
 export default ChatPage;

@@ -3,22 +3,11 @@ import { Navbar } from '@/components/Navbar';
 import { Sidebar } from '@/components/Sidebar';
 import { MobileNav } from '@/components/MobileNav';
 import { HamsterIcon } from '@/components/HamsterIcon';
-import { useState, useEffect } from 'react';
-import { useAppStore } from '../store/useAppStore';
+import { useState } from 'react';
 import { X, Home, Compass, MessageSquare, Radio, Tag, Plus, Rss } from 'lucide-react';
 
 export function RootLayout() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const user = useAppStore((state) => state.user);
-  const setUser = useAppStore((state) => state.setUser);
-  
-  // Set up mock user for development on first mount if none exists
-  useEffect(() => {
-    if (!user) {
-      setUser({ name: 'Aswin Dope', email: 'aswin@celestialabs.com' });
-    }
-  }, [user, setUser]);
-
   const toggleMobileMenu = () => setMobileMenuOpen(!mobileMenuOpen);
 
   const mobileLinks = [

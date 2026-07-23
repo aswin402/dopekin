@@ -1,4 +1,4 @@
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { 
   Home, Compass, MessageSquare, Plus, Rss, Menu, Heart, 
   Crown, ChevronDown, HelpCircle, LogOut 
@@ -8,6 +8,8 @@ import { HamsterIcon } from './HamsterIcon';
 
 export function Sidebar() {
   const chats = useAppStore((state) => state.chats);
+  const setUser = useAppStore((state) => state.setUser);
+  const navigate = useNavigate();
 
   // Calculate unread count (mocked based on chats where last message is from twin)
   const totalUnread = Object.keys(chats).reduce((acc, twinId) => {
@@ -197,8 +199,8 @@ export function Sidebar() {
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
             <span>ONLINE</span>
           </div>
-          <div title="Log Out">
-            <LogOut className="w-4 h-4 hover:text-red-400 cursor-pointer transition-colors" />
+          <div title="Log Out" onClick={() => { setUser(null); navigate('/'); }} className="cursor-pointer">
+            <LogOut className="w-4 h-4 hover:text-red-400 transition-colors" />
           </div>
         </div>
       </div>

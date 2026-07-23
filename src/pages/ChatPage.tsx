@@ -447,7 +447,7 @@ export function ChatPage() {
                   <img 
                     src={activeTwin?.avatarUrl} 
                     alt={activeTwin?.name} 
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-contain"
                   />
                   
                   {/* Speaking indicator wave lines */}

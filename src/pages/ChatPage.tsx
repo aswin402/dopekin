@@ -5,7 +5,7 @@ import type { Message } from '../types/twin';
 import { 
   Send, PhoneCall, PhoneOff, Mic, MicOff, Video, VideoOff, 
   Trash2, ArrowLeft, ShieldAlert, Sparkles, ChevronLeft, ChevronRight,
-  PanelRight, Search, Users, Settings, Image as ImageIcon, Clapperboard,
+  PanelLeft, Search, Users, Settings, Image as ImageIcon, Clapperboard,
   X, Wallet
 } from 'lucide-react';
 
@@ -249,66 +249,133 @@ export function ChatPage() {
         </div>
       )}
 
-      {/* 1. Left Twin List Panel */}
-      <div className="w-80 border-r border-zinc-900 flex flex-col bg-black shrink-0 hidden md:flex">
-        {/* Panel Header */}
-        <div className="p-4 border-b border-zinc-900 flex items-center justify-between">
-          <span className="text-lg font-heading font-black text-white uppercase tracking-wider">Chat</span>
-          <button 
-            onClick={() => alert("Group creation coming soon!")}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-900 border border-white/5 hover:border-[var(--y)] hover:text-[var(--y)] text-[10px] font-black uppercase tracking-wider transition-all cursor-pointer active:scale-95"
-          >
-            <Users className="w-3.5 h-3.5" />
-            <span>New Group</span>
-          </button>
-        </div>
+      {/* 1. Left Profile Sidebar (Swapped to Left) */}
+      {showProfile && (
+        <div className="w-80 border-r border-zinc-900 bg-black shrink-0 flex flex-col overflow-y-auto p-4 z-20 absolute inset-y-0 left-0 md:relative md:flex animate-in slide-in-from-left duration-300">
+          
+          {/* Close button overlay for mobile/small screens */}
+          <div className="flex md:hidden justify-between items-center mb-4 border-b border-zinc-900/50 pb-2">
+            <span className="text-xs font-mono font-black uppercase text-zinc-500">Twin Profile</span>
+            <button 
+              onClick={() => setShowProfile(false)}
+              className="p-1 text-zinc-400 hover:text-white rounded-lg bg-zinc-950 border border-white/5"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
 
-        {/* Search profile input */}
-        <div className="p-3 border-b border-zinc-900/50 relative">
-          <Search className="w-4 h-4 text-zinc-500 absolute left-6 top-1/2 -translate-y-1/2" />
-          <input 
-            type="text" 
-            placeholder="Search for a profile..." 
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-4 py-1.5 bg-zinc-900/40 border border-white/5 rounded-xl text-xs text-[#f5f5f5] placeholder-[#f5f5f5]/30 focus:outline-none focus:border-[var(--y)] focus:bg-zinc-900 transition-all font-body"
-          />
-        </div>
+          {/* Profile Image View */}
+          <div className="relative aspect-square w-full bg-zinc-950 overflow-hidden group rounded-2xl border border-white/5">
+            {carouselIndex === 0 ? (
+              <img 
+                src={activeTwin?.avatarUrl} 
+                alt={activeTwin?.name} 
+                className="w-full h-full object-cover transition-transform duration-500 hover:scale-103" 
+              />
+            ) : activeTwin?.videoUrl ? (
+              <video 
+                src={activeTwin?.videoUrl} 
+                autoPlay 
+                loop 
+                muted 
+                playsInline 
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className="w-full h-full flex flex-col items-center justify-center bg-zinc-900 text-zinc-500">
+                <Video className="w-10 h-10 mb-2 opacity-50 text-[var(--y)]" />
+                <span className="text-[9px] font-bold uppercase tracking-wider font-mono">No video training file</span>
+              </div>
+            )}
+            
+            {/* Carousel Navigation Arrows */}
+            <button 
+              type="button"
+              onClick={() => setCarouselIndex(0)}
+              className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/60 backdrop-blur-md border border-white/5 text-[#f5f5f5] flex items-center justify-center hover:bg-black/80 transition-all cursor-pointer z-10 hover:border-[var(--y)]/30 active:scale-90"
+            >
+              <ChevronLeft className="w-4.5 h-4.5" />
+            </button>
+            <button 
+              type="button"
+              onClick={() => setCarouselIndex(1)}
+              className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/60 backdrop-blur-md border border-white/5 text-[#f5f5f5] flex items-center justify-center hover:bg-black/80 transition-all cursor-pointer z-10 hover:border-[var(--y)]/30 active:scale-90"
+            >
+              <ChevronRight className="w-4.5 h-4.5" />
+            </button>
 
-        {/* Conversations list */}
-        <div className="flex-1 overflow-y-auto p-2 flex flex-col gap-1">
-          {filteredTwins.map((twin) => {
-            const isActive = twin.id === activeTwinId;
-            const messages = chats[twin.id] || [];
-            const lastMsg = messages[messages.length - 1];
-            return (
-              <button
-                key={twin.id}
-                onClick={() => setSearchParams({ twin: twin.id })}
-                className={`flex items-center gap-3 p-3 rounded-xl text-left transition-all cursor-pointer ${
-                  isActive 
-                    ? 'bg-zinc-900/60 border-l-2 border-[var(--y)]' 
-                    : 'bg-transparent border-l-2 border-transparent hover:bg-white/5'
-                }`}
+            {/* Pagination Indicators */}
+            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5 z-10 bg-black/40 px-2.5 py-1 rounded-full border border-white/5 backdrop-blur-[2px]">
+              <span className={`w-1.5 h-1.5 rounded-full transition-all ${carouselIndex === 0 ? 'bg-[var(--y)] w-3' : 'bg-white/30'}`} />
+              <span className={`w-1.5 h-1.5 rounded-full transition-all ${carouselIndex === 1 ? 'bg-[var(--y)] w-3' : 'bg-white/30'}`} />
+            </div>
+
+            {/* Badge Indicator */}
+            <div className="absolute top-3 right-3 bg-[var(--y)] text-black text-[9px] font-black px-2 py-0.5 rounded-md border border-black shadow-[1px_1px_0px_rgba(0,0,0,1)] uppercase tracking-wider z-10">
+              v2.0
+            </div>
+          </div>
+
+          {/* Twin Details info */}
+          <div className="mt-4 flex flex-col gap-1.5 text-left">
+            <h3 className="font-heading font-black text-xl text-white tracking-tight uppercase flex items-center gap-2">
+              <span>{activeTwin?.name}</span>
+              {activeTwin?.isCustom && (
+                <span className="text-[7px] bg-[var(--y)]/10 text-[var(--y)] px-1.5 py-0.5 rounded uppercase font-mono tracking-wider">Custom</span>
+              )}
+            </h3>
+            <p className="text-xs text-zinc-400 font-body leading-relaxed">
+              {activeTwin?.bio}
+            </p>
+
+            {/* Social media connections */}
+            <div className="flex gap-2.5 mt-3">
+              <a 
+                href="https://instagram.com" 
+                target="_blank" 
+                rel="noreferrer" 
+                className="w-10 h-10 rounded-xl bg-zinc-950 border border-white/5 hover:border-[var(--y)] hover:text-[var(--y)] flex items-center justify-center text-zinc-400 transition-all cursor-pointer hover:shadow-[0_0_15px_rgba(255,231,1,0.15)]"
               >
-                <div className="relative shrink-0">
-                  <img src={twin.avatarUrl} alt={twin.name} className="w-10 h-10 rounded-full object-cover border border-white/10" />
-                  <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 border border-black animate-pulse" />
-                </div>
-                <div className="flex-1 min-w-0 flex flex-col gap-0.5">
-                  <div className="flex justify-between items-center">
-                    <span className="font-bold text-[#f5f5f5] text-sm truncate">{twin.name}</span>
-                    <span className="text-[9px] text-white/30 font-mono shrink-0">7:53PM</span>
-                  </div>
-                  <p className="text-xs text-[#f5f5f5]/65 truncate">
-                    {lastMsg ? lastMsg.content : `${twin.profession} · ${twin.vibe}`}
-                  </p>
-                </div>
-              </button>
-            );
-          })}
+                <InstagramIcon className="w-5 h-5" />
+              </a>
+              <a 
+                href="https://tiktok.com" 
+                target="_blank" 
+                rel="noreferrer" 
+                className="w-10 h-10 rounded-xl bg-zinc-950 border border-white/5 hover:border-[var(--y)] hover:text-[var(--y)] flex items-center justify-center text-zinc-400 transition-all cursor-pointer hover:shadow-[0_0_15px_rgba(255,231,1,0.15)]"
+              >
+                <TiktokIcon className="w-5 h-5" />
+              </a>
+            </div>
+          </div>
+
+          {/* Dynamic Sleek About Me List (Replaces bulky box cards) */}
+          <div className="border-t border-zinc-900 pt-5 mt-5 flex flex-col gap-4 text-left">
+            <h4 className="text-xs font-mono font-black uppercase text-zinc-500 tracking-wider">
+              About me:
+            </h4>
+            <div className="flex flex-col gap-3 font-body text-sm">
+              <div className="flex justify-between items-center py-1.5 border-b border-zinc-900/50">
+                <span className="text-zinc-500">Profession</span>
+                <span className="font-extrabold text-[#f5f5f5]">{activeTwin?.profession}</span>
+              </div>
+              <div className="flex justify-between items-center py-1.5 border-b border-zinc-900/50">
+                <span className="text-zinc-500">Vibe</span>
+                <span className="font-extrabold text-[var(--y)]">{activeTwin?.vibe}</span>
+              </div>
+              <div className="flex justify-between items-center py-1.5 border-b border-zinc-900/50">
+                <span className="text-zinc-500">Fans/Reach</span>
+                <span className="font-extrabold text-[#f5f5f5]">{activeTwin?.fans}</span>
+              </div>
+              <div className="flex justify-between items-center py-1.5">
+                <span className="text-zinc-500">Access Tier</span>
+                <span className="font-extrabold text-[#f5f5f5]">{activeTwin?.price}</span>
+              </div>
+            </div>
+          </div>
+
         </div>
-      </div>
+      )}
 
       {/* 2. Middle Workspace Panel */}
       <div className="flex-1 flex flex-col bg-zinc-950 relative">
@@ -356,7 +423,7 @@ export function ChatPage() {
               className={`hover:text-white transition-colors cursor-pointer ${showProfile ? 'text-[var(--y)]' : 'text-zinc-400'}`}
               title="Toggle Profile Sidebar"
             >
-              <PanelRight className="w-5 h-5" />
+              <PanelLeft className="w-5 h-5" />
             </button>
           </div>
         </div>
@@ -439,7 +506,7 @@ export function ChatPage() {
           </div>
         )}
 
-        {/* Flat simple Input Bar (Replaces bulky bordered textarea box) */}
+        {/* Flat simple Input Bar */}
         {!isLocked && (
           <form onSubmit={handleSendMessage} className="p-3 bg-black border-t border-zinc-900 flex items-center gap-3 shrink-0">
             <div className="flex items-center gap-1.5 text-zinc-400">
@@ -586,133 +653,66 @@ export function ChatPage() {
 
       </div>
 
-      {/* 3. Right Profile Sidebar */}
-      {showProfile && (
-        <div className="w-80 border-l border-zinc-900 bg-black shrink-0 flex flex-col overflow-y-auto p-4 z-20 absolute inset-y-0 right-0 md:relative md:flex animate-in slide-in-from-right duration-300">
-          
-          {/* Close button overlay for mobile/small screens */}
-          <div className="flex md:hidden justify-between items-center mb-4 border-b border-zinc-900/50 pb-2">
-            <span className="text-xs font-mono font-black uppercase text-zinc-500">Twin Profile</span>
-            <button 
-              onClick={() => setShowProfile(false)}
-              className="p-1 text-zinc-400 hover:text-white rounded-lg bg-zinc-950 border border-white/5"
-            >
-              <X className="w-4 h-4" />
-            </button>
-          </div>
-
-          {/* Profile Image View */}
-          <div className="relative aspect-square w-full bg-zinc-950 overflow-hidden group rounded-2xl border border-white/5">
-            {carouselIndex === 0 ? (
-              <img 
-                src={activeTwin?.avatarUrl} 
-                alt={activeTwin?.name} 
-                className="w-full h-full object-cover transition-transform duration-500 hover:scale-103" 
-              />
-            ) : activeTwin?.videoUrl ? (
-              <video 
-                src={activeTwin?.videoUrl} 
-                autoPlay 
-                loop 
-                muted 
-                playsInline 
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              <div className="w-full h-full flex flex-col items-center justify-center bg-zinc-900 text-zinc-500">
-                <Video className="w-10 h-10 mb-2 opacity-50 text-[var(--y)]" />
-                <span className="text-[9px] font-bold uppercase tracking-wider font-mono">No video training file</span>
-              </div>
-            )}
-            
-            {/* Carousel Navigation Arrows */}
-            <button 
-              type="button"
-              onClick={() => setCarouselIndex(0)}
-              className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/60 backdrop-blur-md border border-white/5 text-[#f5f5f5] flex items-center justify-center hover:bg-black/80 transition-all cursor-pointer z-10 hover:border-[var(--y)]/30 active:scale-90"
-            >
-              <ChevronLeft className="w-4.5 h-4.5" />
-            </button>
-            <button 
-              type="button"
-              onClick={() => setCarouselIndex(1)}
-              className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/60 backdrop-blur-md border border-white/5 text-[#f5f5f5] flex items-center justify-center hover:bg-black/80 transition-all cursor-pointer z-10 hover:border-[var(--y)]/30 active:scale-90"
-            >
-              <ChevronRight className="w-4.5 h-4.5" />
-            </button>
-
-            {/* Pagination Indicators */}
-            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5 z-10 bg-black/40 px-2.5 py-1 rounded-full border border-white/5 backdrop-blur-[2px]">
-              <span className={`w-1.5 h-1.5 rounded-full transition-all ${carouselIndex === 0 ? 'bg-[var(--y)] w-3' : 'bg-white/30'}`} />
-              <span className={`w-1.5 h-1.5 rounded-full transition-all ${carouselIndex === 1 ? 'bg-[var(--y)] w-3' : 'bg-white/30'}`} />
-            </div>
-
-            {/* Badge Indicator */}
-            <div className="absolute top-3 right-3 bg-[var(--y)] text-black text-[9px] font-black px-2 py-0.5 rounded-md border border-black shadow-[1px_1px_0px_rgba(0,0,0,1)] uppercase tracking-wider z-10">
-              v2.0
-            </div>
-          </div>
-
-          {/* Twin Details info */}
-          <div className="mt-4 flex flex-col gap-1.5 text-left">
-            <h3 className="font-heading font-black text-xl text-white tracking-tight uppercase flex items-center gap-2">
-              <span>{activeTwin?.name}</span>
-              {activeTwin?.isCustom && (
-                <span className="text-[7px] bg-[var(--y)]/10 text-[var(--y)] px-1.5 py-0.5 rounded uppercase font-mono tracking-wider">Custom</span>
-              )}
-            </h3>
-            <p className="text-xs text-zinc-400 font-body leading-relaxed">
-              {activeTwin?.bio}
-            </p>
-
-            {/* Social media connections */}
-            <div className="flex gap-2.5 mt-3">
-              <a 
-                href="https://instagram.com" 
-                target="_blank" 
-                rel="noreferrer" 
-                className="w-10 h-10 rounded-xl bg-zinc-950 border border-white/5 hover:border-[var(--y)] hover:text-[var(--y)] flex items-center justify-center text-zinc-400 transition-all cursor-pointer hover:shadow-[0_0_15px_rgba(255,231,1,0.15)]"
-              >
-                <InstagramIcon className="w-5 h-5" />
-              </a>
-              <a 
-                href="https://tiktok.com" 
-                target="_blank" 
-                rel="noreferrer" 
-                className="w-10 h-10 rounded-xl bg-zinc-950 border border-white/5 hover:border-[var(--y)] hover:text-[var(--y)] flex items-center justify-center text-zinc-400 transition-all cursor-pointer hover:shadow-[0_0_15px_rgba(255,231,1,0.15)]"
-              >
-                <TiktokIcon className="w-5 h-5" />
-              </a>
-            </div>
-          </div>
-
-          {/* Dynamic Sleek About Me List (Replaces bulky box cards) */}
-          <div className="border-t border-zinc-900 pt-5 mt-5 flex flex-col gap-4 text-left">
-            <h4 className="text-xs font-mono font-black uppercase text-zinc-500 tracking-wider">
-              About me:
-            </h4>
-            <div className="flex flex-col gap-3 font-body text-sm">
-              <div className="flex justify-between items-center py-1.5 border-b border-zinc-900/50">
-                <span className="text-zinc-500">Profession</span>
-                <span className="font-extrabold text-[#f5f5f5]">{activeTwin?.profession}</span>
-              </div>
-              <div className="flex justify-between items-center py-1.5 border-b border-zinc-900/50">
-                <span className="text-zinc-500">Vibe</span>
-                <span className="font-extrabold text-[var(--y)]">{activeTwin?.vibe}</span>
-              </div>
-              <div className="flex justify-between items-center py-1.5 border-b border-zinc-900/50">
-                <span className="text-zinc-500">Fans/Reach</span>
-                <span className="font-extrabold text-[#f5f5f5]">{activeTwin?.fans}</span>
-              </div>
-              <div className="flex justify-between items-center py-1.5">
-                <span className="text-zinc-500">Access Tier</span>
-                <span className="font-extrabold text-[#f5f5f5]">{activeTwin?.price}</span>
-              </div>
-            </div>
-          </div>
-
+      {/* 3. Right Twin List Panel (Swapped to Right) */}
+      <div className="w-80 border-l border-zinc-900 flex flex-col bg-black shrink-0 hidden md:flex">
+        {/* Panel Header */}
+        <div className="p-4 border-b border-zinc-900 flex items-center justify-between">
+          <span className="text-lg font-heading font-black text-white uppercase tracking-wider">Chat</span>
+          <button 
+            onClick={() => alert("Group creation coming soon!")}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-900 border border-white/5 hover:border-[var(--y)] hover:text-[var(--y)] text-[10px] font-black uppercase tracking-wider transition-all cursor-pointer active:scale-95"
+          >
+            <Users className="w-3.5 h-3.5" />
+            <span>New Group</span>
+          </button>
         </div>
-      )}
+
+        {/* Search profile input */}
+        <div className="p-3 border-b border-zinc-900/50 relative">
+          <Search className="w-4 h-4 text-zinc-500 absolute left-6 top-1/2 -translate-y-1/2" />
+          <input 
+            type="text" 
+            placeholder="Search for a profile..." 
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full pl-9 pr-4 py-1.5 bg-zinc-900/40 border border-white/5 rounded-xl text-xs text-[#f5f5f5] placeholder-[#f5f5f5]/30 focus:outline-none focus:border-[var(--y)] focus:bg-zinc-900 transition-all font-body"
+          />
+        </div>
+
+        {/* Conversations list */}
+        <div className="flex-1 overflow-y-auto p-2 flex flex-col gap-1">
+          {filteredTwins.map((twin) => {
+            const isActive = twin.id === activeTwinId;
+            const messages = chats[twin.id] || [];
+            const lastMsg = messages[messages.length - 1];
+            return (
+              <button
+                key={twin.id}
+                onClick={() => setSearchParams({ twin: twin.id })}
+                className={`flex items-center gap-3 p-3 rounded-xl text-left transition-all cursor-pointer ${
+                  isActive 
+                    ? 'bg-zinc-900/60 border-l-2 border-[var(--y)]' 
+                    : 'bg-transparent border-l-2 border-transparent hover:bg-white/5'
+                }`}
+              >
+                <div className="relative shrink-0">
+                  <img src={twin.avatarUrl} alt={twin.name} className="w-10 h-10 rounded-full object-cover border border-white/10" />
+                  <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 border border-black animate-pulse" />
+                </div>
+                <div className="flex-1 min-w-0 flex flex-col gap-0.5">
+                  <div className="flex justify-between items-center">
+                    <span className="font-bold text-[#f5f5f5] text-sm truncate">{twin.name}</span>
+                    <span className="text-[9px] text-white/30 font-mono shrink-0">7:53PM</span>
+                  </div>
+                  <p className="text-xs text-[#f5f5f5]/65 truncate">
+                    {lastMsg ? lastMsg.content : `${twin.profession} · ${twin.vibe}`}
+                  </p>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      </div>
 
     </div>
   );

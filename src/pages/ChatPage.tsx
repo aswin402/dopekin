@@ -531,7 +531,7 @@ export function ChatPage() {
             )}
 
             {/* Bottom Controls Bar (Switches based on call connection state) */}
-            <div className="w-full pb-6 pt-3 px-4 flex justify-center items-center z-20 mt-auto bg-gradient-to-t from-black via-black/80 to-transparent">
+            <div className="w-full pb-6 pt-3 px-4 flex justify-center items-center z-20 mt-auto bg-transparent">
               {!isCalling ? (
                 /* Pre-Call Setup controls (Image 2) */
                 <div className="flex items-center gap-3">

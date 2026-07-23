@@ -77,7 +77,7 @@ export function ChatPage() {
 
   // Handle call timer
   useEffect(() => {
-    if (isCalling && !isLocked) {
+    if (isCalling && !isLocked && user) {
       setCallTime(0);
       setCallSubtitle("Hey there! It's so great to talk to you directly. What's on your mind today?");
       speakAnswer("Hey there! It's so great to talk to you directly. What's on your mind today?");
@@ -93,7 +93,7 @@ export function ChatPage() {
       if (callTimerRef.current) clearInterval(callTimerRef.current);
       window.speechSynthesis?.cancel();
     };
-  }, [isCalling, isLocked, activeTwinId]);
+  }, [isCalling, isLocked, activeTwinId, user]);
 
   // Scroll to bottom of chat
   useEffect(() => {
@@ -218,7 +218,7 @@ export function ChatPage() {
       
       {/* Login Wallet Modal Overlay */}
       {!user && (
-        <div className="absolute inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4">
+        <div className="absolute inset-0 bg-black/85 backdrop-blur-md z-[100] flex items-center justify-center p-4">
           <div className="max-w-md w-full p-8 md:p-10 rounded-[32px] bg-zinc-950 border border-white/10 flex flex-col items-center text-center gap-6 shadow-[0_0_50px_rgba(255,231,1,0.15)] animate-in zoom-in-95 duration-200">
             {/* Logo Badge */}
             <div className="w-16 h-16 rounded-full bg-black border border-[var(--y)] flex items-center justify-center shadow-[0_0_15px_rgba(255,231,1,0.2)]">
@@ -497,7 +497,7 @@ export function ChatPage() {
         )}
 
         {/* 3. FaceTime Video Overlay (Triggered by isCalling && !isLocked) */}
-        {isCalling && !isLocked && (
+        {isCalling && !isLocked && user && (
           <div className="absolute inset-0 bg-black z-50 flex flex-col justify-between p-6 animate-zoom-in">
             {/* Header info */}
             <div className="flex justify-between items-center z-10">

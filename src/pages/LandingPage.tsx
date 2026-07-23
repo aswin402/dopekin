@@ -6,7 +6,7 @@ import {
   Globe, Shield, Play, Users, Send, Sparkles, ArrowRight, Activity,
   Heart, Music, Star
 } from 'lucide-react';
-import { HamsterIcon } from '../components/HamsterIcon';
+import DopeIcon from '../assets/DopeIcon.svg';
 import type { Twin } from '../types/twin';
 
 const SHOWCASE_TWINS = [
@@ -365,7 +365,7 @@ export function LandingPage() {
               onClick={() => navigate('/create')}
               className="flex items-center gap-2 bg-[var(--y)] hover:bg-[var(--y2)] text-[var(--blk)] font-extrabold text-xs uppercase tracking-wider py-3.5 px-6 rounded-xl border border-[var(--blk)] shadow-[var(--brutal)] hover:translate-y-[-2px] active:translate-y-[1px] transition-all cursor-pointer"
             >
-              <HamsterIcon className="w-4 h-4 fill-current shrink-0" />
+              <img src={DopeIcon} className="w-4 h-4 shrink-0 object-contain" alt="" />
               <span>Create Your Twin</span>
             </button>
             
@@ -653,7 +653,7 @@ export function LandingPage() {
                 onClick={() => navigate('/create')}
                 className="flex items-center gap-2 bg-[var(--y)] hover:bg-[var(--y2)] text-[var(--blk)] font-extrabold text-xs uppercase tracking-wider py-3.5 px-6 rounded-xl border border-[var(--blk)] shadow-[var(--brutal)] hover:translate-y-[-2px] active:translate-y-[1px] transition-all cursor-pointer"
               >
-                <HamsterIcon className="w-4 h-4 fill-current shrink-0" />
+                <img src={DopeIcon} className="w-4 h-4 shrink-0 object-contain" alt="" />
                 <span>Start Creating</span>
               </button>
               
@@ -782,7 +782,7 @@ export function LandingPage() {
           {/* Logo / Socials */}
           <div className="col-span-2 flex flex-col gap-4">
             <span className="text-xl font-heading font-black text-[var(--y)] uppercase tracking-tight select-none flex items-center gap-1.5">
-              <HamsterIcon className="w-5 h-5 fill-current" />
+              <img src={DopeIcon} className="w-5 h-5 object-contain" alt="DopeKin Logo" />
               <span>DopeKin</span>
             </span>
             <p className="text-xs text-white/50 leading-relaxed font-body max-w-xs">

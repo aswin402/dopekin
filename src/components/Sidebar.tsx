@@ -1,10 +1,10 @@
 import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { 
-  Home, Compass, MessageSquare, Plus, Rss, Menu, Heart, 
+  Home, Compass, MessageSquare, Plus, Rss, Menu, 
   Crown, ChevronDown, HelpCircle, LogOut 
 } from 'lucide-react';
 import { useAppStore } from '../store/useAppStore';
-import { HamsterIcon } from './HamsterIcon';
+import DopeIcon from '../assets/DopeIcon.svg';
 
 export function Sidebar() {
   const chats = useAppStore((state) => state.chats);
@@ -21,16 +21,15 @@ export function Sidebar() {
   }, 0);
 
   const links = [
-    { to: '/', label: 'Home', icon: Home },
-    { to: '/chat', label: 'Chats', icon: MessageSquare, badge: totalUnread > 0 ? totalUnread : 12 },
-    { to: '/explore?filter=favorites', label: 'Favorites', icon: Heart },
-    { to: '/explore', label: 'Discover', icon: Compass },
-    { to: '/feed', label: 'Episodes', icon: Rss },
-    { to: '/create', label: 'Create', icon: Plus },
+    { to: '/home', label: 'Home', icon: Home },
+    { to: '/explore', label: 'Explore', icon: Compass },
+    { to: '/chat', label: 'FaceTime Call', icon: MessageSquare, badge: totalUnread > 0 ? totalUnread : undefined },
+    { to: '/create', label: 'Create Twin', icon: Plus },
+    { to: '/feed', label: 'Feed', icon: Rss },
   ];
 
   return (
-    <aside className="fixed left-0 top-0 bottom-0 w-16 hover:w-60 bg-black border-r border-[var(--border)] flex flex-col justify-between z-50 transition-all duration-300 ease-in-out group hidden lg:flex overflow-y-auto scrollbar-none">
+    <aside className="h-[calc(100vh-6rem)] lg:h-[calc(100vh-4rem)] border-r border-[var(--border)] bg-black group hover:w-64 w-16 transition-all duration-300 flex flex-col justify-between select-none shrink-0 font-body z-30">
       
       <div className="flex flex-col w-full">
         {/* Top Header Block: Hamburger Menu */}
@@ -47,7 +46,7 @@ export function Sidebar() {
             className="flex items-center h-12 px-2 overflow-hidden select-none"
           >
             <div className="w-8 h-8 rounded-full bg-[var(--y)] text-[var(--blk)] flex items-center justify-center font-heading font-black text-lg shadow-[0_0_15px_rgba(255,231,1,0.3)] shrink-0">
-              <HamsterIcon className="w-5 h-5 fill-current" />
+              <img src={DopeIcon} className="w-5 h-5 object-contain" alt="Dopekin Logo" />
             </div>
             <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 font-heading font-black text-base text-[var(--y)] ml-3 tracking-tighter uppercase whitespace-nowrap">
               DopeKin

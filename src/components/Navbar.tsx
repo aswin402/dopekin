@@ -2,7 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAppStore } from '../store/useAppStore';
 import { Menu, Search, Wallet, LogIn } from 'lucide-react';
 import { useState } from 'react';
-import { HamsterIcon } from './HamsterIcon';
+import DopeIcon from '../assets/DopeIcon.svg';
 
 interface NavbarProps {
   onToggleMobileMenu?: () => void;
@@ -42,7 +42,7 @@ export function Navbar({ onToggleMobileMenu }: NavbarProps) {
         </button>
 
         <div className="text-2xl font-heading font-black tracking-tighter text-[var(--y)] flex items-center gap-1.5 lg:hidden select-none">
-          <HamsterIcon className="w-6 h-6 fill-current" />
+          <img src={DopeIcon} className="w-6 h-6 object-contain" alt="DopeKin" />
           <span>DopeKin</span>
         </div>
       </div>

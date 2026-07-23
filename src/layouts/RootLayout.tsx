@@ -2,9 +2,9 @@ import { Outlet, NavLink } from 'react-router-dom';
 import { Navbar } from '@/components/Navbar';
 import { Sidebar } from '@/components/Sidebar';
 import { MobileNav } from '@/components/MobileNav';
-import { HamsterIcon } from '@/components/HamsterIcon';
+import DopeIcon from '@/assets/DopeIcon.svg';
 import { useState } from 'react';
-import { X, Home, Compass, MessageSquare, Radio, Tag, Plus, Rss } from 'lucide-react';
+import { X, Home, Compass, MessageSquare, Plus, Rss } from 'lucide-react';
 
 export function RootLayout() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -13,23 +13,22 @@ export function RootLayout() {
   const mobileLinks = [
     { to: '/', label: 'Home', icon: Home },
     { to: '/explore', label: 'Explore', icon: Compass },
-    { to: '/chat', label: 'Chat', icon: MessageSquare },
+    { to: '/chat', label: 'FaceTime Call', icon: MessageSquare },
+    { to: '/create', label: 'Create Twin', icon: Plus },
     { to: '/feed', label: 'Feed', icon: Rss },
-    { to: '/live', label: 'Live Stream', icon: Radio },
-    { to: '/pricing', label: 'Pricing', icon: Tag },
   ];
 
   return (
-    <div className="min-h-screen bg-[var(--bg)] text-[#f5f5f5] font-body relative overflow-x-hidden">
-      {/* Top sticky Navbar */}
+    <div className="min-h-screen bg-black text-[#f5f5f5] flex flex-col font-body">
+      {/* Top Nav for mobile */}
       <Navbar onToggleMobileMenu={toggleMobileMenu} />
 
-      {/* Sidebar for desktop */}
-      <Sidebar />
+      <div className="flex flex-1 pt-16 lg:pt-0">
+        {/* Left Sidebar for desktop */}
+        <Sidebar />
 
-      {/* Main Content Pane */}
-      <div className="lg:pl-16 pt-16 lg:pt-0 pb-16 lg:pb-0 min-h-screen flex flex-col">
-        <main className="flex-1 w-full max-w-[var(--content-max-width)] mx-auto p-4 md:p-6 lg:p-8">
+        {/* Main Content Area */}
+        <main className="flex-1 min-w-0">
           <Outlet />
         </main>
       </div>
@@ -43,7 +42,7 @@ export function RootLayout() {
           <div className="flex flex-col h-full w-[260px] bg-black border-r border-[var(--border)] p-5">
             <div className="flex justify-between items-center mb-8">
               <span className="text-xl font-heading font-black text-[var(--y)] flex items-center gap-1.5">
-                <HamsterIcon className="w-5 h-5 fill-current" />
+                <img src={DopeIcon} className="w-5 h-5 object-contain" alt="DopeKin Logo" />
                 <span>DopeKin</span>
               </span>
               <button 

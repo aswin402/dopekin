@@ -41,10 +41,10 @@ export function Navbar({ onToggleMobileMenu }: NavbarProps) {
           <Menu className="w-6 h-6" />
         </button>
 
-        <Link to="/landing" className="text-2xl font-heading font-black tracking-tighter text-[var(--y)] transition-all hover:scale-105 active:scale-95 flex items-center gap-1.5 lg:hidden">
+        <div className="text-2xl font-heading font-black tracking-tighter text-[var(--y)] flex items-center gap-1.5 lg:hidden select-none">
           <HamsterIcon className="w-6 h-6 fill-current" />
           <span>DopeKin</span>
-        </Link>
+        </div>
       </div>
 
       {/* Search Bar - Hidden on small screens unless on explore page */}

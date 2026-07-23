@@ -43,9 +43,8 @@ export function Sidebar() {
 
         {/* Brand Block / Hamster Highlight */}
         <div className="p-2 border-b border-white/5 shrink-0">
-          <NavLink 
-            to="/landing" 
-            className="flex items-center h-12 rounded-xl transition-all duration-200 hover:bg-white/5 px-2 overflow-hidden"
+          <div 
+            className="flex items-center h-12 px-2 overflow-hidden select-none"
           >
             <div className="w-8 h-8 rounded-full bg-[var(--y)] text-[var(--blk)] flex items-center justify-center font-heading font-black text-lg shadow-[0_0_15px_rgba(255,231,1,0.3)] shrink-0">
               <HamsterIcon className="w-5 h-5 fill-current" />
@@ -53,7 +52,7 @@ export function Sidebar() {
             <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 font-heading font-black text-base text-[var(--y)] ml-3 tracking-tighter uppercase whitespace-nowrap">
               DopeKin
             </span>
-          </NavLink>
+          </div>
         </div>
 
         {/* Navigation links */}

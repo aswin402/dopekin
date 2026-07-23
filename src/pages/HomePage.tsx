@@ -505,7 +505,7 @@ export function HomePage() {
           </span>
         </div>
         
-        <div className="flex gap-8 overflow-x-auto pb-2 scrollbar-none scroll-smooth">
+        <div className="flex flex-nowrap gap-6 sm:gap-8 overflow-x-auto pb-2 scrollbar-none scroll-smooth">
           {['etherik', 'sarang', 'aiko', 'cody', 'vale'].map((newId, idx) => {
             const twin = getTwin(newId);
             return (
@@ -545,7 +545,7 @@ export function HomePage() {
           </Link>
         </div>
 
-        <div className="flex flex-wrap sm:flex-nowrap gap-4 overflow-x-auto pb-2 scrollbar-none scroll-smooth justify-center sm:justify-start">
+        <div className="flex flex-nowrap gap-4 overflow-x-auto pb-2 scrollbar-none scroll-smooth justify-start">
           {[
             { id: 'vale', vibe: '🎭 Confident • Empathetic', desc: 'You both like fashion' },
             { id: 'sarang', vibe: '💃 Playful • Creative', desc: 'You both like K-pop' },
@@ -716,28 +716,28 @@ export function HomePage() {
             <Link to="/explore" className="text-zinc-500 hover:text-white text-xs font-bold uppercase tracking-wider cursor-pointer font-mono">View all</Link>
           </div>
 
-          <div className="flex-1 flex flex-col justify-between gap-4 bg-zinc-950 border border-white/5 rounded-3xl p-6 font-body">
+          <div className="flex-1 flex flex-col justify-between gap-4 bg-zinc-950 border border-white/5 rounded-3xl p-4 sm:p-6 font-body w-full overflow-hidden">
             {trendingCompanions.map((twin, idx) => {
               return (
-                <div key={twin.id} className="flex items-center justify-between gap-4 p-1.5 rounded-2xl hover:bg-white/5 transition-colors group">
-                  <div className="flex items-center gap-4 min-w-0">
+                <div key={twin.id} className="flex items-center justify-between gap-2.5 sm:gap-4 p-1.5 rounded-2xl hover:bg-white/5 transition-colors group min-w-0">
+                  <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
                     <div className="w-12 h-12 rounded-full border border-white/10 overflow-hidden shrink-0 bg-zinc-950 relative">
                       <img src={twin.avatarUrl} alt={twin.name} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
                     </div>
-                    <div className="flex flex-col text-left min-w-0">
-                      <div className="flex items-center gap-2">
+                    <div className="flex flex-col text-left min-w-0 flex-1">
+                      <div className="flex items-center gap-1.5 min-w-0">
                         <span className="font-heading font-black text-sm text-white truncate">{twin.name}</span>
                         <span className={`text-[8px] font-mono font-black px-1.5 py-0.5 rounded uppercase tracking-wider shrink-0 ${BADGE_COLORS[idx] || BADGE_COLORS[2]}`}>
                           {BADGES[idx] || '⭐ Rising'}
                         </span>
                       </div>
-                      <p className="text-xs text-zinc-400 font-body truncate mt-0.5 max-w-[15rem] sm:max-w-[20rem]">
+                      <p className="text-xs text-zinc-400 font-body truncate mt-0.5">
                         {twin.profession} • <span className="text-[var(--y)] font-semibold">{twin.vibe}</span>
                       </p>
                     </div>
                   </div>
                   
-                  <div className="flex items-center gap-4 shrink-0 font-mono">
+                  <div className="flex items-center gap-2 sm:gap-4 shrink-0 font-mono">
                     <span className="text-[10px] text-zinc-500 font-bold hidden sm:inline">{twin.fans}</span>
                     <Link 
                       to={`/chat?twin=${twin.id}`}
@@ -762,27 +762,27 @@ export function HomePage() {
             <span className="text-zinc-500 hover:text-white text-xs font-bold uppercase tracking-wider cursor-pointer font-mono" onClick={() => navigate('/feed')}>View all</span>
           </div>
 
-          <div className="flex-1 flex flex-col justify-between gap-4 bg-zinc-950 border border-white/5 rounded-3xl p-6 font-body">
+          <div className="flex-1 flex flex-col justify-between gap-4 bg-zinc-950 border border-white/5 rounded-3xl p-4 sm:p-6 font-body w-full overflow-hidden">
             {[
               { title: 'Cyberpunk Summer', description: 'Behind the scenes with Serena and Rina.', cast: 'Serena & Rina', isNew: true },
               { title: 'Midnight Talks', description: 'Late night crypto insights and banter.', cast: 'Cody', isNew: false },
               { title: 'Office Secrets', description: 'Preparing for the next major showcase.', cast: 'Aiko', isNew: false }
             ].map((feed, idx) => {
               return (
-                <div key={idx} className="flex items-center justify-between gap-4 p-1.5 rounded-2xl hover:bg-white/5 transition-colors">
-                  <div className="flex items-center gap-4 min-w-0">
-                    <div className="w-20 h-14 bg-gradient-to-br from-zinc-900 to-black border border-white/10 rounded-xl overflow-hidden shrink-0 relative flex flex-col items-center justify-center text-[10px] font-black text-zinc-600 font-mono">
+                <div key={idx} className="flex items-center justify-between gap-2.5 sm:gap-4 p-1.5 rounded-2xl hover:bg-white/5 transition-colors min-w-0">
+                  <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
+                    <div className="w-16 h-12 sm:w-20 sm:h-14 bg-gradient-to-br from-zinc-900 to-black border border-white/10 rounded-xl overflow-hidden shrink-0 relative flex flex-col items-center justify-center text-[10px] font-black text-zinc-600 font-mono">
                       <span>FEED</span>
                       <span className="text-[8px] opacity-60">#{idx + 1}</span>
                     </div>
-                    <div className="flex flex-col text-left min-w-0">
-                      <div className="flex items-center gap-2">
+                    <div className="flex flex-col text-left min-w-0 flex-1">
+                      <div className="flex items-center gap-1.5 min-w-0">
                         <span className="font-heading font-black text-sm text-white truncate">{feed.title}</span>
                         {feed.isNew && (
-                          <span className="text-[7px] font-mono font-black bg-rose-500 text-white px-1.5 py-0.5 rounded uppercase tracking-wider">New</span>
+                          <span className="text-[7px] font-mono font-black bg-rose-500 text-white px-1.5 py-0.5 rounded uppercase tracking-wider shrink-0">New</span>
                         )}
                       </div>
-                      <p className="text-xs text-zinc-400 font-body truncate mt-0.5 max-w-[15rem] sm:max-w-[20rem]">
+                      <p className="text-xs text-zinc-400 font-body truncate mt-0.5">
                         {feed.description}
                       </p>
                     </div>
@@ -790,7 +790,7 @@ export function HomePage() {
                   
                   <button 
                     onClick={() => navigate('/feed')}
-                    className="h-10 px-5 bg-[var(--y)] text-black text-xs font-black uppercase rounded-lg hover:scale-102 active:scale-98 transition-all border border-black shadow-[2px_2px_0px_rgba(0,0,0,1)] cursor-pointer shrink-0"
+                    className="h-9 px-3.5 sm:h-10 sm:px-5 bg-[var(--y)] text-black text-xs font-black uppercase rounded-lg hover:scale-102 active:scale-98 transition-all border border-black shadow-[2px_2px_0px_rgba(0,0,0,1)] cursor-pointer shrink-0"
                   >
                     Watch
                   </button>

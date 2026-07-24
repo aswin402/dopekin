@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
-import { Twin } from '../../../types/twin';
+import type { Twin } from '../../../types/twin';
 import { useAppStore } from '../../../store/useAppStore';
 
 export interface RecentChatCard {

@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { Twin } from '../../../types/twin';
+import type { Twin } from '../../../types/twin';
 import { useAppStore } from '../../../store/useAppStore';
 
 export interface FavoritesRowProps {

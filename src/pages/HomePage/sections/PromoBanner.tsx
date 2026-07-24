@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect, TouchEvent, MouseEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Sparkles, Play, MessageSquare, ChevronRight } from 'lucide-react';
-import { Twin } from '../../../types/twin';
+import type { Twin } from '../../../types/twin';
 import { useAppStore } from '../../../store/useAppStore';
 
 export interface PromoBannerProps {

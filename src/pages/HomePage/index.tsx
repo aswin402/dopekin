@@ -232,7 +232,7 @@ export function HomePage() {
           </Link>
         </div>
 
-        <div className="flex flex-wrap gap-6 justify-center sm:justify-start">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-10 w-full">
           {twins.map((twin) => (
             <Link 
               key={twin.id}
@@ -250,7 +250,7 @@ export function HomePage() {
                   video.currentTime = 0;
                 }
               }}
-              className="w-full sm:w-72 max-w-sm sm:max-w-none aspect-[3/4] bg-black border border-[var(--border)] rounded-2xl flex flex-col relative group overflow-hidden transition-all duration-300 hover:translate-y-[-6px] hover:scale-[1.02] hover:border-[var(--border2)] shrink-0 text-left cursor-pointer"
+              className="w-full aspect-[3/4] bg-black border border-[var(--border)] rounded-2xl flex flex-col relative group overflow-hidden transition-all duration-300 hover:translate-y-[-6px] hover:scale-[1.02] hover:border-[var(--border2)] shrink-0 text-left cursor-pointer"
             >
               {/* Card Media (Image/Video) */}
               <div className="absolute inset-0 w-full h-full bg-zinc-900">

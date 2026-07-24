@@ -176,11 +176,11 @@ export function DiscoverPage() {
         </div>
       </div>
 
-      {/* Search Input for mobile / secondary */}
-      <div className="relative w-full md:hidden">
+      {/* Search Input */}
+      <div className="relative w-full">
         <input
           type="text"
-          placeholder="Filter seeds..."
+          placeholder="Search companions by name, profession, bio, or vibe..."
           value={searchVal}
           onChange={(e) => handleSearchChange(e.target.value)}
           className="w-full h-11 bg-black border border-[var(--border)] rounded-lg pl-10 pr-4 text-sm text-[#f5f5f5] placeholder-[#f5f5f5]/30 focus:outline-none focus:border-[var(--y)] font-body"

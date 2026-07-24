@@ -1,11 +1,14 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAppStore } from '../store/useAppStore';
+import { useAppStore } from '../../store/useAppStore';
 import { 
-  Users, Clock, MessageSquare, Flame, 
-  ChevronRight, Play, Heart, Phone, Sparkles, Shield,
-  Music, Dumbbell, Laugh, Video, Zap
+  ChevronRight, Heart, Phone, Sparkles, Shield,
+  MessageSquare, Music, Dumbbell, Laugh, Video, Zap
 } from 'lucide-react';
+import { PromoBanner } from './sections/PromoBanner';
+import { DashboardStats } from './sections/DashboardStats';
+import { FavoritesRow } from './sections/FavoritesRow';
+import { ContinueChatting } from './sections/ContinueChatting';
 
 // Helper to parse fan count strings (e.g. "15.9M FANS" -> 15900000)
 const getFansCount = (fansStr: string | null | undefined): number => {
@@ -53,150 +56,6 @@ export function HomePage() {
   const navigate = useNavigate();
   const twins = useAppStore((state) => state.twins);
 
-  const banners = useMemo(() => [
-    {
-      id: 'special-offers',
-      tag: 'SPECIAL OFFER',
-      tagClass: 'bg-amber-500 text-black font-extrabold',
-      title: 'UNLOCK',
-      highlightText: 'VIP PASS',
-      description: 'Get unlimited messaging, priority access to new companion releases, and custom photo generation.',
-      btnText: 'Claim 50% Off',
-      btnIcon: <Sparkles className="w-3.5 h-3.5 fill-current" />,
-      bgGradient: 'bg-gradient-to-r from-amber-950/70 via-yellow-950/40 to-zinc-950',
-      radialGradient: 'radial-gradient(circle at 70% 30%, rgba(245, 158, 11, 0.15), transparent 45%)',
-      twinIds: ['vale', 'cody', 'serena'],
-      action: () => navigate('/pricing')
-    },
-    {
-      id: 'new-release',
-      tag: 'NEW RELEASE',
-      tagClass: 'bg-rose-500 text-white animate-pulse-glow',
-      title: 'CYBERPUNK',
-      highlightText: 'SUMMER',
-      description: 'Step into the neon metropolis and watch your favorite twins interact in autonomous mini-episodes.',
-      btnText: 'Watch Now',
-      btnIcon: <Play className="w-3.5 h-3.5 fill-current" />,
-      bgGradient: 'bg-gradient-to-r from-purple-900/60 via-pink-900/50 to-zinc-950',
-      radialGradient: 'radial-gradient(circle at 70% 30%, rgba(255, 235, 31, 0.15), transparent 45%)',
-      twinIds: ['serena', 'sarang', 'aiko'],
-      action: () => navigate('/feed')
-    },
-    {
-      id: 'trending',
-      tag: 'TRENDING NOW',
-      tagClass: 'bg-indigo-500 text-white font-extrabold',
-      title: 'MEET THE RISING',
-      highlightText: 'STARS',
-      description: 'Interact with the most active and highly rated digital twins of the week. Find your perfect connection.',
-      btnText: 'Chat Now',
-      btnIcon: <MessageSquare className="w-3.5 h-3.5 fill-current" />,
-      bgGradient: 'bg-gradient-to-r from-indigo-900/60 via-blue-950/50 to-zinc-950',
-      radialGradient: 'radial-gradient(circle at 70% 30%, rgba(59, 130, 246, 0.15), transparent 45%)',
-      twinIds: ['sarang', 'aiko', 'serena'],
-      action: () => navigate('/explore')
-    },
-    {
-      id: 'trending-feed',
-      tag: 'TRENDING FEED',
-      tagClass: 'bg-emerald-500 text-black font-extrabold',
-      title: 'HOT ON THE',
-      highlightText: 'FEED',
-      description: 'Stay updated with selfies, diaries, and stories shared directly by the twins on the community feed.',
-      btnText: 'Explore Feed',
-      btnIcon: <ChevronRight className="w-3.5 h-3.5" />,
-      bgGradient: 'bg-gradient-to-r from-teal-900/60 via-emerald-950/50 to-zinc-950',
-      radialGradient: 'radial-gradient(circle at 70% 30%, rgba(16, 185, 129, 0.15), transparent 45%)',
-      twinIds: ['aiko', 'vale', 'sarang'],
-      action: () => navigate('/feed')
-    }
-  ], [navigate]);
-
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
-  const [slideDirection, setSlideDirection] = useState<'next' | 'prev'>('next');
-
-  // Swipe gesture tracking (touch and mouse drag)
-  const [touchStart, setTouchStart] = useState<number | null>(null);
-  const [touchEnd, setTouchEnd] = useState<number | null>(null);
-  const minSwipeDistance = 50;
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchEnd(null);
-    setTouchStart(e.targetTouches[0].clientX);
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    setTouchEnd(e.targetTouches[0].clientX);
-  };
-
-  const handleTouchEnd = () => {
-    if (!touchStart || !touchEnd) return;
-    const distance = touchStart - touchEnd;
-    const isLeftSwipe = distance > minSwipeDistance;
-    const isRightSwipe = distance < -minSwipeDistance;
-    
-    if (isLeftSwipe) {
-      setSlideDirection('next');
-      setCurrentSlide((prev) => (prev + 1) % banners.length);
-    } else if (isRightSwipe) {
-      setSlideDirection('prev');
-      setCurrentSlide((prev) => (prev - 1 + banners.length) % banners.length);
-    }
-    setTouchStart(null);
-    setTouchEnd(null);
-  };
-
-  const handleMouseDown = (e: React.MouseEvent) => {
-    // Avoid triggering swipe/drag if clicking interactive elements like buttons
-    const target = e.target as HTMLElement;
-    if (target.closest('button') || target.closest('a')) return;
-    
-    setTouchEnd(null);
-    setTouchStart(e.clientX);
-  };
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (touchStart !== null) {
-      setTouchEnd(e.clientX);
-    }
-  };
-
-  const handleMouseUp = () => {
-    if (touchStart !== null && touchEnd !== null) {
-      const distance = touchStart - touchEnd;
-      const isLeftSwipe = distance > minSwipeDistance;
-      const isRightSwipe = distance < -minSwipeDistance;
-      
-      if (isLeftSwipe) {
-        setSlideDirection('next');
-        setCurrentSlide((prev) => (prev + 1) % banners.length);
-      } else if (isRightSwipe) {
-         setSlideDirection('prev');
-        setCurrentSlide((prev) => (prev - 1 + banners.length) % banners.length);
-      }
-    }
-    setTouchStart(null);
-    setTouchEnd(null);
-  };
-
-  useEffect(() => {
-    if (isHovered) return;
-    const interval = setInterval(() => {
-      setSlideDirection('next');
-      setCurrentSlide((prev) => (prev + 1) % banners.length);
-    }, 10000);
-    return () => clearInterval(interval);
-  }, [currentSlide, isHovered, banners.length]);
-
-  const trendingCompanions = useMemo(() => {
-    return [...twins]
-      .sort((a, b) => getFansCount(b.fans) - getFansCount(a.fans))
-      .slice(0, 3);
-  }, [twins]);
-
-
-
   // Local state to mock adding/removing favorites
   const [favorites, setFavorites] = useState<string[]>(['vale', 'rina', 'aiko']);
 
@@ -209,6 +68,12 @@ export function HomePage() {
   // Find twin helper
   const getTwin = (id: string) => twins.find(t => t.id === id) || twins[0];
 
+  const trendingCompanions = useMemo(() => {
+    return [...twins]
+      .sort((a, b) => getFansCount(b.fans) - getFansCount(a.fans))
+      .slice(0, 3);
+  }, [twins]);
+
   // Feature toggle to hide top dashboard metrics & quick access rows for now (can be enabled later)
   const SHOW_TOP_DASHBOARD_SECTIONS = false;
 
@@ -216,280 +81,14 @@ export function HomePage() {
     <div className="flex flex-col gap-8 animate-fade-up px-4 md:px-6 py-6 pb-24 text-left w-full mx-auto">
       {SHOW_TOP_DASHBOARD_SECTIONS && (
         <>
-          {/* METRICS / STAT CARDS ROW */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            {/* Stat 1 */}
-            <div className="p-4 bg-zinc-900/40 border border-white/5 rounded-2xl flex items-center justify-between gap-4">
-              <div className="flex flex-col gap-0.5 text-left">
-                <span className="text-2xl font-heading font-black text-white leading-none">5</span>
-                <span className="text-[10px] font-mono font-bold text-zinc-400 uppercase tracking-wider">Active Companions</span>
-              </div>
-              <div className="w-10 h-10 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center">
-                <Users className="w-5 h-5" />
-              </div>
-            </div>
-
-            {/* Stat 2 */}
-            <div className="p-4 bg-zinc-900/40 border border-white/5 rounded-2xl flex items-center justify-between gap-4">
-              <div className="flex flex-col gap-0.5 text-left">
-                <span className="text-2xl font-heading font-black text-white leading-none">2h 35m</span>
-                <span className="text-[10px] font-mono font-bold text-zinc-400 uppercase tracking-wider">Time Spent Today</span>
-              </div>
-              <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
-                <Clock className="w-5 h-5" />
-              </div>
-            </div>
-
-            {/* Stat 3 */}
-            <div className="p-4 bg-zinc-900/40 border border-white/5 rounded-2xl flex items-center justify-between gap-4">
-              <div className="flex flex-col gap-0.5 text-left">
-                <span className="text-2xl font-heading font-black text-white leading-none">12</span>
-                <span className="text-[10px] font-mono font-bold text-zinc-400 uppercase tracking-wider">Conversations Today</span>
-              </div>
-              <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center">
-                <MessageSquare className="w-5 h-5" />
-              </div>
-            </div>
-
-            {/* Stat 4 */}
-            <div className="p-4 bg-zinc-900/40 border border-white/5 rounded-2xl flex flex-col justify-between gap-2.5">
-              <div className="flex items-center justify-between w-full">
-                <div className="flex items-center gap-1.5 text-[var(--y)] font-mono font-bold text-[10px] tracking-wider uppercase">
-                  <Flame className="w-4 h-4 text-[var(--y)] fill-current animate-pulse" />
-                  <span>14 Day Streak</span>
-                </div>
-                <span className="text-[9px] text-zinc-500 font-bold font-mono">Keep it going!</span>
-              </div>
-              <div className="w-full h-1.5 bg-zinc-950 border border-white/5 rounded-full overflow-hidden">
-                <div className="h-full bg-gradient-to-r from-amber-500 to-rose-500" style={{ width: '70%' }} />
-              </div>
-            </div>
-          </div>
-
-          {/* YOUR FAVORITES (BIG HORIZONTAL ROW) */}
-          <div className="flex flex-col gap-4">
-            <div className="flex justify-between items-center">
-              <h3 className="text-sm font-mono font-black uppercase text-white/50 tracking-wider">
-                Your Favorites
-              </h3>
-              <span 
-                className="text-zinc-500 hover:text-white text-xs font-bold uppercase tracking-wider cursor-pointer font-mono" 
-                onClick={() => navigate('/explore?filter=favorites')}
-              >
-                View all
-              </span>
-            </div>
-            
-            <div className="flex gap-8 overflow-x-auto pb-2 scrollbar-none scroll-smooth">
-              {favorites.map((favId) => {
-                const twin = getTwin(favId);
-                return (
-                  <Link 
-                    key={favId}
-                    to={`/chat?twin=${favId}`}
-                    className="flex flex-col items-center gap-2.5 group cursor-pointer shrink-0"
-                  >
-                    <div className="relative w-28 h-28 rounded-full p-[4px] bg-zinc-900 border border-white/5 group-hover:bg-[var(--y)] group-hover:border-[var(--y)] transition-all duration-300 shadow-lg group-hover:shadow-[0_0_20px_rgba(255,231,1,0.35)]">
-                      <img 
-                        src={twin.avatarUrl} 
-                        alt={twin.name} 
-                        className="w-full h-full rounded-full object-cover border-2 border-black" 
-                      />
-                      <span className="absolute bottom-1 right-1 w-4.5 h-4.5 bg-emerald-500 rounded-full border-2 border-black shadow-md" />
-                    </div>
-                    <span className="text-xs md:text-sm text-zinc-300 font-extrabold group-hover:text-white tracking-wide transition-colors mt-1.5 truncate max-w-[7rem]">
-                      {twin.name}
-                    </span>
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* CONTINUE CHATTING SLIDER */}
-          <div className="flex flex-col gap-4 min-w-0">
-            <div className="flex justify-between items-center">
-              <h3 className="text-sm font-mono font-black uppercase text-white/50 tracking-wider">
-                Continue Chatting
-              </h3>
-              <Link to="/chat" className="text-zinc-500 hover:text-white text-xs font-bold uppercase tracking-wider flex items-center gap-0.5">
-                <span>View all</span>
-                <ChevronRight className="w-3.5 h-3.5" />
-              </Link>
-            </div>
-
-            {/* Cards List */}
-            <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-none scroll-smooth">
-              {[
-                { id: 'serena', name: 'Serena', status: 'Online', msg: 'Good morning! Ready for today? ☀️' },
-                { id: 'cody', name: 'Cody', status: 'Online', msg: 'That was an awesome conversation!' },
-                { id: 'rina', name: 'Rina', status: 'Away', msg: 'Can\'t wait to talk again later 💕' },
-                { id: 'aiko', name: 'Aiko', status: 'Offline', msg: 'Here is the summary of what we talked about.' }
-              ].map((card) => {
-                const twin = getTwin(card.id);
-                return (
-                  <div 
-                    key={card.id}
-                    className="w-44 bg-zinc-950 border border-white/5 rounded-2xl flex flex-col shrink-0 relative overflow-hidden group hover:border-white/15 transition-all duration-300 hover:translate-y-[-4px]"
-                  >
-                    {/* Card Image */}
-                    <div className="aspect-[3/4] relative overflow-hidden rounded-t-2xl bg-zinc-900">
-                      <img 
-                        src={twin.avatarUrl} 
-                        alt={card.name} 
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-103" 
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/20 to-transparent" />
-                      
-                      {/* Status Badge */}
-                      <div className="absolute top-2.5 left-2.5 flex items-center gap-1 bg-black/60 backdrop-blur-md px-2 py-0.5 rounded-full border border-white/5 text-[9px] text-zinc-300 font-bold uppercase tracking-wider">
-                        <span className={`w-1.5 h-1.5 rounded-full ${
-                          card.status === 'Online' ? 'bg-emerald-500' : card.status === 'Away' ? 'bg-amber-500 animate-pulse' : 'bg-zinc-500'
-                        }`} />
-                        <span>{card.status}</span>
-                      </div>
-                    </div>
-
-                    {/* Details & Button */}
-                    <div className="p-3 flex flex-col gap-1 z-10 bg-zinc-950">
-                      <h4 className="font-heading font-black text-sm text-white text-left">{card.name}</h4>
-                      <p className="text-[10px] text-zinc-400 font-body leading-relaxed line-clamp-1 h-4 text-left">
-                        "{card.msg}"
-                      </p>
-                      <Link 
-                        to={`/chat?twin=${card.id}`}
-                        className="mt-2.5 w-full py-1.5 text-center bg-zinc-900 border border-white/5 hover:bg-[var(--y)] hover:text-black hover:border-black text-[10px] font-black uppercase rounded-lg transition-all"
-                      >
-                        Resume Chat
-                      </Link>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+          <DashboardStats />
+          <FavoritesRow favorites={favorites} twins={twins} />
+          <ContinueChatting twins={twins} />
         </>
       )}
 
       {/* ANIMATED ROTATING PROMO BANNER */}
-      <div 
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-        className="group relative w-full rounded-3xl overflow-hidden aspect-[16/10] sm:aspect-[3/1] lg:aspect-[4/1] border border-white/10 shadow-2xl transition-all duration-700 ease-in-out select-none cursor-grab active:cursor-grabbing"
-      >
-        {/* Layered background gradients for smooth cross-fading */}
-        {banners.map((banner, index) => (
-          <div
-            key={`bg-${banner.id}`}
-            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${banner.bgGradient} ${
-              currentSlide === index ? 'opacity-100' : 'opacity-0 pointer-events-none'
-            }`}
-          />
-        ))}
-        
-        {/* Layered radial glow overlays for smooth cross-fading */}
-        {banners.map((banner, index) => (
-          <div
-            key={`glow-${banner.id}`}
-            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-              currentSlide === index ? 'opacity-100' : 'opacity-0 pointer-events-none'
-            }`}
-            style={{ 
-              backgroundImage: banner.radialGradient 
-            }} 
-          />
-        ))}
-        
-        <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/45 to-transparent z-10" />
-
-        {/* Content Wrapper for Left Text */}
-        <div 
-          key={`text-${currentSlide}`}
-          className={`absolute inset-y-0 left-6 sm:left-12 flex flex-col justify-center gap-2 max-w-[85%] sm:max-w-md z-20 pointer-events-none ${
-            slideDirection === 'next' ? 'animate-scroll-next-text' : 'animate-scroll-prev-text'
-          }`}
-        >
-          <div className="flex items-center gap-2">
-            <span className={`text-[8px] font-black tracking-widest uppercase px-2 py-0.5 rounded-full ${banners[currentSlide].tagClass}`}>
-              {banners[currentSlide].tag}
-            </span>
-            <span className="text-[10px] text-zinc-400 font-bold tracking-wider font-mono">
-              DOPEKIN SPECIALS
-            </span>
-          </div>
-          <h2 className="text-xl sm:text-2xl lg:text-3xl font-heading font-black uppercase text-white leading-none tracking-tight">
-            {banners[currentSlide].title} <span className="text-[var(--y)]">{banners[currentSlide].highlightText}</span>
-          </h2>
-          <p className="text-xs text-zinc-400 leading-snug line-clamp-2 max-w-xs sm:max-w-sm">
-            {banners[currentSlide].description}
-          </p>
-          <button 
-            onClick={(e) => {
-              e.stopPropagation();
-              banners[currentSlide].action();
-            }}
-            className="mt-2 w-fit h-9 px-5 rounded-full bg-[var(--y)] text-[var(--blk)] font-bold text-xs uppercase tracking-wider shadow-[var(--brutal)] hover:translate-y-[-2px] active:translate-y-[0.5px] transition-transform border border-black flex items-center gap-1.5 cursor-pointer pointer-events-auto"
-          >
-            {banners[currentSlide].btnIcon}
-            <span>{banners[currentSlide].btnText}</span>
-          </button>
-        </div>
-
-        {/* Three portrait overlays from screenshot */}
-        <div 
-          key={`images-${currentSlide}`}
-          className={`absolute right-0 top-0 bottom-0 w-1/2 hidden sm:flex items-center justify-end pr-10 pointer-events-none overflow-hidden opacity-85 z-10 ${
-            slideDirection === 'next' ? 'animate-scroll-next-images' : 'animate-scroll-prev-images'
-          }`}
-        >
-          <div className="flex gap-4 transform rotate-12 translate-x-12 translate-y-6">
-            {banners[currentSlide].twinIds.map((id, i) => {
-              const twin = getTwin(id);
-              return (
-                <div 
-                  key={id}
-                  className="w-24 h-36 lg:w-28 lg:h-40 rounded-xl overflow-hidden border border-white/20 shadow-2xl relative shrink-0 transition-transform duration-500 hover:scale-105"
-                  style={{ transform: `translateY(${i * -12}px)` }}
-                >
-                  <img 
-                    src={twin.avatarUrl} 
-                    alt="" 
-                    draggable="false"
-                    className="w-full h-full object-cover" 
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Slide Indicator dots */}
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 z-30">
-          {banners.map((_, index) => (
-            <button
-              key={index}
-              onClick={(e) => {
-                e.stopPropagation();
-                if (index !== currentSlide) {
-                  setSlideDirection(index > currentSlide ? 'next' : 'prev');
-                  setCurrentSlide(index);
-                }
-              }}
-              className={`relative h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
-                currentSlide === index ? 'w-6 bg-[var(--y)]' : 'w-1.5 bg-white/20 hover:bg-white/40'
-              }`}
-              aria-label={`Go to slide ${index + 1}`}
-            />
-          ))}
-        </div>
-      </div>
+      <PromoBanner twins={twins} />
 
       {/* NEW COMPANIONS (BIG HORIZONTAL ROW) */}
       <div className="flex flex-col gap-4">
@@ -750,7 +349,6 @@ export function HomePage() {
               );
             })}
           </div>
-
         </div>
 
         {/* Latest Feeds */}
@@ -879,4 +477,5 @@ export function HomePage() {
     </div>
   );
 }
+
 export default HomePage;

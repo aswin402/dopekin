@@ -1,4 +1,5 @@
-import { useState, useMemo, useEffect, TouchEvent, MouseEvent } from 'react';
+import { useState, useMemo, useEffect } from 'react';
+import type { TouchEvent, MouseEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Sparkles, Play, MessageSquare, ChevronRight } from 'lucide-react';
 import type { Twin } from '../../../types/twin';

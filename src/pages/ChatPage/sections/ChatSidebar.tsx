@@ -13,7 +13,7 @@ export interface ChatSidebarProps {
   onSendMessage: (e: React.FormEvent) => void;
   onSendVoiceNote: () => void;
   onClose: () => void;
-  messagesEndRef?: RefObject<HTMLDivElement>;
+  messagesEndRef?: RefObject<HTMLDivElement | null>;
   onSelectTwin?: (twinId: string) => void;
   searchQuery?: string;
   onSearchChange?: (query: string) => void;

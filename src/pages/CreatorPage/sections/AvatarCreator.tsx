@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useAppStore } from '../../../store/useAppStore';
 import type { Twin } from '../../../types/twin';
 import { 
-  Sparkles, Camera, Upload, Play, Volume2, Globe, FileText, CheckCircle2, 
-  HelpCircle, RefreshCw, Cpu, Layers, AlertCircle 
+  Sparkles, Upload, Volume2, FileText, CheckCircle2, 
+  RefreshCw, Cpu, Layers 
 } from 'lucide-react';
 
 const STOCK_TEMPLATES = [
@@ -60,7 +60,6 @@ export function AvatarCreator() {
 
   // Voice recording states
   const [isRecording, setIsRecording] = useState(false);
-  const [voiceBlobUrl, setVoiceBlobUrl] = useState<string | null>(null);
   const [audioProgress, setAudioProgress] = useState(0);
   const audioIntervalRef = useRef<any>(null);
 
@@ -128,18 +127,15 @@ export function AvatarCreator() {
     if (isRecording) {
       setIsRecording(false);
       if (audioIntervalRef.current) clearInterval(audioIntervalRef.current);
-      setVoiceBlobUrl("mock-recording-url");
     } else {
       setIsRecording(true);
       setAudioProgress(0);
-      setVoiceBlobUrl(null);
       
       audioIntervalRef.current = setInterval(() => {
         setAudioProgress((prev) => {
           if (prev >= 100) {
             setIsRecording(false);
             if (audioIntervalRef.current) clearInterval(audioIntervalRef.current);
-            setVoiceBlobUrl("mock-recording-url");
             return 100;
           }
           return prev + 4;

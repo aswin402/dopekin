@@ -1,4 +1,4 @@
-import React, { RefObject } from 'react';
+import type { RefObject } from 'react';
 import { X, MessageSquare, Mic } from 'lucide-react';
 import type { Twin, Message } from '../../../types/twin';
 

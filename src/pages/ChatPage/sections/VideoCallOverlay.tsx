@@ -1,6 +1,7 @@
+import { useState } from 'react';
 import { 
   PhoneCall, PhoneOff, Mic, MicOff, Video, VideoOff, 
-  Maximize2, Minimize2 
+  Maximize2, Minimize2, Smartphone, Monitor
 } from 'lucide-react';
 import type { Twin } from '../../../types/twin';
 
@@ -33,6 +34,7 @@ export function VideoCallOverlay({
   onEndCall,
   onStartCall,
 }: VideoCallOverlayProps) {
+  const [orientation, setOrientation] = useState<'landscape' | 'portrait'>('landscape');
   const formatTime = (secs: number) => {
     const mins = Math.floor(secs / 60);
     const remainingSecs = secs % 60;
@@ -48,7 +50,9 @@ export function VideoCallOverlay({
           className={`w-full transition-all duration-300 relative overflow-hidden bg-black flex flex-col justify-between border border-white/5 ${
             isFullscreen 
               ? 'fixed inset-0 max-w-none h-full w-full rounded-none border-none z-50' 
-              : 'aspect-[3/4] sm:aspect-video max-w-[95%] sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-4xl rounded-2xl md:rounded-3xl shadow-2xl animate-in fade-in duration-300'
+              : orientation === 'landscape'
+              ? 'aspect-video max-w-[95%] sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-4xl rounded-2xl md:rounded-3xl shadow-2xl animate-in fade-in duration-300'
+              : 'aspect-[3/4] max-w-[340px] sm:max-w-[380px] rounded-2xl md:rounded-3xl shadow-2xl animate-in fade-in duration-300'
           }`}
         >
           {/* Background image / simulated video */}
@@ -119,6 +123,17 @@ export function VideoCallOverlay({
           >
             {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
           </button>
+
+          {/* Sizing Orientation Button overlay inside the video container */}
+          {!isFullscreen && (
+            <button 
+              onClick={() => setOrientation(orientation === 'landscape' ? 'portrait' : 'landscape')}
+              className="absolute top-4 right-14 p-2 rounded-full bg-black/60 hover:bg-black/80 border border-white/5 hover:border-[var(--y)] text-zinc-400 hover:text-white transition-all cursor-pointer z-20"
+              title={orientation === 'landscape' ? "Switch to Portrait Mode" : "Switch to Landscape Mode"}
+            >
+              {orientation === 'landscape' ? <Smartphone className="w-4 h-4" /> : <Monitor className="w-4 h-4" />}
+            </button>
+          )}
 
           {/* Bottom Controls Bar (Nested inside the video container for layout & fullscreen support) */}
           <div className="w-full pb-4 pt-3 px-4 flex justify-center items-center z-20 mt-auto bg-gradient-to-t from-black/80 via-black/30 to-transparent">

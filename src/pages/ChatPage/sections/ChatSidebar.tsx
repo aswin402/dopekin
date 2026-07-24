@@ -35,6 +35,7 @@ export function ChatSidebar({
   searchQuery = '',
   onSearchChange,
 }: ChatSidebarProps) {
+  const showSearchAndSelection = false;
   if (!showChatList) return null;
 
   return (
@@ -67,8 +68,8 @@ export function ChatSidebar({
         </button>
       </div>
 
-      {/* Twins List / Search bar if provided */}
-      {onSearchChange && (
+      {/* Twins List / Search bar if provided (Hidden for now, can toggle showSearchAndSelection to true in future) */}
+      {showSearchAndSelection && onSearchChange && (
         <div className="mb-3 shrink-0">
           <input
             type="text"
@@ -80,7 +81,7 @@ export function ChatSidebar({
         </div>
       )}
 
-      {twins.length > 0 && onSelectTwin && (
+      {showSearchAndSelection && twins.length > 0 && onSelectTwin && (
         <div className="flex gap-2 overflow-x-auto pb-2 mb-3 scrollbar-none shrink-0 border-b border-zinc-900/50">
           {twins.map((twin) => {
             const isActive = twin.id === activeTwin?.id;

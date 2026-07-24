@@ -1,10 +1,10 @@
-import { HeroSection } from './LandingPage/sections/HeroSection';
-import { TwinShowcase } from './LandingPage/sections/TwinShowcase';
-import { FeatureHighlights } from './LandingPage/sections/FeatureHighlights';
-import { HowItWorks } from './LandingPage/sections/HowItWorks';
-import { FAQSection } from './LandingPage/sections/FAQSection';
-import { FooterSection } from './LandingPage/sections/FooterSection';
-import { NotificationWidget } from './LandingPage/sections/NotificationWidget';
+import { HeroSection } from './sections/HeroSection';
+import { TwinShowcase } from './sections/TwinShowcase';
+import { FeatureHighlights } from './sections/FeatureHighlights';
+import { HowItWorks } from './sections/HowItWorks';
+import { FAQSection } from './sections/FAQSection';
+import { FooterSection } from './sections/FooterSection';
+import { NotificationWidget } from './sections/NotificationWidget';
 
 export function LandingPage() {
   return (

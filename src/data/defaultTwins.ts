@@ -1,22 +1,17 @@
 import type { Twin, SocialPost } from '../types/twin';
 
-// Helper to resolve local assets dynamically under src/assets/Avatars/
-const getAssetUrl = (path: string) => {
-  return new URL(path, import.meta.url).href;
-};
+// Map high-fidelity local assets statically for Vite analysis
+const serenaImg = new URL('../assets/Avatars/9_16 Ratio Images/05_Serena_C4.png', import.meta.url).href;
+const serenaVid = new URL('../assets/Avatars/potrait videos/serina-mac.mp4', import.meta.url).href;
 
-// Map high-fidelity local assets
-const serenaImg = getAssetUrl('../assets/Avatars/9_16 Ratio Images/05_Serena_C4.png');
-const serenaVid = getAssetUrl('../assets/Avatars/potrait videos/serina-mac.mp4');
+const sarangImg = new URL('../assets/Avatars/9_16 Ratio Images/02_Sarang_Sleevless.png', import.meta.url).href;
+const sarangVid = new URL('../assets/Avatars/potrait videos/sarang_mac.mp4', import.meta.url).href;
 
-const sarangImg = getAssetUrl('../assets/Avatars/9_16 Ratio Images/02_Sarang_Sleevless.png');
-const sarangVid = getAssetUrl('../assets/Avatars/potrait videos/sarang_mac.mp4');
+const aikoImg = new URL('../assets/Avatars/9_16 Ratio Images/03_Aiko_V2.png', import.meta.url).href;
+const aikoVid = new URL('../assets/Avatars/Intro Videos/Aiko  3.mp4', import.meta.url).href;
 
-const aikoImg = getAssetUrl('../assets/Avatars/9_16 Ratio Images/03_Aiko_V2.png');
-const aikoVid = getAssetUrl('../assets/Avatars/Intro Videos/Aiko  3.mp4');
-
-const etherikImg = getAssetUrl('../assets/Avatars/9_16 Ratio Images/01_Etherik.png');
-const etherikVid = getAssetUrl('../assets/Avatars/potrait videos/etherik_mac.mp4');
+const etherikImg = new URL('../assets/Avatars/9_16 Ratio Images/01_Etherik.png', import.meta.url).href;
+const etherikVid = new URL('../assets/Avatars/potrait videos/etherik_mac.mp4', import.meta.url).href;
 
 export const DEFAULT_TWINS: Twin[] = [
   {

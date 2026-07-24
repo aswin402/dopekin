@@ -32,65 +32,77 @@ export function MyAvatars({ onCreateClick }: MyAvatarsProps) {
   };
 
   const AvatarCard = ({ twin }: { twin: Twin }) => (
-    <div className="bg-zinc-950 border border-white/5 rounded-2xl overflow-hidden group hover:border-[var(--y)] transition-all duration-300 relative flex flex-col h-[320px]">
-      <div className="relative flex-1 overflow-hidden bg-zinc-900">
+    <div 
+      className="w-full aspect-[3/4] bg-black border border-white/5 rounded-2xl overflow-hidden group hover:border-[var(--y)] transition-all duration-300 relative flex flex-col cursor-pointer" 
+      onClick={() => handleChat(twin.id)}
+    >
+      {/* Image / Media */}
+      <div className="absolute inset-0 w-full h-full bg-zinc-900">
         <img 
           src={twin.avatarUrl} 
           alt={twin.name}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
         />
-        
-        {/* Custom badge */}
-        {twin.isCustom && (
-          <span className="absolute top-3 left-3 bg-[var(--y)] text-[var(--blk)] font-mono text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded border border-[var(--blk)] shadow-[1px_1px_0px_rgba(0,0,0,1)] z-10">
-            Trained Clone
-          </span>
-        )}
-
-        {/* Action Menu Trigger */}
-        <div className="absolute top-3 right-3 z-20">
-          <button 
-            onClick={(e) => {
-              e.stopPropagation();
-              setActiveMenu(activeMenu === twin.id ? null : twin.id);
-            }}
-            className="w-8 h-8 rounded-full bg-black/60 backdrop-blur-md border border-white/5 text-zinc-400 hover:text-white flex items-center justify-center transition-colors cursor-pointer"
-          >
-            <MoreVertical className="w-4 h-4" />
-          </button>
-          
-          {activeMenu === twin.id && (
-            <div className="absolute right-0 mt-1.5 w-32 bg-black border border-white/10 rounded-lg shadow-2xl p-1 z-30 animate-in fade-in slide-in-from-top-2 duration-100">
-              <button 
-                onClick={() => handleChat(twin.id)}
-                className="w-full flex items-center gap-2 px-3 py-2 text-xs font-bold text-[#f5f5f5] hover:bg-[var(--y)] hover:text-black rounded transition-colors text-left cursor-pointer"
-              >
-                <MessageSquare className="w-3.5 h-3.5" />
-                <span>Chat</span>
-              </button>
-              {twin.isCustom && (
-                <button 
-                  onClick={() => handleDelete(twin.id)}
-                  className="w-full flex items-center gap-2 px-3 py-2 text-xs font-bold text-red-400 hover:bg-red-500 hover:text-white rounded transition-colors text-left cursor-pointer border-t border-white/5"
-                >
-                  <Trash2 className="w-3.5 h-3.5" />
-                  <span>Delete</span>
-                </button>
-              )}
-            </div>
-          )}
-        </div>
       </div>
 
-      <div className="p-4 bg-zinc-950 flex flex-col justify-between border-t border-white/5">
-        <div>
-          <h3 className="font-heading font-black text-base text-white tracking-tight flex items-center gap-1.5">
-            {twin.name}
-          </h3>
-          <span className="text-[10px] text-zinc-400 font-mono uppercase tracking-wider">
-            {twin.profession} • {twin.fans || '0 FANS'}
-          </span>
-        </div>
+      {/* Dark overlay mask on bottom half */}
+      <div className="absolute bottom-0 left-0 right-0 h-[50%] bg-gradient-to-t from-black via-black/75 to-transparent z-10 pointer-events-none" />
+
+      {/* Custom badge */}
+      {twin.isCustom && (
+        <span className="absolute top-3 left-3 bg-[var(--y)] text-[var(--blk)] font-mono text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded border border-[var(--blk)] shadow-[1px_1px_0px_rgba(0,0,0,1)] z-20">
+          Trained Clone
+        </span>
+      )}
+
+      {/* Action Menu Trigger */}
+      <div className="absolute top-3 right-3 z-30">
+        <button 
+          onClick={(e) => {
+            e.stopPropagation();
+            setActiveMenu(activeMenu === twin.id ? null : twin.id);
+          }}
+          className="w-8 h-8 rounded-full bg-black/60 backdrop-blur-md border border-white/5 text-zinc-400 hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+        >
+          <MoreVertical className="w-4 h-4" />
+        </button>
+        
+        {activeMenu === twin.id && (
+          <div className="absolute right-0 mt-1.5 w-32 bg-black border border-white/10 rounded-lg shadow-2xl p-1 z-40 animate-in fade-in slide-in-from-top-2 duration-100">
+            <button 
+              onClick={(e) => {
+                e.stopPropagation();
+                handleChat(twin.id);
+              }}
+              className="w-full flex items-center gap-2 px-3 py-2 text-xs font-bold text-[#f5f5f5] hover:bg-[var(--y)] hover:text-black rounded transition-colors text-left cursor-pointer"
+            >
+              <MessageSquare className="w-3.5 h-3.5" />
+              <span>Chat</span>
+            </button>
+            {twin.isCustom && (
+              <button 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDelete(twin.id);
+                }}
+                className="w-full flex items-center gap-2 px-3 py-2 text-xs font-bold text-red-400 hover:bg-red-500 hover:text-white rounded transition-colors text-left cursor-pointer border-t border-white/5"
+              >
+                <Trash2 className="w-3.5 h-3.5" />
+                <span>Delete</span>
+              </button>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* Text Info Overlaid at bottom */}
+      <div className="absolute bottom-0 left-0 right-0 p-4 z-20 flex flex-col gap-0.5 text-left pointer-events-none">
+        <h3 className="font-heading font-black text-base text-white tracking-tight flex items-center gap-1.5">
+          {twin.name}
+        </h3>
+        <span className="text-[10px] text-zinc-400 font-mono uppercase tracking-wider">
+          {twin.profession} • {twin.fans || '0 FANS'}
+        </span>
       </div>
     </div>
   );

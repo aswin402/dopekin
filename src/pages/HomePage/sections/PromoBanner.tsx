@@ -66,7 +66,7 @@ export function PromoBanner({ twins: twinsProp }: PromoBannerProps) {
         radialGradient:
           'radial-gradient(circle at 70% 30%, rgba(59, 130, 246, 0.15), transparent 45%)',
         twinIds: ['sarang', 'aiko', 'serena'],
-        action: () => navigate('/explore'),
+        action: () => navigate('/discover'),
       },
       {
         id: 'trending-feed',

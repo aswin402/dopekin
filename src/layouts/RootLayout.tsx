@@ -30,7 +30,7 @@ export function RootLayout() {
   // Labels are fully uppercase to match reference Image 1
   const mobileLinks = [
     { to: '/', label: 'HOME', icon: Home },
-    { to: '/explore', label: 'EXPLORE', icon: Compass },
+    { to: '/discover', label: 'DISCOVER', icon: Compass },
     { to: '/chat', label: 'CHAT', icon: MessageSquare, badge: totalUnread > 0 ? totalUnread : undefined },
     { to: '/create', label: 'CREATE TWIN', icon: Plus },
     { to: '/feed', label: 'FEED', icon: Rss },

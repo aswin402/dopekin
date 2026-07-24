@@ -49,7 +49,7 @@ export function HeroSection() {
           </button>
           
           <button 
-            onClick={() => navigate('/explore')}
+            onClick={() => navigate('/discover')}
             className="flex items-center gap-1.5 bg-transparent hover:bg-white/5 border border-white/10 text-white font-bold text-xs uppercase tracking-wider py-3.5 px-6 rounded-xl transition-all cursor-pointer"
           >
             <span>Explore Twins</span>

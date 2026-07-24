@@ -173,7 +173,7 @@ export function CreatorPage() {
 
     addTwin(newTwin);
     alert(`Successfully launched ${name}! Deploying to exploration grids.`);
-    navigate('/explore?category=all');
+    navigate('/discover?category=all');
   };
 
   return (

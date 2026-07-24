@@ -186,7 +186,7 @@ export function TwinShowcase({ twins: propTwins }: TwinShowcaseProps) {
         </div>
 
         <button 
-          onClick={() => navigate('/explore')}
+          onClick={() => navigate('/discover')}
           className="flex items-center gap-3 bg-zinc-950 border border-white/10 hover:border-white/20 text-[#f5f5f5] hover:text-[var(--y)] font-bold text-xs uppercase tracking-widest py-3 px-5 rounded-full transition-all cursor-pointer group shrink-0 self-start md:self-end"
         >
           <span>View All Twins</span>

@@ -38,7 +38,7 @@ export const NOTIFICATION_CAMPAIGNS = [
     title: 'Companion Match',
     message: 'Find a companion that matches your energy',
     actionText: 'Explore',
-    link: '/explore'
+    link: '/discover'
   },
   {
     twinId: 'aiko',

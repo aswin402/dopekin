@@ -17,7 +17,7 @@ export function Navbar({ onToggleMobileMenu }: NavbarProps) {
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchVal.trim()) {
-      navigate(`/explore?q=${encodeURIComponent(searchVal.trim())}`);
+      navigate(`/discover?q=${encodeURIComponent(searchVal.trim())}`);
     }
   };
 

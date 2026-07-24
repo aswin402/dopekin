@@ -41,7 +41,7 @@ export function FooterSection() {
         {/* Product links */}
         <div className="flex flex-col gap-3 font-mono text-[10px]">
           <span className="font-extrabold uppercase text-[#f5f5f5] tracking-wider mb-1">Product</span>
-          <Link to="/explore" className="text-white/50 hover:text-[var(--y)] transition-colors">Explore</Link>
+          <Link to="/discover" className="text-white/50 hover:text-[var(--y)] transition-colors">Discover</Link>
           <Link to="/live" className="text-white/50 hover:text-[var(--y)] transition-colors">Live Streams</Link>
           <Link to="/create" className="text-white/50 hover:text-[var(--y)] transition-colors">Creators OS</Link>
           <Link to="/pricing" className="text-white/50 hover:text-[var(--y)] transition-colors">Pricing Options</Link>

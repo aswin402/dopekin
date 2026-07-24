@@ -98,7 +98,7 @@ export function HomePage() {
           </h3>
           <span 
             className="text-zinc-500 hover:text-white text-xs font-bold uppercase tracking-wider cursor-pointer font-mono" 
-            onClick={() => navigate('/explore')}
+            onClick={() => navigate('/discover')}
           >
             View all
           </span>
@@ -138,7 +138,7 @@ export function HomePage() {
           <h3 className="text-sm font-mono font-black uppercase text-white/50 tracking-wider">
             Recommended for you
           </h3>
-          <Link to="/explore" className="text-zinc-500 hover:text-white text-xs font-bold uppercase tracking-wider flex items-center gap-0.5">
+          <Link to="/discover" className="text-zinc-500 hover:text-white text-xs font-bold uppercase tracking-wider flex items-center gap-0.5">
             <span>View all</span>
             <ChevronRight className="w-3.5 h-3.5" />
           </Link>
@@ -226,7 +226,7 @@ export function HomePage() {
           <h3 className="text-sm font-mono font-black uppercase text-white/50 tracking-wider">
             Featured Twins
           </h3>
-          <Link to="/explore" className="text-zinc-500 hover:text-white text-xs font-bold uppercase tracking-wider flex items-center gap-0.5">
+          <Link to="/discover" className="text-zinc-500 hover:text-white text-xs font-bold uppercase tracking-wider flex items-center gap-0.5">
             <span>View all</span>
             <ChevronRight className="w-3.5 h-3.5" />
           </Link>
@@ -312,7 +312,7 @@ export function HomePage() {
             <h3 className="text-sm font-mono font-black uppercase text-white/50 tracking-wider">
               Trending Companions
             </h3>
-            <Link to="/explore" className="text-zinc-500 hover:text-white text-xs font-bold uppercase tracking-wider cursor-pointer font-mono">View all</Link>
+            <Link to="/discover" className="text-zinc-500 hover:text-white text-xs font-bold uppercase tracking-wider cursor-pointer font-mono">View all</Link>
           </div>
 
           <div className="flex-1 flex flex-col justify-between gap-4 bg-zinc-950 border border-white/5 rounded-3xl p-4 sm:p-6 font-body w-full overflow-hidden">

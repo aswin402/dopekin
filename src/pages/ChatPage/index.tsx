@@ -302,7 +302,7 @@ export function ChatPage() {
           subscribeToTwin(twinId);
           alert(`Successfully subscribed to ${activeTwin.name}! Unlocking full capabilities...`);
         }}
-        onBack={() => navigate('/explore')}
+        onBack={() => navigate('/discover')}
         onCreateTwin={() => navigate('/create')}
       />
 

@@ -21,7 +21,7 @@ export function FeatureHighlights() {
               <p className="text-xs text-[#f5f5f5]/60 leading-relaxed font-body">{feat.desc}</p>
             </div>
             <button 
-              onClick={() => navigate('/explore')}
+              onClick={() => navigate('/discover')}
               className="text-[10px] font-bold font-mono uppercase tracking-wider text-[var(--y)] hover:underline flex items-center gap-1 self-start mt-2 cursor-pointer"
             >
               <span>Learn more</span>

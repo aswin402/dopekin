@@ -23,7 +23,7 @@ export function FavoritesRow({ favorites: favoritesProp, twins: twinsProp }: Fav
         </h3>
         <span
           className="text-zinc-500 hover:text-white text-xs font-bold uppercase tracking-wider cursor-pointer font-mono"
-          onClick={() => navigate('/explore?filter=favorites')}
+          onClick={() => navigate('/discover?filter=favorites')}
         >
           View all
         </span>

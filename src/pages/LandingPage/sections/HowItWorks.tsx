@@ -55,7 +55,7 @@ export function HowItWorks() {
               </button>
               
               <button 
-                onClick={() => navigate('/explore')}
+                onClick={() => navigate('/discover')}
                 className="flex items-center gap-2 bg-transparent hover:bg-white/5 border border-white/10 text-white font-bold text-xs uppercase tracking-wider py-3.5 px-6 rounded-xl transition-all cursor-pointer"
               >
                 <Play className="w-3.5 h-3.5 fill-current shrink-0 text-[var(--y)]" />

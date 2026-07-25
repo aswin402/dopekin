@@ -318,7 +318,7 @@ export function HomePage() {
       )}
 
       {/* ANIMATED ROTATING PROMO BANNER */}
-      <PromoBanner twins={twins} />
+      <PromoBanner />
 
       {/* NEW COMPANIONS (BIG HORIZONTAL ROW) */}
       <div className="flex flex-col gap-4">

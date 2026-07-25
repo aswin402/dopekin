@@ -1,10 +1,11 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppStore } from '../../store/useAppStore';
 import { 
   ChevronRight, Heart, Phone, Sparkles, Shield,
   MessageSquare, Music, Dumbbell, Laugh, Video, Zap
 } from 'lucide-react';
+import type { Twin } from '../../types/twin';
 import { PromoBanner } from './sections/PromoBanner';
 import { DashboardStats } from './sections/DashboardStats';
 import { FavoritesRow } from './sections/FavoritesRow';
@@ -52,12 +53,191 @@ const BADGE_COLORS = [
   'bg-indigo-500/10 text-indigo-400 border border-indigo-500/25'
 ];
 
+interface HomeTwinCardProps {
+  twin: Twin;
+}
+
+function HomeTwinCard({ twin }: HomeTwinCardProps) {
+  const [isHovered, setIsHovered] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    if (isHovered && videoRef.current) {
+      const playPromise = videoRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(err => {
+          console.log('Video play interrupted:', err);
+        });
+      }
+    } else if (!isHovered && videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.currentTime = 0;
+    }
+  }, [isHovered]);
+
+  return (
+    <Link 
+      to={`/chat?twin=${twin.id}`}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="w-full aspect-[3/4] bg-black border border-[var(--border)] rounded-2xl flex flex-col relative group overflow-hidden transition-all duration-300 hover:translate-y-[-6px] hover:scale-[1.02] hover:border-[var(--border2)] shrink-0 text-left cursor-pointer"
+    >
+      {/* Card Media (Image/Video) */}
+      <div className="absolute inset-0 w-full h-full bg-zinc-900 overflow-hidden">
+        {twin.videoUrl && (
+          <video 
+            ref={videoRef}
+            src={twin.videoUrl}
+            loop
+            muted
+            playsInline
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 z-0 ${
+              isHovered ? 'opacity-100 scale-105' : 'opacity-0 scale-100'
+            }`}
+          />
+        )}
+        <img 
+          src={twin.avatarUrl} 
+          alt={twin.name} 
+          className={`absolute inset-0 w-full h-full object-cover transition-all duration-500 z-0 ${
+            isHovered && twin.videoUrl ? 'opacity-0 scale-105' : 'opacity-100 group-hover:scale-105'
+          }`}
+        />
+      </div>
+
+      {/* Bottom Dark Gradient Mask */}
+      <div className="absolute bottom-0 left-0 right-0 h-[50%] bg-gradient-to-t from-black via-black/75 to-transparent opacity-95 transition-opacity z-10" />
+
+      {/* Vibe Badge in Top Right Corner */}
+      <div className="absolute top-3 right-3 z-20">
+        <span className="flex items-center gap-1.5 px-2.5 py-0.5 rounded bg-black/60 backdrop-blur-md text-[var(--y)] border border-[var(--y)]/30 text-[9px] font-black uppercase tracking-wider">
+          {getCategoryIcon(twin.category, twin.vibe)}
+          <span>{twin.vibe}</span>
+        </span>
+      </div>
+
+      {/* Overlaid Text Info */}
+      <div className="absolute bottom-0 left-0 right-0 p-4 z-20 flex flex-col gap-1 text-left">
+        <div className="flex justify-between items-baseline">
+          <h4 className="font-heading font-black text-lg text-white flex items-center gap-1.5">
+            <span>{twin.name}</span>
+            {twin.isCustom && (
+              <span className="text-[7px] bg-white/10 px-1.5 py-0.5 rounded text-[#f5f5f5]/60 font-mono font-normal">Trained</span>
+            )}
+          </h4>
+        </div>
+        <span className="text-[11px] text-zinc-400 font-semibold font-mono uppercase tracking-wider">
+          {twin.profession} • {twin.fans}
+        </span>
+        <p className="text-xs text-zinc-300 font-body leading-relaxed line-clamp-2 mt-1">
+          {twin.bio}
+        </p>
+      </div>
+    </Link>
+  );
+}
+
+interface RecommendedTwinCardProps {
+  item: { id: string; vibe: string; desc: string };
+  twin: Twin;
+  isFav: boolean;
+  toggleFavorite: (id: string) => void;
+}
+
+function RecommendedTwinCard({ item, twin, isFav, toggleFavorite }: RecommendedTwinCardProps) {
+  const [isHovered, setIsHovered] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    if (isHovered && videoRef.current) {
+      const playPromise = videoRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(err => {
+          console.log('Video play interrupted:', err);
+        });
+      }
+    } else if (!isHovered && videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.currentTime = 0;
+    }
+  }, [isHovered]);
+
+  return (
+    <div 
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="w-full sm:w-60 max-w-sm sm:max-w-none bg-zinc-950 border border-white/5 rounded-2xl flex flex-col shrink-0 relative group overflow-hidden transition-all duration-300 hover:translate-y-[-4px] hover:border-white/15"
+    >
+      {/* 3:4 Aspect Ratio Image/Video wrapper */}
+      <div className="relative aspect-[3/4] w-full overflow-hidden rounded-t-2xl bg-zinc-900">
+        {twin.videoUrl && (
+          <video 
+            ref={videoRef}
+            src={twin.videoUrl}
+            loop
+            muted
+            playsInline
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 z-0 ${
+              isHovered ? 'opacity-100 scale-103' : 'opacity-0 scale-100'
+            }`}
+          />
+        )}
+        <img 
+          src={twin.avatarUrl} 
+          alt={twin.name} 
+          className={`w-full h-full object-cover transition-all duration-500 ${
+            isHovered && twin.videoUrl ? 'opacity-0 scale-103' : 'opacity-100 group-hover:scale-103'
+          }`}
+        />
+        
+        {/* Status Tag */}
+        <div className="absolute top-3 left-3 z-20 flex items-center gap-1 bg-black/60 backdrop-blur-md px-2 py-0.5 rounded-md border border-white/5 text-[9px] text-zinc-300 font-bold uppercase tracking-wider">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+          <span>Online</span>
+        </div>
+
+        {/* Favorite Heart Button */}
+        <button 
+          onClick={() => toggleFavorite(item.id)}
+          className="absolute top-3 right-3 z-30 w-8 h-8 rounded-lg bg-black/60 backdrop-blur-md flex items-center justify-center border border-white/5 hover:border-white/20 transition-all text-zinc-400 hover:text-white cursor-pointer active:scale-90"
+        >
+          <Heart className={`w-4 h-4 ${isFav ? 'fill-rose-500 text-rose-500' : 'text-zinc-400'}`} />
+        </button>
+
+        {/* Hover play buttons */}
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-2.5 opacity-0 group-hover:opacity-100 transition-all z-20 bg-black/50 backdrop-blur-[2px] p-2">
+          <Link 
+            to={`/chat?twin=${twin.id}&call=true`}
+            className="flex items-center justify-center gap-1.5 bg-black border border-[var(--y)] text-[var(--y)] font-extrabold text-[10px] uppercase w-44 py-2 rounded-lg hover:scale-105 active:scale-95 transition-all shadow-[2px_2px_0px_rgba(255,235,31,0.2)]"
+          >
+            <Phone className="w-3.5 h-3.5" />
+            <span>Call</span>
+          </Link>
+        </div>
+      </div>
+
+      {/* Info box */}
+      <div className="p-3.5 flex flex-col gap-1 z-10 bg-zinc-950 text-left">
+        <h4 className="font-heading font-black text-sm text-white">
+          {twin.name}
+        </h4>
+        <span className="text-[9px] font-bold text-[var(--y)] tracking-wide uppercase">
+          {item.vibe}
+        </span>
+        <p className="text-xs text-zinc-400 font-mono mt-0.5">
+          {item.desc}
+        </p>
+      </div>
+    </div>
+  );
+}
+
 export function HomePage() {
   const navigate = useNavigate();
   const twins = useAppStore((state) => state.twins);
 
   // Local state to mock adding/removing favorites
-  const [favorites, setFavorites] = useState<string[]>(['vale', 'rina', 'aiko']);
+  const [favorites, setFavorites] = useState<string[]>(['vale', 'kaia', 'aiko', 'jax']);
 
   const toggleFavorite = (id: string) => {
     setFavorites((prev) => 
@@ -74,7 +254,7 @@ export function HomePage() {
       .slice(0, 3);
   }, [twins]);
 
-  // Feature toggle to hide top dashboard metrics & quick access rows for now (can be enabled later)
+  // Feature toggle to hide top dashboard metrics & quick access rows for now
   const SHOW_TOP_DASHBOARD_SECTIONS = false;
 
   return (
@@ -105,7 +285,7 @@ export function HomePage() {
         </div>
         
         <div className="flex flex-nowrap gap-6 sm:gap-8 overflow-x-auto pt-3 pb-2 scrollbar-none scroll-smooth">
-          {['etherik', 'sarang', 'aiko', 'cody', 'vale'].map((newId, idx) => {
+          {['kaia', 'luna', 'jax', 'maya', 'senpai', 'drake', 'chloe'].map((newId, idx) => {
             const twin = getTwin(newId);
             return (
               <Link 
@@ -146,75 +326,22 @@ export function HomePage() {
 
         <div className="flex flex-nowrap gap-4 overflow-x-auto pb-2 scrollbar-none scroll-smooth justify-start">
           {[
-            { id: 'vale', vibe: '🎭 Confident • Empathetic', desc: 'You both like fashion' },
-            { id: 'sarang', vibe: '💃 Playful • Creative', desc: 'You both like K-pop' },
-            { id: 'carlos', vibe: '🔥 Ambitious • Smart', desc: 'You both like tech' },
-            { id: 'ben', vibe: '🕹️ Energetic • Friendly', desc: 'You both play games' }
+            { id: 'kaia', vibe: '🎮 Fiery • Skilled', desc: 'You both love esports' },
+            { id: 'luna', vibe: '🔮 Mysterious • Enchanting', desc: 'You both like astrology' },
+            { id: 'jax', vibe: '🎸 Rebellious • Electric', desc: 'You both love rock music' },
+            { id: 'maya', vibe: '✨ Playful • Witty', desc: 'You both like design' },
+            { id: 'vale', vibe: '🎭 Magnetic • Authentic', desc: 'You both like indie tunes' }
           ].map((item) => {
             const twin = getTwin(item.id);
             const isFav = favorites.includes(item.id);
             return (
-              <div 
+              <RecommendedTwinCard 
                 key={item.id}
-                className="w-full sm:w-60 max-w-sm sm:max-w-none bg-zinc-950 border border-white/5 rounded-2xl flex flex-col shrink-0 relative group overflow-hidden transition-all duration-300 hover:translate-y-[-4px] hover:border-white/15"
-              >
-                {/* 3:4 Aspect Ratio Image/Video wrapper */}
-                <div className="relative aspect-[3/4] w-full overflow-hidden rounded-t-2xl bg-zinc-900">
-                  {twin.videoUrl ? (
-                    <video 
-                      src={twin.videoUrl}
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-103"
-                    />
-                  ) : (
-                    <img 
-                      src={twin.avatarUrl} 
-                      alt={twin.name} 
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-103"
-                    />
-                  )}
-                  {/* Status Tag */}
-                  <div className="absolute top-3 left-3 z-20 flex items-center gap-1 bg-black/60 backdrop-blur-md px-2 py-0.5 rounded-md border border-white/5 text-[9px] text-zinc-300 font-bold uppercase tracking-wider">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                    <span>Online</span>
-                  </div>
-
-                  {/* Favorite Heart Button */}
-                  <button 
-                    onClick={() => toggleFavorite(item.id)}
-                    className="absolute top-3 right-3 z-30 w-8 h-8 rounded-lg bg-black/60 backdrop-blur-md flex items-center justify-center border border-white/5 hover:border-white/20 transition-all text-zinc-400 hover:text-white cursor-pointer active:scale-90"
-                  >
-                    <Heart className={`w-4 h-4 ${isFav ? 'fill-rose-500 text-rose-500' : 'text-zinc-400'}`} />
-                  </button>
-
-                  {/* Hover play buttons (Stacked vertically to fit w-60 card) */}
-                  <div className="absolute inset-0 flex flex-col items-center justify-center gap-2.5 opacity-0 group-hover:opacity-100 transition-all z-20 bg-black/50 backdrop-blur-[2px] p-2">
-                    <Link 
-                      to={`/chat?twin=${twin.id}&call=true`}
-                      className="flex items-center justify-center gap-1.5 bg-black border border-[var(--y)] text-[var(--y)] font-extrabold text-[10px] uppercase w-44 py-2 rounded-lg hover:scale-105 active:scale-95 transition-all shadow-[2px_2px_0px_rgba(255,235,31,0.2)]"
-                    >
-                      <Phone className="w-3.5 h-3.5" />
-                      <span>Call</span>
-                    </Link>
-                  </div>
-                </div>
-
-                {/* Info box */}
-                <div className="p-3.5 flex flex-col gap-1 z-10 bg-zinc-950 text-left">
-                  <h4 className="font-heading font-black text-sm text-white">
-                    {twin.name}
-                  </h4>
-                  <span className="text-[9px] font-bold text-[var(--y)] tracking-wide uppercase">
-                    {item.vibe}
-                  </span>
-                  <p className="text-xs text-zinc-400 font-mono mt-0.5">
-                    {item.desc}
-                  </p>
-                </div>
-              </div>
+                item={item}
+                twin={twin}
+                isFav={isFav}
+                toggleFavorite={toggleFavorite}
+              />
             );
           })}
         </div>
@@ -234,72 +361,7 @@ export function HomePage() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-10 w-full">
           {twins.map((twin) => (
-            <Link 
-              key={twin.id}
-              to={`/chat?twin=${twin.id}`}
-              onMouseEnter={(e) => {
-                const video = e.currentTarget.querySelector('video');
-                if (video) {
-                  video.play().catch(err => console.log('Playback prevented', err));
-                }
-              }}
-              onMouseLeave={(e) => {
-                const video = e.currentTarget.querySelector('video');
-                if (video) {
-                  video.pause();
-                  video.currentTime = 0;
-                }
-              }}
-              className="w-full aspect-[3/4] bg-black border border-[var(--border)] rounded-2xl flex flex-col relative group overflow-hidden transition-all duration-300 hover:translate-y-[-6px] hover:scale-[1.02] hover:border-[var(--border2)] shrink-0 text-left cursor-pointer"
-            >
-              {/* Card Media (Image/Video) */}
-              <div className="absolute inset-0 w-full h-full bg-zinc-900">
-                {twin.videoUrl ? (
-                  <video 
-                    src={twin.videoUrl}
-                    loop
-                    muted
-                    playsInline
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                ) : (
-                  <img 
-                    src={twin.avatarUrl} 
-                    alt={twin.name} 
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                )}
-              </div>
-
-              {/* Bottom Dark Gradient Mask */}
-              <div className="absolute bottom-0 left-0 right-0 h-[50%] bg-gradient-to-t from-black via-black/75 to-transparent opacity-95 transition-opacity" />
-
-              {/* Vibe Badge in Top Right Corner */}
-              <div className="absolute top-3 right-3 z-20">
-                <span className="flex items-center gap-1.5 px-2.5 py-0.5 rounded bg-black/60 backdrop-blur-md text-[var(--y)] border border-[var(--y)]/30 text-[9px] font-black uppercase tracking-wider">
-                  {getCategoryIcon(twin.category, twin.vibe)}
-                  <span>{twin.vibe}</span>
-                </span>
-              </div>
-
-              {/* Overlaid Text Info */}
-              <div className="absolute bottom-0 left-0 right-0 p-4 z-10 flex flex-col gap-1 text-left">
-                <div className="flex justify-between items-baseline">
-                  <h4 className="font-heading font-black text-lg text-white flex items-center gap-1.5">
-                    <span>{twin.name}</span>
-                    {twin.isCustom && (
-                      <span className="text-[7px] bg-white/10 px-1.5 py-0.5 rounded text-[#f5f5f5]/60 font-mono font-normal">Trained</span>
-                    )}
-                  </h4>
-                </div>
-                <span className="text-[11px] text-zinc-400 font-semibold font-mono uppercase tracking-wider">
-                  {twin.profession} • {twin.fans}
-                </span>
-                <p className="text-xs text-zinc-300 font-body leading-relaxed line-clamp-2 mt-1">
-                  {twin.bio}
-                </p>
-              </div>
-            </Link>
+            <HomeTwinCard key={twin.id} twin={twin} />
           ))}
         </div>
       </div>
@@ -362,9 +424,9 @@ export function HomePage() {
 
           <div className="flex-1 flex flex-col justify-between gap-4 bg-zinc-950 border border-white/5 rounded-3xl p-4 sm:p-6 font-body w-full overflow-hidden">
             {[
-              { title: 'Cyberpunk Summer', description: 'Behind the scenes with Serena and Rina.', cast: 'Serena & Rina', isNew: true },
-              { title: 'Midnight Talks', description: 'Late night crypto insights and banter.', cast: 'Cody', isNew: false },
-              { title: 'Office Secrets', description: 'Preparing for the next major showcase.', cast: 'Aiko', isNew: false }
+              { title: 'Cyberpunk Summer', description: 'Behind the scenes with Serena and Kaia.', cast: 'Serena & Kaia', isNew: true },
+              { title: 'Cosmic Moon Astrology', description: 'Tarot readings and star mapping with Luna.', cast: 'Luna', isNew: true },
+              { title: 'Backstage Guitar Solos', description: 'Preparing for the next tour show.', cast: 'Jax', isNew: false }
             ].map((feed, idx) => {
               return (
                 <div key={idx} className="flex items-center justify-between gap-2.5 sm:gap-4 p-1.5 rounded-2xl hover:bg-white/5 transition-colors min-w-0">

@@ -3,23 +3,23 @@ import { Heart, Sparkles, Brain, Activity, Music, Star, MessageSquare, Video, Ra
 export const SHOWCASE_TWINS = [
   {
     name: 'Serena',
-    video: new URL('../../assets/Avatars/potrait videos/serina-mac.mp4', import.meta.url).href,
-    image: new URL('../../assets/Avatars/9_16 Ratio Images/05_Serena_C4.png', import.meta.url).href,
+    video: new URL('../../assets/Avatars/potrait_videos/serina-mac.mp4', import.meta.url).href,
+    image: new URL('../../assets/Avatars/9_16_Ratio_Images/05_Serena_C4.png', import.meta.url).href,
   },
   {
     name: 'Sarang',
-    video: new URL('../../assets/Avatars/potrait videos/sarang_mac.mp4', import.meta.url).href,
-    image: new URL('../../assets/Avatars/9_16 Ratio Images/02_Sarang_Sleevless.png', import.meta.url).href,
+    video: new URL('../../assets/Avatars/potrait_videos/sarang_mac.mp4', import.meta.url).href,
+    image: new URL('../../assets/Avatars/9_16_Ratio_Images/02_Sarang_Sleevless.png', import.meta.url).href,
   },
   {
     name: 'Aiko',
-    video: new URL('../../assets/Avatars/Intro Videos/Aiko  3.mp4', import.meta.url).href,
-    image: new URL('../../assets/Avatars/9_16 Ratio Images/03_Aiko_V2.png', import.meta.url).href,
+    video: new URL('../../assets/Avatars/Intro_Videos/Aiko.mp4', import.meta.url).href,
+    image: new URL('../../assets/Avatars/9_16_Ratio_Images/03_Aiko_V2.png', import.meta.url).href,
   },
   {
     name: 'Etherik',
-    video: new URL('../../assets/Avatars/potrait videos/etherik_mac.mp4', import.meta.url).href,
-    image: new URL('../../assets/Avatars/9_16 Ratio Images/01_Etherik.png', import.meta.url).href,
+    video: new URL('../../assets/Avatars/potrait_videos/etherik_mac.mp4', import.meta.url).href,
+    image: new URL('../../assets/Avatars/9_16_Ratio_Images/01_Etherik.png', import.meta.url).href,
   }
 ];
 

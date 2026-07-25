@@ -1,7 +1,133 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { useAppStore } from '../../store/useAppStore';
 import { Search, Compass, Trash2, Heart } from 'lucide-react';
+import type { Twin } from '../../types/twin';
+
+interface DiscoverTwinCardProps {
+  twin: Twin;
+  likedTwins: string[];
+  toggleLike: (id: string) => void;
+  setTwinToDelete: (id: string) => void;
+  vibeData: { emoji: string; text: string };
+  personalizationHook: string;
+}
+
+function DiscoverTwinCard({ 
+  twin, 
+  likedTwins, 
+  toggleLike, 
+  setTwinToDelete, 
+  vibeData, 
+  personalizationHook 
+}: DiscoverTwinCardProps) {
+  const [isHovered, setIsHovered] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    if (isHovered && videoRef.current) {
+      const playPromise = videoRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(err => {
+          console.log('Video play interrupted:', err);
+        });
+      }
+    } else if (!isHovered && videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.currentTime = 0;
+    }
+  }, [isHovered]);
+
+  return (
+    <Link 
+      to={`/chat?twin=${twin.id}`}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="w-full aspect-[3/4] bg-black border border-[var(--border)] rounded-2xl flex flex-col relative group overflow-hidden transition-all duration-300 hover:translate-y-[-6px] hover:scale-[1.02] hover:border-[var(--border2)] shrink-0 text-left cursor-pointer"
+    >
+      {/* Hover Video Loop */}
+      {twin.videoUrl && (
+        <video
+          ref={videoRef}
+          src={twin.videoUrl}
+          loop
+          muted
+          playsInline
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 z-0 ${
+            isHovered ? "opacity-100 scale-102" : "opacity-0 scale-100"
+          }`}
+        />
+      )}
+
+      {/* Cover Image */}
+      <img 
+        src={twin.avatarUrl} 
+        alt={twin.name} 
+        className={`absolute inset-0 w-full h-full object-cover transition-all duration-500 z-0 ${
+          isHovered && twin.videoUrl ? "opacity-0 scale-105" : "opacity-100 group-hover:scale-105"
+        }`}
+      />
+
+      {/* Bottom Dark Gradient Mask */}
+      <div className="absolute bottom-0 left-0 right-0 h-[50%] bg-gradient-to-t from-black via-black/75 to-transparent opacity-95 transition-opacity z-10" />
+
+      {/* Online Badge */}
+      <div className="absolute top-3 left-3 flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/5 text-[9px] font-bold text-white uppercase tracking-wider select-none z-20">
+        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+        <span>Online</span>
+      </div>
+
+      {/* Favorite Heart Button */}
+      <button 
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          toggleLike(twin.id);
+        }}
+        className="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 backdrop-blur-md border border-white/5 text-zinc-400 hover:text-red-500 hover:scale-105 active:scale-95 transition-all flex items-center justify-center cursor-pointer z-30"
+        title="Favorite Companion"
+      >
+        <Heart className={`w-4 h-4 transition-colors ${likedTwins.includes(twin.id) ? 'fill-red-500 text-red-500' : 'text-zinc-400'}`} />
+      </button>
+
+      {/* Custom Delete Icon */}
+      {twin.isCustom && (
+        <button 
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            setTwinToDelete(twin.id);
+          }}
+          className="absolute top-3 right-12 w-8 h-8 rounded-full bg-red-500/85 hover:bg-red-600 text-white transition-colors z-30 cursor-pointer flex items-center justify-center"
+          title="Delete Custom Twin"
+        >
+          <Trash2 className="w-3.5 h-3.5" />
+        </button>
+      )}
+
+      {/* Overlaid Text Info */}
+      <div className="absolute bottom-0 left-0 right-0 p-4 z-20 flex flex-col gap-1 text-left">
+        <h3 className="font-heading font-black text-lg text-white tracking-tight flex items-center gap-2">
+          <span>{twin.name}</span>
+          {twin.isCustom && (
+            <span className="text-[7px] bg-[var(--y)]/15 text-[var(--y)] px-1.5 py-0.5 rounded uppercase font-mono tracking-wider border border-[var(--y)]/20">Custom</span>
+          )}
+        </h3>
+        
+        {/* Vibe line */}
+        <div className="flex items-center gap-1.5 text-[9px] font-extrabold uppercase tracking-wide text-[var(--y)] mt-0.5">
+          <span>{vibeData.emoji}</span>
+          <span>{vibeData.text}</span>
+        </div>
+
+        {/* Personalization hook */}
+        <p className="text-[11px] text-zinc-300 font-body mt-1 leading-relaxed line-clamp-2">
+          {personalizationHook}
+        </p>
+      </div>
+    </Link>
+  );
+}
 
 export function DiscoverPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -103,21 +229,53 @@ export function DiscoverPage() {
   const getVibeIconAndText = (id: string, vibe: string) => {
     switch (id) {
       case 'vale':
-        return { emoji: '🎭', text: 'CONFIDENT • EMPATHETIC' };
+        return { emoji: '🎭', text: 'MAGNETIC • AUTHENTIC' };
       case 'serena':
-        return { emoji: '🌿', text: 'WARM • EMPATHETIC' };
+        return { emoji: '🌿', text: 'WARM • EMPATHIC' };
       case 'aiko':
         return { emoji: '💼', text: 'FOCUSED • ATTENTIVE' };
-      case 'cody':
-        return { emoji: '⚡', text: 'WITTY • FAST' };
-      case 'sarang':
-        return { emoji: '💃', text: 'PLAYFUL • CREATIVE' };
-      case 'carlos':
-        return { emoji: '🔥', text: 'AMBITIOUS • SMART' };
-      case 'ben':
-        return { emoji: '🕹️', text: 'ENERGETIC • FRIENDLY' };
       case 'etherik':
-        return { emoji: '🧬', text: 'ANALYTICAL • DEEP' };
+        return { emoji: '🧬', text: 'ANALYTICAL • CHARISMATIC' };
+      case 'kaia':
+        return { emoji: '🎮', text: 'FIERY • SKILLED' };
+      case 'luna':
+        return { emoji: '🔮', text: 'MYSTERIOUS • ENCHANTING' };
+      case 'jax':
+        return { emoji: '🎸', text: 'REBELLIOUS • ELECTRIC' };
+      case 'maya':
+        return { emoji: '✨', text: 'PLAYFUL • WITTY' };
+      case 'alex':
+        return { emoji: '💪', text: 'HIGH ENERGY • MOTIVATED' };
+      case 'sarang':
+        return { emoji: '💃', text: 'CHARMING • BRIGHT' };
+      case 'carlos':
+        return { emoji: '🔥', text: 'SATIRICAL • SHARP' };
+      case 'cody':
+        return { emoji: '⚡', text: 'COMPETITIVE • FAST' };
+      case 'senpai':
+        return { emoji: '🌸', text: 'COOL • PROTECTIVE' };
+      case 'claire':
+        return { emoji: '📚', text: 'THOUGHTFUL • COZY' };
+      case 'marco':
+        return { emoji: '🍷', text: 'PASSIONATE • CULINARY' };
+      case 'leo':
+        return { emoji: '☕', text: 'GENTLE • REASSURING' };
+      case 'chloe':
+        return { emoji: '👠', text: 'CHIC • TRENDSETTING' };
+      case 'marina':
+        return { emoji: '🌊', text: 'ETHEREAL • FREE-SPIRITED' };
+      case 'sam':
+        return { emoji: '📷', text: 'GENUINE • CHARMING' };
+      case 'dr-elena':
+        return { emoji: '🧠', text: 'CALM • INSIGHTFUL' };
+      case 'rio':
+        return { emoji: '✈️', text: 'ADVENTUROUS • ENERGETIC' };
+      case 'drake':
+        return { emoji: '🦇', text: 'DARK • INTRIGUING' };
+      case 'hannah':
+        return { emoji: '🏡', text: 'DEVOTED • SWEET' };
+      case 'noah':
+        return { emoji: '☕', text: 'FLIRTY • UNPREDICTABLE' };
       default:
         return { emoji: '✨', text: vibe.toUpperCase() };
     }
@@ -126,21 +284,53 @@ export function DiscoverPage() {
   const getPersonalizationHook = (id: string) => {
     switch (id) {
       case 'vale':
-        return 'You both like fashion';
+        return 'You both like indie acoustic tunes';
       case 'serena':
         return 'You both like wellness';
       case 'aiko':
         return 'You both like productivity';
-      case 'cody':
-        return 'You both like crypto';
+      case 'etherik':
+        return 'You both like tech & AI';
+      case 'kaia':
+        return 'You both love esports';
+      case 'luna':
+        return 'You both like astrology';
+      case 'jax':
+        return 'You both love rock music';
+      case 'maya':
+        return 'You both like design';
+      case 'alex':
+        return 'You both like workouts';
       case 'sarang':
         return 'You both like K-pop';
       case 'carlos':
         return 'You both like comedy';
-      case 'ben':
+      case 'cody':
         return 'You both play games';
-      case 'etherik':
-        return 'You both like tech';
+      case 'senpai':
+        return 'You both love anime';
+      case 'claire':
+        return 'You both love reading';
+      case 'marco':
+        return 'You both love fine dining';
+      case 'leo':
+        return 'Comforting companion';
+      case 'chloe':
+        return 'You both love fashion';
+      case 'marina':
+        return 'You both love ocean vibes';
+      case 'sam':
+        return 'You both like photography';
+      case 'dr-elena':
+        return 'Mindfulness coach';
+      case 'rio':
+        return 'You both love traveling';
+      case 'drake':
+        return 'Gothic mystery writer';
+      case 'hannah':
+        return 'Devoted home designer';
+      case 'noah':
+        return 'Magnetic coffee partner';
       default:
         return 'Recommended companion';
     }
@@ -207,82 +397,20 @@ export function DiscoverPage() {
 
       {/* Twins Grid Container */}
       {sortedTwins.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 xl:gap-12 w-full">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 xl:gap-10 w-full">
           {sortedTwins.map((twin) => {
             const vibeData = getVibeIconAndText(twin.id, twin.vibe);
+            const personalizationHook = getPersonalizationHook(twin.id);
             return (
-              <Link 
+              <DiscoverTwinCard 
                 key={twin.id}
-                to={`/chat?twin=${twin.id}`}
-                className="w-full aspect-[3/4] bg-black border border-[var(--border)] rounded-2xl flex flex-col relative group overflow-hidden transition-all duration-300 hover:translate-y-[-6px] hover:scale-[1.02] hover:border-[var(--border2)] shrink-0 text-left cursor-pointer"
-              >
-                {/* Card Media (Image) */}
-                <div className="absolute inset-0 w-full h-full bg-zinc-900">
-                  <img 
-                    src={twin.avatarUrl} 
-                    alt={twin.name} 
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                </div>
-
-                {/* Bottom Dark Gradient Mask */}
-                <div className="absolute bottom-0 left-0 right-0 h-[50%] bg-gradient-to-t from-black via-black/75 to-transparent opacity-95 transition-opacity" />
-
-                {/* Online Badge Tag */}
-                <div className="absolute top-3 left-3 flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/5 text-[9px] font-bold text-white uppercase tracking-wider select-none z-20">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                  <span>Online</span>
-                </div>
-
-                {/* Favorite Heart Button */}
-                <button 
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    toggleLike(twin.id);
-                  }}
-                  className="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 backdrop-blur-md border border-white/5 text-zinc-400 hover:text-red-500 hover:scale-105 active:scale-95 transition-all flex items-center justify-center cursor-pointer z-30"
-                  title="Favorite Companion"
-                >
-                  <Heart className={`w-4 h-4 transition-colors ${likedTwins.includes(twin.id) ? 'fill-red-500 text-red-500' : 'text-zinc-400'}`} />
-                </button>
-
-                {/* Custom Delete Icon */}
-                {twin.isCustom && (
-                  <button 
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      setTwinToDelete(twin.id);
-                    }}
-                    className="absolute top-3 right-12 w-8 h-8 rounded-full bg-red-500/85 hover:bg-red-600 text-white transition-colors z-30 cursor-pointer flex items-center justify-center"
-                    title="Delete Custom Twin"
-                  >
-                    <Trash2 className="w-3.5 h-3.5" />
-                  </button>
-                )}
-
-                {/* Overlaid Text Info */}
-                <div className="absolute bottom-0 left-0 right-0 p-4 z-10 flex flex-col gap-1 text-left">
-                  <h3 className="font-heading font-black text-lg text-white tracking-tight flex items-center gap-2">
-                    <span>{twin.name}</span>
-                    {twin.isCustom && (
-                      <span className="text-[7px] bg-[var(--y)]/15 text-[var(--y)] px-1.5 py-0.5 rounded uppercase font-mono tracking-wider border border-[var(--y)]/20">Custom</span>
-                    )}
-                  </h3>
-                  
-                  {/* Vibe line */}
-                  <div className="flex items-center gap-1.5 text-[9px] font-extrabold uppercase tracking-wide text-[var(--y)] mt-0.5">
-                    <span>{vibeData.emoji}</span>
-                    <span>{vibeData.text}</span>
-                  </div>
-
-                  {/* Personalization hook */}
-                  <p className="text-[11px] text-zinc-300 font-body mt-1 leading-relaxed line-clamp-2">
-                    {getPersonalizationHook(twin.id)}
-                  </p>
-                </div>
-              </Link>
+                twin={twin}
+                likedTwins={likedTwins}
+                toggleLike={toggleLike}
+                setTwinToDelete={setTwinToDelete}
+                vibeData={vibeData}
+                personalizationHook={personalizationHook}
+              />
             );
           })}
         </div>

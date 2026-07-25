@@ -7,11 +7,24 @@ import {
   RefreshCw, Cpu, Layers 
 } from 'lucide-react';
 
+const serenaImg = new URL('../../../assets/Avatars/9_16_Ratio_Images/05_Serena_C4.png', import.meta.url).href;
+const sarangImg = new URL('../../../assets/Avatars/9_16_Ratio_Images/02_Sarang_Sleevless.png', import.meta.url).href;
+const aikoImg = new URL('../../../assets/Avatars/9_16_Ratio_Images/03_Aiko_V2.png', import.meta.url).href;
+const etherikImg = new URL('../../../assets/Avatars/9_16_Ratio_Images/01_Etherik.png', import.meta.url).href;
+const gamerGirlImg = new URL('../../../assets/Avatars/9_16_Ratio_Images/Potrait_gamer_girl.png', import.meta.url).href;
+const cosmicWitchImg = new URL('../../../assets/Avatars/9_16_Ratio_Images/Cosmic_Witch_ Portrait.png', import.meta.url).href;
+const rockstarImg = new URL('../../../assets/Avatars/9_16_Ratio_Images/Rockstar_Potrait.png', import.meta.url).href;
+const flirtyNeighborImg = new URL('../../../assets/Avatars/9_16_Ratio_Images/Flirty_Neighbor_Potrait.png', import.meta.url).href;
+
 const STOCK_TEMPLATES = [
-  { id: 'serena', name: 'Serena', avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=600&auto=format&fit=crop' },
-  { id: 'vale', name: 'Vale', avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=600&auto=format&fit=crop' },
-  { id: 'sarang', name: 'Sarang', avatarUrl: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=600&auto=format&fit=crop' },
-  { id: 'aiko', name: 'Aiko', avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=600&auto=format&fit=crop' }
+  { id: 'serena', name: 'Serena', avatarUrl: serenaImg },
+  { id: 'sarang', name: 'Sarang', avatarUrl: sarangImg },
+  { id: 'aiko', name: 'Aiko', avatarUrl: aikoImg },
+  { id: 'etherik', name: 'Etherik', avatarUrl: etherikImg },
+  { id: 'kaia', name: 'Kaia', avatarUrl: gamerGirlImg },
+  { id: 'luna', name: 'Luna', avatarUrl: cosmicWitchImg },
+  { id: 'jax', name: 'Jax', avatarUrl: rockstarImg },
+  { id: 'maya', name: 'Maya', avatarUrl: flirtyNeighborImg },
 ];
 
 const PRESET_NAMES = [

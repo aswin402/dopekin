@@ -126,45 +126,7 @@ export const DEFAULT_TWINS: Twin[] = [
     voiceId: 'etherik-voice-id',
     videoUrl: etherikVid
   },
-  {
-    id: 'kaia',
-    name: 'Kaia',
-    profession: 'Esports Athlete',
-    vibe: 'Fiery & Skilled',
-    bio: 'Tournament champion, pro streamer with cat-ear headset icon dominating leaderboards with tactical precision and playful banter.',
-    fans: '7.4M FANS',
-    price: '$0.00 (Free)',
-    avatarUrl: gamerGirlImg,
-    category: 'athletes',
-    voiceId: 'kaia-voice-id',
-    videoUrl: gamerGirlVid
-  },
-  {
-    id: 'luna',
-    name: 'Luna',
-    profession: 'Astrologer & Mystic',
-    vibe: 'Mysterious & Enchanting',
-    bio: 'Tarot reader, star mapper, and crystal enthusiast guiding you through cosmic energies, celestial shifts, and moon cycles.',
-    fans: '3.1M FANS',
-    price: '$3.99/mo',
-    avatarUrl: cosmicWitchImg,
-    category: 'creators',
-    voiceId: 'luna-voice-id',
-    videoUrl: cosmicWitchVid
-  },
-  {
-    id: 'jax',
-    name: 'Jax',
-    profession: 'Lead Guitarist',
-    vibe: 'Rebellious & Electric',
-    bio: 'Leather jacket, electric solos, backstage energy, and uninhibited rock & roll passion for live music junkies.',
-    fans: '4.8M FANS',
-    price: '$4.99/mo',
-    avatarUrl: rockstarImg,
-    category: 'musicians',
-    voiceId: 'jax-voice-id',
-    videoUrl: rockstarVid
-  },
+
   {
     id: 'maya',
     name: 'Maya',
@@ -385,6 +347,45 @@ export const DEFAULT_TWINS: Twin[] = [
     category: 'models',
     voiceId: 'noah-voice-id',
     videoUrl: situationshipVid
+  },
+  {
+    id: 'kaia',
+    name: 'Kaia',
+    profession: 'Esports Athlete',
+    vibe: 'Fiery & Skilled',
+    bio: 'Tournament champion, pro streamer with cat-ear headset icon dominating leaderboards with tactical precision and playful banter.',
+    fans: '7.4M FANS',
+    price: '$0.00 (Free)',
+    avatarUrl: gamerGirlImg,
+    category: 'athletes',
+    voiceId: 'kaia-voice-id',
+    videoUrl: gamerGirlVid
+  },
+  {
+    id: 'luna',
+    name: 'Luna',
+    profession: 'Astrologer & Mystic',
+    vibe: 'Mysterious & Enchanting',
+    bio: 'Tarot reader, star mapper, and crystal enthusiast guiding you through cosmic energies, celestial shifts, and moon cycles.',
+    fans: '3.1M FANS',
+    price: '$3.99/mo',
+    avatarUrl: cosmicWitchImg,
+    category: 'creators',
+    voiceId: 'luna-voice-id',
+    videoUrl: cosmicWitchVid
+  },
+  {
+    id: 'jax',
+    name: 'Jax',
+    profession: 'Lead Guitarist',
+    vibe: 'Rebellious & Electric',
+    bio: 'Leather jacket, electric solos, backstage energy, and uninhibited rock & roll passion for live music junkies.',
+    fans: '4.8M FANS',
+    price: '$4.99/mo',
+    avatarUrl: rockstarImg,
+    category: 'musicians',
+    voiceId: 'jax-voice-id',
+    videoUrl: rockstarVid
   }
 ];
 

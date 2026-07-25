@@ -21,10 +21,10 @@ const STOCK_TEMPLATES = [
   { id: 'sarang', name: 'Sarang', avatarUrl: sarangImg },
   { id: 'aiko', name: 'Aiko', avatarUrl: aikoImg },
   { id: 'etherik', name: 'Etherik', avatarUrl: etherikImg },
+  { id: 'maya', name: 'Maya', avatarUrl: flirtyNeighborImg },
   { id: 'kaia', name: 'Kaia', avatarUrl: gamerGirlImg },
   { id: 'luna', name: 'Luna', avatarUrl: cosmicWitchImg },
   { id: 'jax', name: 'Jax', avatarUrl: rockstarImg },
-  { id: 'maya', name: 'Maya', avatarUrl: flirtyNeighborImg },
 ];
 
 const PRESET_NAMES = [

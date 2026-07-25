@@ -285,7 +285,7 @@ export function HomePage() {
         </div>
         
         <div className="flex flex-nowrap gap-6 sm:gap-8 overflow-x-auto pt-3 pb-2 scrollbar-none scroll-smooth">
-          {['kaia', 'luna', 'jax', 'maya', 'senpai', 'drake', 'chloe'].map((newId, idx) => {
+          {['etherik', 'sarang', 'aiko', 'cody', 'maya', 'senpai', 'drake', 'chloe'].map((newId, idx) => {
             const twin = getTwin(newId);
             return (
               <Link 
@@ -326,9 +326,9 @@ export function HomePage() {
 
         <div className="flex flex-nowrap gap-4 overflow-x-auto pb-2 scrollbar-none scroll-smooth justify-start">
           {[
-            { id: 'kaia', vibe: '🎮 Fiery • Skilled', desc: 'You both love esports' },
-            { id: 'luna', vibe: '🔮 Mysterious • Enchanting', desc: 'You both like astrology' },
-            { id: 'jax', vibe: '🎸 Rebellious • Electric', desc: 'You both love rock music' },
+            { id: 'serena', vibe: '🌿 Warm • Empathic', desc: 'You both like wellness' },
+            { id: 'sarang', vibe: '💃 Charming • Bright', desc: 'You both like K-pop' },
+            { id: 'aiko', vibe: '💼 Focused • Attentive', desc: 'You both like productivity' },
             { id: 'maya', vibe: '✨ Playful • Witty', desc: 'You both like design' },
             { id: 'vale', vibe: '🎭 Magnetic • Authentic', desc: 'You both like indie tunes' }
           ].map((item) => {

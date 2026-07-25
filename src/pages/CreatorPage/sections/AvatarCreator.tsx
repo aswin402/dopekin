@@ -15,9 +15,13 @@ const gamerGirlImg = new URL('../../../assets/Avatars/9_16_Ratio_Images/Potrait_
 const cosmicWitchImg = new URL('../../../assets/Avatars/9_16_Ratio_Images/Cosmic_Witch_ Portrait.png', import.meta.url).href;
 const rockstarImg = new URL('../../../assets/Avatars/9_16_Ratio_Images/Rockstar_Potrait.png', import.meta.url).href;
 const flirtyNeighborImg = new URL('../../../assets/Avatars/9_16_Ratio_Images/Flirty_Neighbor_Potrait.png', import.meta.url).href;
+const emmaImg = new URL('../../../assets/Avatars/9_16_Ratio_Images/Emma.png', import.meta.url).href;
+const lyraImg = new URL('../../../assets/Avatars/9_16_Ratio_Images/Lyra.png', import.meta.url).href;
 
 const STOCK_TEMPLATES = [
   { id: 'serena', name: 'Serena', avatarUrl: serenaImg },
+  { id: 'emma', name: 'Emma', avatarUrl: emmaImg },
+  { id: 'lyra', name: 'Lyra', avatarUrl: lyraImg },
   { id: 'sarang', name: 'Sarang', avatarUrl: sarangImg },
   { id: 'aiko', name: 'Aiko', avatarUrl: aikoImg },
   { id: 'etherik', name: 'Etherik', avatarUrl: etherikImg },

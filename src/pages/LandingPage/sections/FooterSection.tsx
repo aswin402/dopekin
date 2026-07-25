@@ -68,10 +68,7 @@ export function FooterSection() {
         {/* Legal links */}
         <div className="flex flex-col gap-3 font-mono text-[10px]">
           <span className="font-extrabold uppercase text-[#f5f5f5] tracking-wider mb-1">Legal</span>
-          <a href="#" className="text-white/50 hover:text-[var(--y)] transition-colors">Privacy Policy</a>
-          <a href="#" className="text-white/50 hover:text-[var(--y)] transition-colors">Terms of Service</a>
           <a href="#" className="text-white/50 hover:text-[var(--y)] transition-colors">Refund Policy</a>
-          <a href="#" className="text-white/50 hover:text-[var(--y)] transition-colors">Cookies settings</a>
         </div>
       </div>
 

@@ -333,7 +333,7 @@ export function HomePage() {
         </div>
         
         <div className="flex flex-nowrap gap-6 sm:gap-8 overflow-x-auto pt-3 pb-2 scrollbar-none scroll-smooth">
-          {['etherik', 'sarang', 'aiko', 'cody', 'maya', 'senpai', 'drake', 'chloe'].map((newId, idx) => {
+          {['emma', 'lyra', 'serena', 'sarang', 'aiko', 'etherik', 'cody', 'maya'].map((newId, idx) => {
             const twin = getTwin(newId);
             return (
               <Link 
@@ -374,11 +374,11 @@ export function HomePage() {
 
         <div className="flex flex-nowrap gap-4 overflow-x-auto pb-2 scrollbar-none scroll-smooth justify-start">
           {[
+            { id: 'emma', vibe: '⚡ Tech-Savvy • Bold', desc: 'You both love coding & AI' },
+            { id: 'lyra', vibe: '🎵 Ethereal • Harmonious', desc: 'You both love ambient synthwave' },
             { id: 'serena', vibe: '🌿 Warm • Empathic', desc: 'You both like wellness' },
             { id: 'sarang', vibe: '💃 Charming • Bright', desc: 'You both like K-pop' },
-            { id: 'aiko', vibe: '💼 Focused • Attentive', desc: 'You both like productivity' },
-            { id: 'maya', vibe: '✨ Playful • Witty', desc: 'You both like design' },
-            { id: 'vale', vibe: '🎭 Magnetic • Authentic', desc: 'You both like indie tunes' }
+            { id: 'aiko', vibe: '💼 Focused • Attentive', desc: 'You both like productivity' }
           ].map((item) => {
             const twin = getTwin(item.id);
             const isFav = favorites.includes(item.id);
@@ -574,8 +574,6 @@ export function HomePage() {
           <span className="font-bold text-zinc-400">DopeKin AI Platform</span>
         </div>
         <div className="flex gap-4">
-          <span className="hover:text-zinc-400 cursor-pointer">Privacy Policy</span>
-          <span className="hover:text-zinc-400 cursor-pointer">Terms of Service</span>
           <span className="hover:text-zinc-400 cursor-pointer">Contact Support</span>
         </div>
         <div className="flex items-center gap-2">

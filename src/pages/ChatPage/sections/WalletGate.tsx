@@ -16,7 +16,7 @@ export function WalletGate({ onConnect }: WalletGateProps) {
             Connect Your Wallet
           </h3>
           <p className="text-xs md:text-sm text-zinc-400 font-body leading-relaxed max-w-xs mx-auto">
-            Connect your AppKit wallet to DopaMint to continue and check your reward eligibility.
+            Connect your AppKit wallet to DopeKin to continue and check your reward eligibility.
           </p>
         </div>
         <button

@@ -3,6 +3,7 @@ import { useSearchParams, Link } from 'react-router-dom';
 import { useAppStore } from '../../store/useAppStore';
 import { Search, Compass, Trash2, Heart } from 'lucide-react';
 import type { Twin } from '../../types/twin';
+import { TwinCardSkeleton } from '../../components/Skeleton';
 
 interface DiscoverTwinCardProps {
   twin: Twin;
@@ -142,6 +143,13 @@ export function DiscoverPage() {
   const [activeCategory, setActiveCategory] = useState(categoryParam);
   const [sortBy, setSortBy] = useState('popular');
   const [twinToDelete, setTwinToDelete] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setIsLoading(true);
+    const timer = setTimeout(() => setIsLoading(false), 300);
+    return () => clearTimeout(timer);
+  }, [activeCategory]);
 
   // Stateful favorite system
   const [likedTwins, setLikedTwins] = useState<string[]>(['vale', 'sarang']);
@@ -396,7 +404,13 @@ export function DiscoverPage() {
       </div>
 
       {/* Twins Grid Container */}
-      {sortedTwins.length > 0 ? (
+      {isLoading ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 xl:gap-10 w-full">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <TwinCardSkeleton key={i} />
+          ))}
+        </div>
+      ) : sortedTwins.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 xl:gap-10 w-full">
           {sortedTwins.map((twin) => {
             const vibeData = getVibeIconAndText(twin.id, twin.vibe);

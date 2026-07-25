@@ -22,6 +22,14 @@ export function ChatPage() {
   const activeTwinId = searchParams.get('twin') || twins[0]?.id;
   const activeTwin = twins.find((t) => t.id === activeTwinId) || twins[0];
 
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setIsLoading(true);
+    const timer = setTimeout(() => setIsLoading(false), 300);
+    return () => clearTimeout(timer);
+  }, [activeTwinId]);
+
   const [inputText, setInputText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [showProfile, setShowProfile] = useState(true);
@@ -258,6 +266,53 @@ export function ChatPage() {
           setUser({ name: 'Aswin Dope', email: 'aswin@celestialabs.com' });
         }}
       />
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div className="h-[calc(100vh-8rem)] lg:h-screen flex bg-black overflow-hidden relative">
+        <div className="w-80 border-r border-zinc-900 flex flex-col bg-black p-4 gap-4 hidden md:flex shrink-0">
+          <div className="w-full h-8 rounded bg-zinc-900 animate-pulse" />
+          <div className="flex flex-col gap-3">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="flex items-center gap-3 p-3 rounded-2xl bg-zinc-950/60 border border-white/5 animate-pulse">
+                <div className="w-12 h-12 rounded-full bg-zinc-900 shrink-0" />
+                <div className="flex-1 flex flex-col gap-2">
+                  <div className="w-20 h-4 rounded bg-zinc-900" />
+                  <div className="w-32 h-3 rounded bg-zinc-900/60" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="flex-1 flex flex-col justify-between p-6 bg-black">
+          <div className="flex items-center justify-between border-b border-zinc-900 pb-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-zinc-900 animate-pulse" />
+              <div className="w-32 h-4 rounded bg-zinc-900 animate-pulse" />
+            </div>
+            <div className="w-20 h-8 rounded-lg bg-zinc-900 animate-pulse" />
+          </div>
+
+          <div className="flex flex-col gap-6 py-6 overflow-y-auto">
+            <div className="flex items-end gap-3 mr-auto max-w-[70%]">
+              <div className="w-8 h-8 rounded-full bg-zinc-900 shrink-0 animate-pulse" />
+              <div className="p-4 rounded-2xl bg-zinc-950 border border-white/5 w-64 h-16 animate-pulse" />
+            </div>
+            <div className="flex items-end gap-3 ml-auto max-w-[70%] flex-row-reverse">
+              <div className="p-4 rounded-2xl bg-zinc-900 border border-white/10 w-48 h-12 animate-pulse" />
+            </div>
+            <div className="flex items-end gap-3 mr-auto max-w-[70%]">
+              <div className="w-8 h-8 rounded-full bg-zinc-900 shrink-0 animate-pulse" />
+              <div className="p-4 rounded-2xl bg-zinc-950 border border-white/5 w-80 h-20 animate-pulse" />
+            </div>
+          </div>
+
+          <div className="w-full h-14 rounded-2xl bg-zinc-900 border border-white/5 animate-pulse" />
+        </div>
+      </div>
     );
   }
 

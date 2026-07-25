@@ -1,12 +1,19 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { DEFAULT_POSTS } from '../data/defaultTwins';
 import { MessageSquare, Heart, Repeat, Eye, Rss } from 'lucide-react';
+import { FeedPostSkeleton } from '../components/Skeleton';
 
 export function FeedPage() {
   const [posts, setPosts] = useState(DEFAULT_POSTS);
   const [newPostText, setNewPostText] = useState('');
   const [likedPosts, setLikedPosts] = useState<string[]>([]);
   const [retweetedPosts, setRetweetedPosts] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 300);
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleLike = (id: string) => {
     const isLiked = likedPosts.includes(id);
@@ -104,7 +111,12 @@ export function FeedPage() {
 
       {/* Feed post list */}
       <div className="flex flex-col gap-4">
-        {posts.map((post) => {
+        {isLoading ? (
+          Array.from({ length: 4 }).map((_, i) => (
+            <FeedPostSkeleton key={i} />
+          ))
+        ) : (
+          posts.map((post) => {
           const isLiked = likedPosts.includes(post.id);
           const isRetweeted = retweetedPosts.includes(post.id);
           return (
@@ -151,7 +163,7 @@ export function FeedPage() {
               </div>
             </div>
           );
-        })}
+        }))}
       </div>
     </div>
   );

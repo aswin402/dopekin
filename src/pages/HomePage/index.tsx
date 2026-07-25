@@ -10,6 +10,10 @@ import { PromoBanner } from './sections/PromoBanner';
 import { DashboardStats } from './sections/DashboardStats';
 import { FavoritesRow } from './sections/FavoritesRow';
 import { ContinueChatting } from './sections/ContinueChatting';
+import { 
+  BannerSkeleton, AvatarCircleSkeleton, RecommendedCardSkeleton, 
+  TwinCardSkeleton 
+} from '../../components/Skeleton';
 
 // Helper to parse fan count strings (e.g. "15.9M FANS" -> 15900000)
 const getFansCount = (fansStr: string | null | undefined): number => {
@@ -235,6 +239,12 @@ function RecommendedTwinCard({ item, twin, isFav, toggleFavorite }: RecommendedT
 export function HomePage() {
   const navigate = useNavigate();
   const twins = useAppStore((state) => state.twins);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 300);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Local state to mock adding/removing favorites
   const [favorites, setFavorites] = useState<string[]>(['vale', 'kaia', 'aiko', 'jax']);
@@ -256,6 +266,44 @@ export function HomePage() {
 
   // Feature toggle to hide top dashboard metrics & quick access rows for now
   const SHOW_TOP_DASHBOARD_SECTIONS = false;
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col gap-8 animate-fade-up px-4 md:px-6 py-6 pb-24 text-left w-full mx-auto">
+        <BannerSkeleton />
+        
+        {/* New Companions Skeleton */}
+        <div className="flex flex-col gap-4">
+          <div className="w-32 h-4 rounded bg-zinc-900 animate-pulse" />
+          <div className="flex gap-6 overflow-hidden pt-2">
+            {Array.from({ length: 7 }).map((_, i) => (
+              <AvatarCircleSkeleton key={i} />
+            ))}
+          </div>
+        </div>
+
+        {/* Recommended Skeleton */}
+        <div className="flex flex-col gap-4">
+          <div className="w-40 h-4 rounded bg-zinc-900 animate-pulse" />
+          <div className="flex gap-4 overflow-hidden">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <RecommendedCardSkeleton key={i} />
+            ))}
+          </div>
+        </div>
+
+        {/* Featured Companions Skeleton */}
+        <div className="flex flex-col gap-4">
+          <div className="w-44 h-4 rounded bg-zinc-900 animate-pulse" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <TwinCardSkeleton key={i} />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-8 animate-fade-up px-4 md:px-6 py-6 pb-24 text-left w-full mx-auto">

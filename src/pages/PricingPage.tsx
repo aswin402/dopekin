@@ -1,5 +1,7 @@
+import { useState, useEffect } from 'react';
 import { useAppStore } from '../store/useAppStore';
 import { Tag, Check, X } from 'lucide-react';
+import { PricingCardSkeleton } from '../components/Skeleton';
 
 export function PricingPage() {
   const isPro = useAppStore((state) => state.isPro);
@@ -8,6 +10,13 @@ export function PricingPage() {
   const setElite = useAppStore((state) => state.setElite);
   const userTokens = useAppStore((state) => state.userTokens);
   const addTokens = useAppStore((state) => state.addTokens);
+
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 300);
+    return () => clearTimeout(timer);
+  }, []);
 
   const plans = [
     {
@@ -97,7 +106,12 @@ export function PricingPage() {
 
       {/* Plans Section */}
       <div className="grid md:grid-cols-3 gap-8 items-stretch">
-        {plans.map((plan, idx) => (
+        {isLoading ? (
+          Array.from({ length: 3 }).map((_, i) => (
+            <PricingCardSkeleton key={i} />
+          ))
+        ) : (
+          plans.map((plan, idx) => (
           <div 
             key={idx}
             className={`p-6 bg-black border rounded-2xl flex flex-col justify-between relative group ${
@@ -151,7 +165,7 @@ export function PricingPage() {
               {plan.buttonText}
             </button>
           </div>
-        ))}
+        )))}
       </div>
 
       {/* Tokens Store Section */}

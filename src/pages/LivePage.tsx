@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useAppStore } from '../store/useAppStore';
 import { Radio, Users, Play, Pause, Volume2, VolumeX, Send } from 'lucide-react';
+import { LiveStreamSkeleton } from '../components/Skeleton';
 
 interface ChatComment {
   id: string;
@@ -16,6 +17,7 @@ export function LivePage() {
 
   const activeStreamer = twins.find(t => t.id === 'vale') || twins[0];
 
+  const [isLoading, setIsLoading] = useState(true);
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(false);
   const [viewersCount, setViewersCount] = useState(12430);
@@ -23,6 +25,11 @@ export function LivePage() {
   const [inputComment, setInputComment] = useState('');
 
   const chatEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 300);
+    return () => clearTimeout(timer);
+  }, []);
 
   const defaultComments = [
     "Wait, that is actually crazy!",
@@ -97,6 +104,18 @@ export function LivePage() {
     setComments((prev) => [...prev, userComment]);
     setInputComment('');
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col gap-6 animate-fade-up">
+        <div className="flex justify-between items-center">
+          <div className="w-48 h-8 rounded bg-zinc-900 animate-pulse" />
+          <div className="w-24 h-6 rounded-full bg-zinc-900 animate-pulse" />
+        </div>
+        <LiveStreamSkeleton />
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-6 animate-fade-up">

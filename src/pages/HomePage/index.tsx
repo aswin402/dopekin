@@ -351,7 +351,7 @@ export function HomePage() {
       <div className="flex flex-col gap-4">
         <div className="flex justify-between items-center">
           <h3 className="text-sm font-mono font-black uppercase text-white/50 tracking-wider">
-            Featured Twins
+            Featured Companions
           </h3>
           <Link to="/discover" className="text-zinc-500 hover:text-white text-xs font-bold uppercase tracking-wider flex items-center gap-0.5">
             <span>View all</span>

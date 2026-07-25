@@ -169,12 +169,12 @@ export function TwinShowcase({ twins: propTwins }: TwinShowcaseProps) {
         <div className="flex flex-col gap-2 items-start text-left">
           <div className="flex items-center gap-2 text-[var(--y)] text-[9px] font-mono font-bold uppercase tracking-widest">
             <span className="w-1.5 h-1.5 rounded-full bg-[var(--y)] animate-pulse" />
-            <span>Featured AI Twins</span>
+            <span>Featured AI Companions</span>
           </div>
           
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading font-black uppercase text-[#f5f5f5] tracking-tight leading-[0.95]">
             Meet Our Featured <br />
-            <span className="text-[var(--y)] drop-shadow-[0_0_15px_rgba(255,231,1,0.25)]">AI Twins</span>
+            <span className="text-[var(--y)] drop-shadow-[0_0_15px_rgba(255,231,1,0.25)]">AI Companions</span>
             <span className="inline-flex items-center justify-center bg-zinc-900 border border-white/10 p-1.5 rounded-lg ml-3 text-[var(--y)] align-middle">
               <Sparkles className="w-4 h-4 fill-current" />
             </span>

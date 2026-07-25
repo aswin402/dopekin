@@ -46,24 +46,25 @@ function DiscoverTwinCard({
       onMouseLeave={() => setIsHovered(false)}
       className="w-full aspect-[3/4] bg-black border border-[var(--border)] rounded-2xl flex flex-col relative group overflow-hidden transition-all duration-300 hover:translate-y-[-6px] hover:scale-[1.02] hover:border-[var(--border2)] shrink-0 text-left cursor-pointer"
     >
-      {/* Hover Video Loop */}
-      {twin.videoUrl && (
+      {/* Hover Video Loop - Only load video src on user hover */}
+      {twin.videoUrl && isHovered && (
         <video
           ref={videoRef}
           src={twin.videoUrl}
           loop
           muted
           playsInline
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 z-0 ${
-            isHovered ? "opacity-100 scale-102" : "opacity-0 scale-100"
-          }`}
+          preload="auto"
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 z-0 opacity-100 scale-102"
         />
       )}
 
-      {/* Cover Image */}
+      {/* Cover Image with lazy loading & async decoding */}
       <img 
         src={twin.avatarUrl} 
         alt={twin.name} 
+        loading="lazy"
+        decoding="async"
         className={`absolute inset-0 w-full h-full object-cover transition-all duration-500 z-0 ${
           isHovered && twin.videoUrl ? "opacity-0 scale-105" : "opacity-100 group-hover:scale-105"
         }`}

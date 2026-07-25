@@ -88,21 +88,22 @@ function HomeTwinCard({ twin }: HomeTwinCardProps) {
     >
       {/* Card Media (Image/Video) */}
       <div className="absolute inset-0 w-full h-full bg-zinc-900 overflow-hidden">
-        {twin.videoUrl && (
+        {twin.videoUrl && isHovered && (
           <video 
             ref={videoRef}
             src={twin.videoUrl}
             loop
             muted
             playsInline
-            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 z-0 ${
-              isHovered ? 'opacity-100 scale-105' : 'opacity-0 scale-100'
-            }`}
+            preload="auto"
+            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 z-0 opacity-100 scale-105"
           />
         )}
         <img 
           src={twin.avatarUrl} 
           alt={twin.name} 
+          loading="lazy"
+          decoding="async"
           className={`absolute inset-0 w-full h-full object-cover transition-all duration-500 z-0 ${
             isHovered && twin.videoUrl ? 'opacity-0 scale-105' : 'opacity-100 group-hover:scale-105'
           }`}
@@ -174,21 +175,22 @@ function RecommendedTwinCard({ item, twin, isFav, toggleFavorite }: RecommendedT
     >
       {/* 3:4 Aspect Ratio Image/Video wrapper */}
       <div className="relative aspect-[3/4] w-full overflow-hidden rounded-t-2xl bg-zinc-900">
-        {twin.videoUrl && (
+        {twin.videoUrl && isHovered && (
           <video 
             ref={videoRef}
             src={twin.videoUrl}
             loop
             muted
             playsInline
-            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 z-0 ${
-              isHovered ? 'opacity-100 scale-103' : 'opacity-0 scale-100'
-            }`}
+            preload="auto"
+            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 z-0 opacity-100 scale-103"
           />
         )}
         <img 
           src={twin.avatarUrl} 
           alt={twin.name} 
+          loading="lazy"
+          decoding="async"
           className={`w-full h-full object-cover transition-all duration-500 ${
             isHovered && twin.videoUrl ? 'opacity-0 scale-103' : 'opacity-100 group-hover:scale-103'
           }`}

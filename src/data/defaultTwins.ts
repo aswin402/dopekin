@@ -73,6 +73,12 @@ const wifeVid = new URL('../assets/Avatars/Intro_Videos/Wife.mp4', import.meta.u
 const situationshipImg = new URL('../assets/Avatars/9_16_Ratio_Images/Your_Situationship_ Portrait.png', import.meta.url).href;
 const situationshipVid = new URL('../assets/Avatars/Intro_Videos/Your_Situationship.mp4', import.meta.url).href;
 
+const emmaImg = new URL('../assets/Avatars/9_16_Ratio_Images/Emma.png', import.meta.url).href;
+const emmaVid = new URL('../assets/Avatars/Intro_Videos/Emma.mp4', import.meta.url).href;
+
+const lyraImg = new URL('../assets/Avatars/9_16_Ratio_Images/Lyra.png', import.meta.url).href;
+const lyraVid = new URL('../assets/Avatars/Intro_Videos/Lyra.mp4', import.meta.url).href;
+
 export const DEFAULT_TWINS: Twin[] = [
   {
     id: 'serena',
@@ -386,6 +392,32 @@ export const DEFAULT_TWINS: Twin[] = [
     category: 'musicians',
     voiceId: 'jax-voice-id',
     videoUrl: rockstarVid
+  },
+  {
+    id: 'emma',
+    name: 'Emma',
+    profession: 'AI Architect & Hacker',
+    vibe: 'Tech-Savvy & Bold',
+    bio: 'Elite cyber engineer and neural strategist designing the next frontier of intelligent companions.',
+    fans: '5.2M FANS',
+    price: '$4.99/mo',
+    avatarUrl: emmaImg,
+    category: 'creators',
+    voiceId: 'emma-voice-id',
+    videoUrl: emmaVid
+  },
+  {
+    id: 'lyra',
+    name: 'Lyra',
+    profession: 'Celestial Vocalist',
+    vibe: 'Ethereal & Harmonious',
+    bio: 'Dreamy synthwave artist and ambient composer bringing melodic warmth and atmospheric soundscapes.',
+    fans: '6.1M FANS',
+    price: '$5.99/mo',
+    avatarUrl: lyraImg,
+    category: 'musicians',
+    voiceId: 'lyra-voice-id',
+    videoUrl: lyraVid
   }
 ];
 

@@ -408,7 +408,7 @@ export function HomePage() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-10 w-full">
-          {twins.map((twin) => (
+          {twins.slice(0, 20).map((twin) => (
             <HomeTwinCard key={twin.id} twin={twin} />
           ))}
         </div>

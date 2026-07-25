@@ -284,6 +284,10 @@ export function DiscoverPage() {
         return { emoji: '🏡', text: 'DEVOTED • SWEET' };
       case 'noah':
         return { emoji: '☕', text: 'FLIRTY • UNPREDICTABLE' };
+      case 'emma':
+        return { emoji: '⚡', text: 'TECH-SAVVY • BOLD' };
+      case 'lyra':
+        return { emoji: '🎵', text: 'ETHEREAL • HARMONIOUS' };
       default:
         return { emoji: '✨', text: vibe.toUpperCase() };
     }
@@ -339,6 +343,10 @@ export function DiscoverPage() {
         return 'Devoted home designer';
       case 'noah':
         return 'Magnetic coffee partner';
+      case 'emma':
+        return 'You both love coding & AI';
+      case 'lyra':
+        return 'You both love ambient synthwave';
       default:
         return 'Recommended companion';
     }

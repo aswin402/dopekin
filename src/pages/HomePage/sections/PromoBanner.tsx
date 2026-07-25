@@ -144,7 +144,7 @@ export function PromoBanner() {
       className="group relative w-full rounded-3xl overflow-hidden border border-white/10 shadow-2xl transition-all duration-500 select-none cursor-pointer bg-zinc-950"
     >
       {/* Banner Images Carousel */}
-      <div className="relative w-full aspect-[21/9] sm:aspect-[24/9] md:aspect-[3/1] lg:aspect-[3.5/1] overflow-hidden">
+      <div className="relative w-full aspect-[21/9] sm:aspect-[24/9] md:aspect-[3/1] lg:aspect-[3.5/1] overflow-hidden bg-zinc-950">
         {BANNERS.map((banner, idx) => (
           <div
             key={banner.id}
@@ -153,12 +153,21 @@ export function PromoBanner() {
               currentIndex === idx ? 'opacity-100 z-10 pointer-events-auto' : 'opacity-0 z-0 pointer-events-none'
             }`}
           >
+            {/* Ambient Blurred Background to prevent letterbox gaps on ultra-wide screens */}
+            <img
+              src={banner.image}
+              alt=""
+              aria-hidden="true"
+              className="absolute inset-0 w-full h-full object-cover blur-2xl opacity-40 scale-110 pointer-events-none"
+            />
+
+            {/* Sharp Full Banner Graphic (Fully Visible & Uncropped) */}
             <img
               src={banner.image}
               alt={banner.alt}
               loading={idx === 0 ? 'eager' : 'lazy'}
               decoding="async"
-              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+              className="relative z-10 w-full h-full object-contain object-center transition-transform duration-700 group-hover:scale-[1.01]"
             />
           </div>
         ))}

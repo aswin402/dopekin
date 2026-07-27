@@ -131,7 +131,7 @@ export function PromoBanner() {
               alt={banner.alt}
               loading={idx === 0 ? 'eager' : 'lazy'}
               decoding="async"
-              className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-[1.02]"
+              className="w-full h-full object-cover object-center"
             />
           </div>
         ))}

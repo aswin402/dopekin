@@ -116,7 +116,7 @@ export function PromoBanner() {
       className="group relative w-[calc(100%+2rem)] -mx-4 sm:mx-0 sm:w-full rounded-none sm:rounded-3xl overflow-hidden border-y border-x-0 sm:border border-white/10 shadow-2xl transition-all duration-500 select-none cursor-pointer bg-zinc-950"
     >
       {/* Banner Images Carousel */}
-      <div className="relative w-full aspect-[1.6/1] sm:aspect-[2.4/1] md:aspect-[2.75/1] lg:aspect-[2.85/1] overflow-hidden bg-zinc-950">
+      <div className="relative w-full aspect-[1.8/1] sm:aspect-[2.4/1] md:aspect-[2.75/1] lg:aspect-[2.85/1] overflow-hidden bg-zinc-950">
         {BANNERS.map((banner, idx) => (
           <div
             key={banner.id}
@@ -125,14 +125,25 @@ export function PromoBanner() {
               currentIndex === idx ? 'opacity-100 z-10 pointer-events-auto' : 'opacity-0 z-0 pointer-events-none'
             }`}
           >
-            {/* Full Width Edge-to-Edge Banner Graphic */}
-            <img
-              src={banner.image}
-              alt={banner.alt}
-              loading={idx === 0 ? 'eager' : 'lazy'}
-              decoding="async"
-              className="w-full h-full object-cover object-center"
-            />
+            <div className="relative w-full h-full overflow-hidden bg-black flex items-center justify-center">
+              {/* Blurred Ambient Background Fill */}
+              <img
+                src={banner.image}
+                alt=""
+                aria-hidden="true"
+                loading="lazy"
+                decoding="async"
+                className="absolute inset-0 w-full h-full object-cover blur-2xl opacity-40 scale-110 pointer-events-none"
+              />
+              {/* Crisp Uncropped Banner Graphic */}
+              <img
+                src={banner.image}
+                alt={banner.alt}
+                loading={idx === 0 ? 'eager' : 'lazy'}
+                decoding="async"
+                className="relative z-10 w-full h-full object-contain object-center"
+              />
+            </div>
           </div>
         ))}
       </div>

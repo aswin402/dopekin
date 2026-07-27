@@ -4,6 +4,7 @@ import { useAppStore } from '../../store/useAppStore';
 import { Search, Compass, Trash2, Heart } from 'lucide-react';
 import type { Twin } from '../../types/twin';
 import { TwinCardSkeleton } from '../../components/Skeleton';
+import { videoQueueManager } from '../../utils/videoQueueManager';
 
 interface DiscoverTwinCardProps {
   twin: Twin;
@@ -23,39 +24,71 @@ function DiscoverTwinCard({
   personalizationHook 
 }: DiscoverTwinCardProps) {
   const [isHovered, setIsHovered] = useState(false);
+  const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
+  const [videoLoaded, setVideoLoaded] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    if (isHovered && videoRef.current) {
-      const playPromise = videoRef.current.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(err => {
-          console.log('Video play interrupted:', err);
-        });
+    const unregister = videoQueueManager.register(twin.id, (allowed) => {
+      if (allowed) {
+        setShouldLoadVideo(true);
       }
-    } else if (!isHovered && videoRef.current) {
-      videoRef.current.pause();
-      videoRef.current.currentTime = 0;
+    });
+
+    return () => {
+      unregister();
+    };
+  }, [twin.id]);
+
+  useEffect(() => {
+    if (shouldLoadVideo && videoRef.current) {
+      if (isHovered && videoLoaded) {
+        const playPromise = videoRef.current.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(err => {
+            console.log('Video play interrupted:', err);
+          });
+        }
+      } else if (!isHovered) {
+        videoRef.current.pause();
+        videoRef.current.currentTime = 0;
+      }
     }
-  }, [isHovered]);
+  }, [isHovered, shouldLoadVideo, videoLoaded]);
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+    videoQueueManager.prioritize(twin.id);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
+
+  const handleVideoCanPlay = () => {
+    setVideoLoaded(true);
+    videoQueueManager.notifyLoaded(twin.id);
+  };
 
   return (
     <Link 
       to={`/chat?twin=${twin.id}`}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       className="w-full aspect-[3/4] bg-black border border-[var(--border)] rounded-2xl flex flex-col relative group overflow-hidden transition-all duration-300 hover:translate-y-[-6px] hover:scale-[1.02] hover:border-[var(--border2)] shrink-0 text-left cursor-pointer"
     >
-      {/* Hover Video Loop - Only load video src on user hover */}
-      {twin.videoUrl && isHovered && (
+      {/* Video Loop - Loaded sequentially */}
+      {twin.videoUrl && shouldLoadVideo && (
         <video
           ref={videoRef}
           src={twin.videoUrl}
           loop
           muted
           playsInline
-          preload="auto"
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 z-0 opacity-100 scale-102"
+          onLoadedData={handleVideoCanPlay}
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 z-0 ${
+            isHovered && videoLoaded ? "opacity-100 scale-102" : "opacity-0 scale-100"
+          }`}
         />
       )}
 
@@ -66,7 +99,7 @@ function DiscoverTwinCard({
         loading="lazy"
         decoding="async"
         className={`absolute inset-0 w-full h-full object-cover transition-all duration-500 z-0 ${
-          isHovered && twin.videoUrl ? "opacity-0 scale-105" : "opacity-100 group-hover:scale-105"
+          isHovered && videoLoaded ? "opacity-0 scale-105" : "opacity-100 group-hover:scale-105"
         }`}
       />
 

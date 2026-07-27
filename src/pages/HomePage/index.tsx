@@ -336,7 +336,7 @@ export function HomePage() {
 
   if (isLoading) {
     return (
-      <div className="flex flex-col gap-8 animate-fade-up px-4 md:px-6 py-6 pb-24 text-left w-full mx-auto">
+      <div className="flex flex-col gap-8 animate-fade-up px-4 md:px-6 pt-0 sm:pt-6 pb-24 text-left w-full mx-auto">
         <BannerSkeleton />
         
         {/* New Companions Skeleton */}
@@ -373,7 +373,7 @@ export function HomePage() {
   }
 
   return (
-    <div className="flex flex-col gap-8 animate-fade-up px-4 md:px-6 py-6 pb-24 text-left w-full mx-auto">
+    <div className="flex flex-col gap-8 animate-fade-up px-4 md:px-6 pt-0 sm:pt-6 pb-24 text-left w-full mx-auto">
       {SHOW_TOP_DASHBOARD_SECTIONS && (
         <>
           <DashboardStats />

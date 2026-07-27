@@ -4,22 +4,22 @@ export const SHOWCASE_TWINS = [
   {
     name: 'Serena',
     video: new URL('../../assets/Avatars/potrait_videos/serina-mac.mp4', import.meta.url).href,
-    image: new URL('../../assets/Avatars/9_16_Ratio_Images/05_Serena_C4.png', import.meta.url).href,
+    image: new URL('../../assets/Avatars/9_16_Ratio_Images/05_Serena_C4.webp', import.meta.url).href,
   },
   {
     name: 'Sarang',
     video: new URL('../../assets/Avatars/potrait_videos/sarang_mac.mp4', import.meta.url).href,
-    image: new URL('../../assets/Avatars/9_16_Ratio_Images/02_Sarang_Sleevless.png', import.meta.url).href,
+    image: new URL('../../assets/Avatars/9_16_Ratio_Images/02_Sarang_Sleevless.webp', import.meta.url).href,
   },
   {
     name: 'Aiko',
     video: new URL('../../assets/Avatars/Intro_Videos/Aiko.mp4', import.meta.url).href,
-    image: new URL('../../assets/Avatars/9_16_Ratio_Images/03_Aiko_V2.png', import.meta.url).href,
+    image: new URL('../../assets/Avatars/9_16_Ratio_Images/03_Aiko_V2.webp', import.meta.url).href,
   },
   {
     name: 'Etherik',
     video: new URL('../../assets/Avatars/potrait_videos/etherik_mac.mp4', import.meta.url).href,
-    image: new URL('../../assets/Avatars/9_16_Ratio_Images/01_Etherik.png', import.meta.url).href,
+    image: new URL('../../assets/Avatars/9_16_Ratio_Images/01_Etherik.webp', import.meta.url).href,
   }
 ];
 

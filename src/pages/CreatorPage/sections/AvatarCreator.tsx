@@ -7,16 +7,16 @@ import {
   RefreshCw, Cpu, Layers 
 } from 'lucide-react';
 
-const serenaImg = new URL('../../../assets/Avatars/9_16_Ratio_Images/05_Serena_C4.png', import.meta.url).href;
-const sarangImg = new URL('../../../assets/Avatars/9_16_Ratio_Images/02_Sarang_Sleevless.png', import.meta.url).href;
-const aikoImg = new URL('../../../assets/Avatars/9_16_Ratio_Images/03_Aiko_V2.png', import.meta.url).href;
-const etherikImg = new URL('../../../assets/Avatars/9_16_Ratio_Images/01_Etherik.png', import.meta.url).href;
-const gamerGirlImg = new URL('../../../assets/Avatars/9_16_Ratio_Images/Potrait_gamer_girl.png', import.meta.url).href;
-const cosmicWitchImg = new URL('../../../assets/Avatars/9_16_Ratio_Images/Cosmic_Witch_ Portrait.png', import.meta.url).href;
-const rockstarImg = new URL('../../../assets/Avatars/9_16_Ratio_Images/Rockstar_Potrait.png', import.meta.url).href;
-const flirtyNeighborImg = new URL('../../../assets/Avatars/9_16_Ratio_Images/Flirty_Neighbor_Potrait.png', import.meta.url).href;
-const emmaImg = new URL('../../../assets/Avatars/9_16_Ratio_Images/Emma.png', import.meta.url).href;
-const lyraImg = new URL('../../../assets/Avatars/9_16_Ratio_Images/Lyra.png', import.meta.url).href;
+const serenaImg = new URL('../../../assets/Avatars/9_16_Ratio_Images/05_Serena_C4.webp', import.meta.url).href;
+const sarangImg = new URL('../../../assets/Avatars/9_16_Ratio_Images/02_Sarang_Sleevless.webp', import.meta.url).href;
+const aikoImg = new URL('../../../assets/Avatars/9_16_Ratio_Images/03_Aiko_V2.webp', import.meta.url).href;
+const etherikImg = new URL('../../../assets/Avatars/9_16_Ratio_Images/01_Etherik.webp', import.meta.url).href;
+const gamerGirlImg = new URL('../../../assets/Avatars/9_16_Ratio_Images/Potrait_gamer_girl.webp', import.meta.url).href;
+const cosmicWitchImg = new URL('../../../assets/Avatars/9_16_Ratio_Images/Cosmic_Witch_ Portrait.webp', import.meta.url).href;
+const rockstarImg = new URL('../../../assets/Avatars/9_16_Ratio_Images/Rockstar_Potrait.webp', import.meta.url).href;
+const flirtyNeighborImg = new URL('../../../assets/Avatars/9_16_Ratio_Images/Flirty_Neighbor_Potrait.webp', import.meta.url).href;
+const emmaImg = new URL('../../../assets/Avatars/9_16_Ratio_Images/Emma.webp', import.meta.url).href;
+const lyraImg = new URL('../../../assets/Avatars/9_16_Ratio_Images/Lyra.webp', import.meta.url).href;
 
 const STOCK_TEMPLATES = [
   { id: 'serena', name: 'Serena', avatarUrl: serenaImg },

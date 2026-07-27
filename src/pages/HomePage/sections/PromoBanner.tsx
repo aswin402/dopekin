@@ -3,13 +3,13 @@ import type { TouchEvent, MouseEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-const communityFeedsBanner = new URL('../../../assets/banner/community_feeds.png', import.meta.url).href;
-const createTwinBanner = new URL('../../../assets/banner/create_twin_banner.png', import.meta.url).href;
-const discoverMoreBanner = new URL('../../../assets/banner/discover_more.png', import.meta.url).href;
-const newCompanionBanner = new URL('../../../assets/banner/new_companion.png', import.meta.url).href;
-const offersBanner = new URL('../../../assets/banner/offers.png', import.meta.url).href;
-const tokenPlansBanner = new URL('../../../assets/banner/tokenplans.png', import.meta.url).href;
-const trendingFeedBanner = new URL('../../../assets/banner/trending_feed.png', import.meta.url).href;
+const communityFeedsBanner = new URL('../../../assets/banner/community_feeds.webp', import.meta.url).href;
+const createTwinBanner = new URL('../../../assets/banner/create_twin_banner.webp', import.meta.url).href;
+const discoverMoreBanner = new URL('../../../assets/banner/discover_more.webp', import.meta.url).href;
+const newCompanionBanner = new URL('../../../assets/banner/new_companion.webp', import.meta.url).href;
+const offersBanner = new URL('../../../assets/banner/offers.webp', import.meta.url).href;
+const tokenPlansBanner = new URL('../../../assets/banner/tokenplans.webp', import.meta.url).href;
+const trendingFeedBanner = new URL('../../../assets/banner/trending_feed.webp', import.meta.url).href;
 
 const BANNERS = [
   {

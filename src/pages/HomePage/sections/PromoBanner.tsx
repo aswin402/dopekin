@@ -113,7 +113,7 @@ export function PromoBanner() {
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
-      className="group relative w-full rounded-3xl overflow-hidden border border-white/10 shadow-2xl transition-all duration-500 select-none cursor-pointer bg-zinc-950"
+      className="group relative w-[calc(100%+2rem)] -mx-4 sm:mx-0 sm:w-full rounded-none sm:rounded-3xl overflow-hidden border-y border-x-0 sm:border border-white/10 shadow-2xl transition-all duration-500 select-none cursor-pointer bg-zinc-950"
     >
       {/* Banner Images Carousel */}
       <div className="relative w-full aspect-[2.1/1] sm:aspect-[2.4/1] md:aspect-[2.75/1] lg:aspect-[2.85/1] overflow-hidden bg-zinc-950">

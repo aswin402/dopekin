@@ -66,7 +66,7 @@ export function AvatarCircleSkeleton() {
 // Large Promo Banner Skeleton
 export function BannerSkeleton() {
   return (
-    <div className="w-full h-48 sm:h-56 md:h-64 rounded-3xl bg-zinc-950 border border-white/5 p-6 sm:p-10 flex flex-col justify-between animate-pulse">
+    <div className="w-[calc(100%+2rem)] -mx-4 sm:mx-0 sm:w-full h-48 sm:h-56 md:h-64 rounded-none sm:rounded-3xl bg-zinc-950 border-y border-x-0 sm:border border-white/5 p-6 sm:p-10 flex flex-col justify-between animate-pulse">
       <div className="flex justify-between items-start">
         <Skeleton className="w-24 h-5 rounded-full" />
         <Skeleton className="w-12 h-4 rounded-md" />

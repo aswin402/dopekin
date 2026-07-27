@@ -482,20 +482,20 @@ export function HomePage() {
       </div>
 
       {/* DOUBLE SECTION ROW: RECENT CHATS & LATEST FEEDS */}
-      <div className="grid lg:grid-cols-2 gap-8 pt-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 pt-4 w-full min-w-0 overflow-hidden">
         {/* Trending Companions */}
-        <div className="flex flex-col gap-4">
-          <div className="flex justify-between items-center">
-            <h3 className="text-sm font-mono font-black uppercase text-white/50 tracking-wider">
+        <div className="flex flex-col gap-4 w-full min-w-0 overflow-hidden">
+          <div className="flex justify-between items-center w-full min-w-0 px-1">
+            <h3 className="text-sm font-mono font-black uppercase text-white/50 tracking-wider truncate">
               Trending Companions
             </h3>
-            <Link to="/discover" className="text-zinc-500 hover:text-white text-xs font-bold uppercase tracking-wider cursor-pointer font-mono">View all</Link>
+            <Link to="/discover" className="text-zinc-500 hover:text-white text-xs font-bold uppercase tracking-wider cursor-pointer font-mono shrink-0 ml-2">View all</Link>
           </div>
 
-          <div className="flex-1 flex flex-col justify-between gap-4 bg-zinc-950 border border-white/5 rounded-3xl p-4 sm:p-6 font-body overflow-hidden">
+          <div className="flex-1 flex flex-col justify-between gap-4 bg-zinc-950 border border-white/5 rounded-3xl p-4 sm:p-6 font-body w-full overflow-hidden">
             {trendingCompanions.map((twin, idx) => {
                return (
-                 <div key={twin.id} className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 p-2 rounded-2xl hover:bg-white/5 transition-colors group min-w-0">
+                 <div key={twin.id} className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 p-2 rounded-2xl hover:bg-white/5 transition-colors group min-w-0 w-full">
                    <div className="flex items-center gap-3 sm:gap-4 min-w-0 w-full sm:flex-1">
                      <div className="w-12 h-12 rounded-full border border-white/10 overflow-hidden shrink-0 bg-zinc-950 relative">
                        <img src={twin.avatarUrl} alt={twin.name} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
@@ -530,22 +530,22 @@ export function HomePage() {
         </div>
 
         {/* Latest Feeds */}
-        <div className="flex flex-col gap-4">
-          <div className="flex justify-between items-center">
-            <h3 className="text-sm font-mono font-black uppercase text-white/50 tracking-wider">
+        <div className="flex flex-col gap-4 w-full min-w-0 overflow-hidden">
+          <div className="flex justify-between items-center w-full min-w-0 px-1">
+            <h3 className="text-sm font-mono font-black uppercase text-white/50 tracking-wider truncate">
               Latest Feeds
             </h3>
-            <span className="text-zinc-500 hover:text-white text-xs font-bold uppercase tracking-wider cursor-pointer font-mono" onClick={() => navigate('/feed')}>View all</span>
+            <span className="text-zinc-500 hover:text-white text-xs font-bold uppercase tracking-wider cursor-pointer font-mono shrink-0 ml-2" onClick={() => navigate('/feed')}>View all</span>
           </div>
 
-          <div className="flex-1 flex flex-col justify-between gap-4 bg-zinc-950 border border-white/5 rounded-3xl p-4 sm:p-6 font-body overflow-hidden">
+          <div className="flex-1 flex flex-col justify-between gap-4 bg-zinc-950 border border-white/5 rounded-3xl p-4 sm:p-6 font-body w-full overflow-hidden">
             {[
               { title: 'Cyberpunk Summer', description: 'Behind the scenes with Serena and Kaia.', cast: 'Serena & Kaia', isNew: true },
               { title: 'Cosmic Moon Astrology', description: 'Tarot readings and star mapping with Luna.', cast: 'Luna', isNew: true },
               { title: 'Backstage Guitar Solos', description: 'Preparing for the next tour show.', cast: 'Jax', isNew: false }
             ].map((feed, idx) => {
               return (
-                <div key={idx} className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 p-2 rounded-2xl hover:bg-white/5 transition-colors min-w-0">
+                <div key={idx} className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 p-2 rounded-2xl hover:bg-white/5 transition-colors min-w-0 w-full">
                   <div className="flex items-center gap-3 sm:gap-4 min-w-0 w-full sm:flex-1">
                     <div className="w-16 h-12 sm:w-20 sm:h-14 bg-gradient-to-br from-zinc-900 to-black border border-white/10 rounded-xl overflow-hidden shrink-0 relative flex flex-col items-center justify-center text-[10px] font-black text-zinc-600 font-mono">
                       <span>FEED</span>

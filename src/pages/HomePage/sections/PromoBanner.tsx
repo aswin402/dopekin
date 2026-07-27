@@ -3,56 +3,28 @@ import type { TouchEvent, MouseEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-const communityFeedsBanner = new URL('../../../assets/banner/community_feeds.webp', import.meta.url).href;
-const createTwinBanner = new URL('../../../assets/banner/create_twin_banner.webp', import.meta.url).href;
-const discoverMoreBanner = new URL('../../../assets/banner/discover_more.webp', import.meta.url).href;
-const newCompanionBanner = new URL('../../../assets/banner/new_companion.webp', import.meta.url).href;
-const offersBanner = new URL('../../../assets/banner/offers.webp', import.meta.url).href;
-const tokenPlansBanner = new URL('../../../assets/banner/tokenplans.webp', import.meta.url).href;
-const trendingFeedBanner = new URL('../../../assets/banner/trending_feed.webp', import.meta.url).href;
+const newCompanionBanner = new URL('../../../assets/banner/new_companion_banner.webp', import.meta.url).href;
+const hotFeedBanner = new URL('../../../assets/banner/hot_feed_banner.webp', import.meta.url).href;
+const tokenPlanBanner = new URL('../../../assets/banner/token_plan_banner.webp', import.meta.url).href;
 
 const BANNERS = [
   {
-    id: 'create-twin',
-    image: createTwinBanner,
-    alt: 'Create Your Own Digital Twin',
-    link: '/create',
-  },
-  {
-    id: 'discover-more',
-    image: discoverMoreBanner,
-    alt: 'Discover More AI Companions',
-    link: '/discover',
-  },
-  {
-    id: 'special-offers',
-    image: offersBanner,
-    alt: 'Special Offers & Membership Tiers',
-    link: '/pricing',
-  },
-  {
     id: 'new-companion',
     image: newCompanionBanner,
-    alt: 'New AI Companions',
+    alt: 'Create & Meet New Companions',
     link: '/discover',
   },
   {
-    id: 'token-plans',
-    image: tokenPlansBanner,
-    alt: 'Token Top-Up Plans',
+    id: 'hot-feed',
+    image: hotFeedBanner,
+    alt: 'Trending Social Feed',
+    link: '/feed',
+  },
+  {
+    id: 'token-plan',
+    image: tokenPlanBanner,
+    alt: 'Token Top-Up Plans & Offers',
     link: '/pricing',
-  },
-  {
-    id: 'community-feeds',
-    image: communityFeedsBanner,
-    alt: 'Community Social Feed',
-    link: '/feed',
-  },
-  {
-    id: 'trending-feed',
-    image: trendingFeedBanner,
-    alt: 'Trending Companions Feed',
-    link: '/feed',
   },
 ];
 

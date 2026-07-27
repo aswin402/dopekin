@@ -492,41 +492,41 @@ export function HomePage() {
             <Link to="/discover" className="text-zinc-500 hover:text-white text-xs font-bold uppercase tracking-wider cursor-pointer font-mono">View all</Link>
           </div>
 
-          <div className="flex-1 flex flex-col justify-between gap-4 bg-zinc-950 border border-white/5 rounded-3xl p-4 sm:p-6 font-body w-full overflow-hidden">
+          <div className="flex-1 flex flex-col justify-between gap-4 bg-zinc-950 border border-white/5 rounded-3xl p-4 sm:p-6 font-body overflow-hidden">
             {trendingCompanions.map((twin, idx) => {
-              return (
-                <div key={twin.id} className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 p-2 rounded-2xl hover:bg-white/5 transition-colors group min-w-0 w-full">
-                  <div className="flex items-center gap-3 sm:gap-4 min-w-0 w-full sm:flex-1">
-                    <div className="w-12 h-12 rounded-full border border-white/10 overflow-hidden shrink-0 bg-zinc-950 relative">
-                      <img src={twin.avatarUrl} alt={twin.name} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
-                    </div>
-                    <div className="flex flex-col text-left min-w-0 flex-1">
-                      <div className="flex items-center gap-1.5 min-w-0">
-                        <span className="font-heading font-black text-sm text-white truncate">{twin.name}</span>
-                        <span className={`text-[8px] font-mono font-black px-1.5 py-0.5 rounded uppercase tracking-wider shrink-0 ${BADGE_COLORS[idx] || BADGE_COLORS[2]}`}>
-                          {BADGES[idx] || '⭐ Rising'}
-                        </span>
-                      </div>
-                      <p className="text-xs text-zinc-400 font-body truncate mt-0.5">
-                        {twin.profession} • <span className="text-[var(--y)] font-semibold">{twin.vibe}</span>
-                      </p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center justify-between sm:justify-end gap-3 sm:gap-4 shrink-0 font-mono w-full sm:w-auto pt-2.5 sm:pt-0 border-t border-white/5 sm:border-t-0">
-                    <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider shrink-0 sm:hidden lg:inline">{twin.fans}</span>
-                    <Link 
-                      to={`/chat?twin=${twin.id}`}
-                      className="flex-1 sm:flex-initial sm:w-10 h-10 rounded-xl bg-zinc-900 border border-white/5 hover:border-[var(--y)] hover:bg-[var(--y)] hover:text-black flex items-center justify-center gap-2 sm:gap-0 text-zinc-400 transition-all cursor-pointer font-bold text-xs uppercase"
-                    >
-                      <MessageSquare className="w-4 h-4 shrink-0" />
-                      <span className="inline sm:hidden">Chat Now</span>
-                    </Link>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+               return (
+                 <div key={twin.id} className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 p-2 rounded-2xl hover:bg-white/5 transition-colors group min-w-0">
+                   <div className="flex items-center gap-3 sm:gap-4 min-w-0 w-full sm:flex-1">
+                     <div className="w-12 h-12 rounded-full border border-white/10 overflow-hidden shrink-0 bg-zinc-950 relative">
+                       <img src={twin.avatarUrl} alt={twin.name} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
+                     </div>
+                     <div className="flex flex-col text-left min-w-0 flex-1">
+                       <div className="flex items-center gap-1.5 min-w-0">
+                         <span className="font-heading font-black text-sm text-white truncate">{twin.name}</span>
+                         <span className={`text-[8px] font-mono font-black px-1.5 py-0.5 rounded uppercase tracking-wider shrink-0 ${BADGE_COLORS[idx] || BADGE_COLORS[2]}`}>
+                           {BADGES[idx] || '⭐ Rising'}
+                         </span>
+                       </div>
+                       <p className="text-xs text-zinc-400 font-body truncate mt-0.5">
+                         {twin.profession} • <span className="text-[var(--y)] font-semibold">{twin.vibe}</span>
+                       </p>
+                     </div>
+                   </div>
+                   
+                   <div className="flex items-center justify-end gap-3 sm:gap-4 shrink-0 font-mono w-full sm:w-auto pt-2.5 sm:pt-0 border-t border-white/5 sm:border-t-0">
+                     <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider shrink-0 hidden lg:inline">{twin.fans}</span>
+                     <Link 
+                       to={`/chat?twin=${twin.id}`}
+                       className="w-full sm:w-10 h-10 rounded-xl bg-zinc-900 border border-white/5 hover:border-[var(--y)] hover:bg-[var(--y)] hover:text-black flex items-center justify-center gap-2 sm:gap-0 text-zinc-400 transition-all cursor-pointer font-bold text-xs uppercase"
+                     >
+                       <MessageSquare className="w-4 h-4 shrink-0" />
+                       <span className="inline sm:hidden">Chat</span>
+                     </Link>
+                   </div>
+                 </div>
+               );
+             })}
+           </div>
         </div>
 
         {/* Latest Feeds */}
@@ -538,14 +538,14 @@ export function HomePage() {
             <span className="text-zinc-500 hover:text-white text-xs font-bold uppercase tracking-wider cursor-pointer font-mono" onClick={() => navigate('/feed')}>View all</span>
           </div>
 
-          <div className="flex-1 flex flex-col justify-between gap-4 bg-zinc-950 border border-white/5 rounded-3xl p-4 sm:p-6 font-body w-full overflow-hidden">
+          <div className="flex-1 flex flex-col justify-between gap-4 bg-zinc-950 border border-white/5 rounded-3xl p-4 sm:p-6 font-body overflow-hidden">
             {[
               { title: 'Cyberpunk Summer', description: 'Behind the scenes with Serena and Kaia.', cast: 'Serena & Kaia', isNew: true },
               { title: 'Cosmic Moon Astrology', description: 'Tarot readings and star mapping with Luna.', cast: 'Luna', isNew: true },
               { title: 'Backstage Guitar Solos', description: 'Preparing for the next tour show.', cast: 'Jax', isNew: false }
             ].map((feed, idx) => {
               return (
-                <div key={idx} className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 p-2 rounded-2xl hover:bg-white/5 transition-colors min-w-0 w-full">
+                <div key={idx} className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 p-2 rounded-2xl hover:bg-white/5 transition-colors min-w-0">
                   <div className="flex items-center gap-3 sm:gap-4 min-w-0 w-full sm:flex-1">
                     <div className="w-16 h-12 sm:w-20 sm:h-14 bg-gradient-to-br from-zinc-900 to-black border border-white/10 rounded-xl overflow-hidden shrink-0 relative flex flex-col items-center justify-center text-[10px] font-black text-zinc-600 font-mono">
                       <span>FEED</span>

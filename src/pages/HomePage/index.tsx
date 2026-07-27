@@ -495,8 +495,8 @@ export function HomePage() {
           <div className="flex-1 flex flex-col justify-between gap-4 bg-zinc-950 border border-white/5 rounded-3xl p-4 sm:p-6 font-body w-full overflow-hidden">
             {trendingCompanions.map((twin, idx) => {
               return (
-                <div key={twin.id} className="flex items-center justify-between gap-2.5 sm:gap-4 p-1.5 rounded-2xl hover:bg-white/5 transition-colors group min-w-0">
-                  <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
+                <div key={twin.id} className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 p-2 rounded-2xl hover:bg-white/5 transition-colors group min-w-0 w-full">
+                  <div className="flex items-center gap-3 sm:gap-4 min-w-0 w-full sm:flex-1">
                     <div className="w-12 h-12 rounded-full border border-white/10 overflow-hidden shrink-0 bg-zinc-950 relative">
                       <img src={twin.avatarUrl} alt={twin.name} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
                     </div>
@@ -513,13 +513,14 @@ export function HomePage() {
                     </div>
                   </div>
                   
-                  <div className="flex items-center gap-2 sm:gap-4 shrink-0 font-mono">
-                    <span className="text-[10px] text-zinc-500 font-bold hidden sm:inline">{twin.fans}</span>
+                  <div className="flex items-center justify-between sm:justify-end gap-3 sm:gap-4 shrink-0 font-mono w-full sm:w-auto pt-2.5 sm:pt-0 border-t border-white/5 sm:border-t-0">
+                    <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider shrink-0 sm:hidden lg:inline">{twin.fans}</span>
                     <Link 
                       to={`/chat?twin=${twin.id}`}
-                      className="w-10 h-10 rounded-xl bg-zinc-900 border border-white/5 hover:border-[var(--y)] hover:bg-[var(--y)] hover:text-black flex items-center justify-center text-zinc-400 transition-all cursor-pointer"
+                      className="flex-1 sm:flex-initial sm:w-10 h-10 rounded-xl bg-zinc-900 border border-white/5 hover:border-[var(--y)] hover:bg-[var(--y)] hover:text-black flex items-center justify-center gap-2 sm:gap-0 text-zinc-400 transition-all cursor-pointer font-bold text-xs uppercase"
                     >
-                      <MessageSquare className="w-4 h-4" />
+                      <MessageSquare className="w-4 h-4 shrink-0" />
+                      <span className="inline sm:hidden">Chat Now</span>
                     </Link>
                   </div>
                 </div>
@@ -544,8 +545,8 @@ export function HomePage() {
               { title: 'Backstage Guitar Solos', description: 'Preparing for the next tour show.', cast: 'Jax', isNew: false }
             ].map((feed, idx) => {
               return (
-                <div key={idx} className="flex items-center justify-between gap-2.5 sm:gap-4 p-1.5 rounded-2xl hover:bg-white/5 transition-colors min-w-0">
-                  <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
+                <div key={idx} className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 p-2 rounded-2xl hover:bg-white/5 transition-colors min-w-0 w-full">
+                  <div className="flex items-center gap-3 sm:gap-4 min-w-0 w-full sm:flex-1">
                     <div className="w-16 h-12 sm:w-20 sm:h-14 bg-gradient-to-br from-zinc-900 to-black border border-white/10 rounded-xl overflow-hidden shrink-0 relative flex flex-col items-center justify-center text-[10px] font-black text-zinc-600 font-mono">
                       <span>FEED</span>
                       <span className="text-[8px] opacity-60">#{idx + 1}</span>
@@ -563,12 +564,14 @@ export function HomePage() {
                     </div>
                   </div>
                   
-                  <button 
-                    onClick={() => navigate('/feed')}
-                    className="h-9 px-3.5 sm:h-10 sm:px-5 bg-[var(--y)] text-black text-xs font-black uppercase rounded-lg hover:scale-102 active:scale-98 transition-all border border-black shadow-[2px_2px_0px_rgba(0,0,0,1)] cursor-pointer shrink-0"
-                  >
-                    Watch
-                  </button>
+                  <div className="flex items-center w-full sm:w-auto pt-2.5 sm:pt-0 border-t border-white/5 sm:border-t-0">
+                    <button 
+                      onClick={() => navigate('/feed')}
+                      className="w-full sm:w-auto h-9 px-3.5 sm:h-10 sm:px-5 bg-[var(--y)] text-black text-xs font-black uppercase rounded-lg hover:scale-102 active:scale-98 transition-all border border-black shadow-[2px_2px_0px_rgba(0,0,0,1)] cursor-pointer shrink-0"
+                    >
+                      Watch
+                    </button>
+                  </div>
                 </div>
               );
             })}

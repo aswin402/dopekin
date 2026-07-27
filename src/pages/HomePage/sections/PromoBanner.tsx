@@ -7,22 +7,29 @@ const newCompanionBanner = new URL('../../../assets/banner/new_companion_banner.
 const hotFeedBanner = new URL('../../../assets/banner/hot_feed_banner.webp', import.meta.url).href;
 const tokenPlanBanner = new URL('../../../assets/banner/token_plan_banner.webp', import.meta.url).href;
 
+const newCompanionBannerMobile = new URL('../../../assets/banner/new_companion_banner_mobile.webp', import.meta.url).href;
+const hotFeedBannerMobile = new URL('../../../assets/banner/hot_feed_banner_mobile.webp', import.meta.url).href;
+const tokenPlanBannerMobile = new URL('../../../assets/banner/token_plan_banner_mobile.webp', import.meta.url).href;
+
 const BANNERS = [
   {
     id: 'new-companion',
     image: newCompanionBanner,
+    imageMobile: newCompanionBannerMobile,
     alt: 'Create & Meet New Companions',
     link: '/discover',
   },
   {
     id: 'hot-feed',
     image: hotFeedBanner,
+    imageMobile: hotFeedBannerMobile,
     alt: 'Trending Social Feed',
     link: '/feed',
   },
   {
     id: 'token-plan',
     image: tokenPlanBanner,
+    imageMobile: tokenPlanBannerMobile,
     alt: 'Token Top-Up Plans & Offers',
     link: '/pricing',
   },
@@ -125,25 +132,22 @@ export function PromoBanner() {
               currentIndex === idx ? 'opacity-100 z-10 pointer-events-auto' : 'opacity-0 z-0 pointer-events-none'
             }`}
           >
-            <div className="relative w-full h-full overflow-hidden bg-black flex items-center justify-center">
-              {/* Blurred Ambient Background Fill */}
-              <img
-                src={banner.image}
-                alt=""
-                aria-hidden="true"
-                loading="lazy"
-                decoding="async"
-                className="absolute inset-0 w-full h-full object-cover blur-2xl opacity-40 scale-110 pointer-events-none"
-              />
-              {/* Crisp Uncropped Banner Graphic */}
-              <img
-                src={banner.image}
-                alt={banner.alt}
-                loading={idx === 0 ? 'eager' : 'lazy'}
-                decoding="async"
-                className="relative z-10 w-full h-full object-contain object-center"
-              />
-            </div>
+            {/* Desktop Banner Graphic */}
+            <img
+              src={banner.image}
+              alt={banner.alt}
+              loading={idx === 0 ? 'eager' : 'lazy'}
+              decoding="async"
+              className="hidden sm:block w-full h-full object-cover object-center"
+            />
+            {/* Mobile Banner Graphic */}
+            <img
+              src={banner.imageMobile}
+              alt={banner.alt}
+              loading={idx === 0 ? 'eager' : 'lazy'}
+              decoding="async"
+              className="block sm:hidden w-full h-full object-cover object-center"
+            />
           </div>
         ))}
       </div>
